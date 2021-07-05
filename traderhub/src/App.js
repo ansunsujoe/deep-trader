@@ -1,7 +1,7 @@
 import './App.css';
 import Navbar from './components/navbar';
 import Login from './components/login';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import styles from './styles/home.module.css';
 import {
   BrowserRouter as Router,
