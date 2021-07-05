@@ -5,8 +5,8 @@ RUN mkdir /usr/src/backend
 WORKDIR /usr/src/backend
 
 # Copy and install requirements
-COPY requirements.txt .
-RUN pip install -r backend/requirements.txt
+COPY backend/requirements.txt .
+RUN pip install -r requirements.txt
 
 # Install and run flask app
 COPY backend/app.py .
