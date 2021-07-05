@@ -4,6 +4,10 @@ services:
   database:
     image: mansoonseason77/database:master
     pull_policy: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres2021
+      POSTGRES_DB: postgres
     deploy:
       resources:
         limits:
@@ -13,6 +17,7 @@ services:
       restart_policy:
         condition: on-failure
     restart: unless-stopped
+  
   backend:
     image: mansoonseason77/backend:master
     pull_policy: always
