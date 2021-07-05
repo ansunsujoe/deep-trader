@@ -9,7 +9,7 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 # Install and run flask app
-COPY app.py .
+COPY backend/app.py .
 EXPOSE 5001
 ENV FLASK_ENV=development
 CMD ["python", "app.py"]
