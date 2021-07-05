@@ -2,22 +2,31 @@ version: '3.7'
 
 services:
   database:
-    image: mansoonseason77/traderhub:master
+    image: mansoonseason77/database:master
     pull_policy: always
     deploy:
+      resources:
+        limits:
+          memory: 12288m
+        reservations:
+          memory: 8192m
       restart_policy:
         condition: on-failure
-    ports:
-      - '8081:8080'
-    volumes:
-      - 'dependency-track:/data'
     restart: unless-stopped
-
-  dtrack-frontend:
-    image: dependencytrack/frontend
+  backend:
+    image: mansoonseason77/backend:master
     pull_policy: always
     depends_on:
-      - dtrack-apiserver
+      - database
     ports:
-      - "8080:8080"
+      - "5001:5001"
+    restart: unless-stopped
+
+  frontend:
+    image: mansoonseason77/traderhub:master
+    pull_policy: always
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
     restart: unless-stopped
