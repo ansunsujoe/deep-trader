@@ -1,7 +1,6 @@
 import './App.css';
-import Navbar from './components/navbar';
 import Login from './components/login';
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import styles from './styles/home.module.css';
 import {
   BrowserRouter as Router,
@@ -15,7 +14,7 @@ import axios from 'axios';
 function App() {
 
   useEffect(() => {
-    axios.get('http://localhost:5000').then(response => {
+    axios.get('http://localhost:5001').then(response => {
       console.log("SUCCESS", response);
       alert("Successfully got update from App");
     }).catch(error => {
@@ -35,16 +34,23 @@ function App() {
         </p>
 
         <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Sign Up/Login &rarr;</h2>
+          <Link to="/signup" className={styles.card}>
+            <h2>Sign Up &rarr;</h2>
             <p>New to TraderHub? Create your free account today to access realtime predictions
               and recommendations made by dedicated Stock Bots.
             </p>
-          </a>
+          </Link>
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
+          <Link to="/login" className={styles.card}>
+            <h2>Login &rarr;</h2>
+            <p>
+              Access your account dashboard.
+            </p>
+          </Link>
+
+          <a href="https://github.com/ansunsujoe/deep-trader" className={styles.card}>
             <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
+            <p>Learn about TraderHub and all of its benefits to both professional and amateur traders.</p>
           </a>
 
           <a
@@ -54,17 +60,16 @@ function App() {
             <h2>Source &rarr;</h2>
             <p>View the source code for the Deep-Trader application. Contributions are appreciated!</p>
           </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
         </div>
+
+        <Switch>
+          <Route path="/signup">
+            <Login />
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+        </Switch>
       </div>
     </Router>
   );
