@@ -48,11 +48,11 @@ function App() {
           </a>
 
           <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
+            href="https://github.com/ansunsujoe/deep-trader"
             className={styles.card}
           >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
+            <h2>Source &rarr;</h2>
+            <p>View the source code for the Deep-Trader application. Contributions are appreciated!</p>
           </a>
 
           <a
