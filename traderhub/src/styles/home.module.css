@@ -47,6 +47,7 @@
     flex-wrap: wrap;
     max-width: 1200px;
     margin-top: 3rem;
+    margin: auto;
 }
 
 .card {
@@ -64,8 +65,8 @@
 .card:hover,
 .card:focus,
 .card:active {
-    color: #0070f3;
-    border-color: #0070f3;
+    color: #4ddb7c;
+    border-color: #4ddb7c;
 }
 
 .card h2 {
@@ -80,11 +81,14 @@
 }
 
 .container {
+    margin-top: 4rem;
     min-height: 100vh;
     padding: 0 0.5rem;
-    display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-  }
+}
+
+/* body {
+    background-color: #222224;
+    color: white;
+} */
