@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  database:
+    image: mansoonseason77/traderhub:master
+    pull_policy: always
+    deploy:
+      restart_policy:
+        condition: on-failure
+    ports:
+      - '8081:8080'
+    volumes:
+      - 'dependency-track:/data'
+    restart: unless-stopped
+
+  dtrack-frontend:
+    image: dependencytrack/frontend
+    pull_policy: always
+    depends_on:
+      - dtrack-apiserver
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
