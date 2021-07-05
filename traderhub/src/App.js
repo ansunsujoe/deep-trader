@@ -9,9 +9,20 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import axios from 'axios';
 
 
 function App() {
+
+  useEffect(() => {
+    axios.get('http://localhost:5000').then(response => {
+      console.log("SUCCESS", response);
+      alert("Successfully got update from App");
+    }).catch(error => {
+      console.log(error);
+    })
+  }, [])
+
   return (
     <Router>
       <div className={styles.container}>
