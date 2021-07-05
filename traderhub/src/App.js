@@ -1,24 +1,61 @@
 import './App.css';
 import Navbar from './components/navbar';
+import Login from './components/login';
+import React from 'react';
+import styles from './styles/home.module.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
 
 function App() {
   return (
-    <div className="App">
-      <Navbar></Navbar>
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
+    <Router>
+      <div className={styles.container}>
+        <h1 className={styles.title}>
+          Welcome to the Trader Hub!
+        </h1>
+
+        <p className={styles.description}>
+          A free autonomous portfolio management system guided by Deep Learning and Pattern Recognition
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+        <div className={styles.grid}>
+          <a href="https://nextjs.org/docs" className={styles.card}>
+            <h2>Sign Up/Login &rarr;</h2>
+            <p>New to TraderHub? Create your free account today to access realtime predictions
+              and recommendations made by dedicated Stock Bots.
+            </p>
+          </a>
+
+          <a href="https://nextjs.org/learn" className={styles.card}>
+            <h2>Learn &rarr;</h2>
+            <p>Learn about Next.js in an interactive course with quizzes!</p>
+          </a>
+
+          <a
+            href="https://github.com/vercel/next.js/tree/master/examples"
+            className={styles.card}
+          >
+            <h2>Examples &rarr;</h2>
+            <p>Discover and deploy boilerplate example Next.js projects.</p>
+          </a>
+
+          <a
+            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+            className={styles.card}
+          >
+            <h2>Deploy &rarr;</h2>
+            <p>
+              Instantly deploy your Next.js site to a public URL with Vercel.
+            </p>
+          </a>
+        </div>
+      </div>
+    </Router>
   );
 }
 
