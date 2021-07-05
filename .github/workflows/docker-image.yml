@@ -36,7 +36,7 @@ jobs:
           context: .
           file: ./traderhub/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/traderhub:${{ env.BRANCH }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/traderhub:master
       -
         name: Build and push Backend
         uses: docker/build-push-action@v2
@@ -44,7 +44,7 @@ jobs:
           context: .
           file: ./backend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/backend:${{ env.BRANCH }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/backend:master
       -
         name: Build and push Database
         uses: docker/build-push-action@v2
@@ -52,4 +52,4 @@ jobs:
           context: .
           file: ./database/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/database:${{ env.BRANCH }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/database:master
