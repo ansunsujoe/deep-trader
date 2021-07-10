@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function ValidationTextFields() {
+export default function Login() {
   const classes = useStyles();
 
   return (
