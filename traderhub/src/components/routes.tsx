@@ -1,4 +1,5 @@
 import Login from './login';
+import Signup from './signup';
 import Homepage from './homepage';
 import {
   BrowserRouter as Router,
@@ -12,7 +13,7 @@ export default function Routes() {
     <Router>
       <Switch>
         <Route path="/" component={Homepage} exact />
-        <Route path="/signup" component={Login} />
+        <Route path="/signup" component={Signup} />
         <Route path="/login" component={Login} />
       </Switch>
     </Router>

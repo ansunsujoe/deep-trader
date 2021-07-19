@@ -10,7 +10,7 @@ RUN pip install -r requirements.txt
 
 # Environment variables
 ENV FLASK_ENV=development
-ENV DATABASE_URL=postgresql://postgres:postgres2021@localhost:5432/postgres
+ENV DATABASE_URL=postgresql://postgres:postgres2021@localhost:5432/deep-trader
 
 # Install and run flask app
 COPY backend/app.py .

@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres2021
-      POSTGRES_DB: postgres
+      POSTGRES_DB: deep-trader
     deploy:
       resources:
         limits:
