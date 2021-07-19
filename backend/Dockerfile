@@ -8,8 +8,12 @@ WORKDIR /usr/src/backend
 COPY backend/requirements.txt .
 RUN pip install -r requirements.txt
 
+# Environment variables
+ENV FLASK_ENV=development
+ENV DATABASE_URL=postgresql://postgres:postgres2021@localhost:5432/postgres
+
 # Install and run flask app
 COPY backend/app.py .
 EXPOSE 5001
-ENV FLASK_ENV=development
+
 CMD ["python", "app.py"]
