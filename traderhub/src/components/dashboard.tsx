@@ -27,19 +27,27 @@ export default function Dashboard() {
       <div className={styles.container}>
         <Container fluid>
           <Row>
-            <Col md={8}>
+            <Col md={9}>
+              <Card className={styles.displayCard}>
+                <CardContent>
+                  <h1>Ansun's Portfolio</h1>
+                  <p>7/27/2021</p>
+                </CardContent>
+              </Card>
               <Row>
                 <Col>
-                  <Card>
+                  <Card className={styles.displayCard}>
                     <CardContent>
-                      <p>Good</p>
+                      <h1 className={styles.number}>$31,487</h1>
+                      <p>Total</p>
                     </CardContent>
                   </Card>
                 </Col>
                 <Col>
-                  <Card>
+                  <Card className={styles.displayCard}>
                     <CardContent>
-                      <p>Good</p>
+                      <h1 className={styles.number}>$22,381</h1>
+                      <p>Buying Power</p>
                     </CardContent>
                   </Card>
                 </Col>
@@ -50,10 +58,10 @@ export default function Dashboard() {
                 </CardContent>
               </Card>
             </Col>
-            <Col md={4}>
-              <Card>
+            <Col md={3}>
+              <Card className={styles.assets}>
                 <CardContent>
-                  <p>Good</p>
+                  <p>My Assets</p>
                 </CardContent>
               </Card>
             </Col>
