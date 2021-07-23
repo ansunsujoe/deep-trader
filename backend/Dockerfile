@@ -9,7 +9,7 @@ RUN mkdir /usr/src/backend
 WORKDIR /usr/src/backend
 
 # Copy backend code
-COPY backend backend
+COPY backend .
 
 # Install requirements and deep-trader package
 RUN pip install -r requirements.txt && \
