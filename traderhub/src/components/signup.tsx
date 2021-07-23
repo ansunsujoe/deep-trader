@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import styles from '../styles/login.module.css';
 import axios from 'axios';
+import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -18,6 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Signup() {
   const classes = useStyles();
+  let history = useHistory();
 
   // Use states
   const [name, setName] = useState(null);
@@ -33,6 +35,7 @@ export default function Signup() {
     }
     axios.post('http://localhost:5001/users', {data}).then(response => {
       console.log("SUCCESS", response);
+      history.push("/dashboard");
       alert("Successfully got update from App");
     }).catch(error => {
       console.log(error);

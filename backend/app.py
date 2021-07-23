@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
-from flask import request
+from flask import request, session
 import traderbase_tools as db
 
 app = Flask(__name__)
