@@ -2,7 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask import request, session
-import traderbase_tools as db
+from traderbase_tools import Database
 
 app = Flask(__name__)
 app.config['ENV'] = "development"
@@ -10,6 +10,7 @@ app.config['ENV'] = "development"
 # Set up some configurations for the app
 CORS(app)
 bcrypt = Bcrypt(app)
+db = Database()
 
 # Root endpoint
 @app.route("/")
