@@ -24,9 +24,11 @@ export default function Navbar() {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            News
+            Trader Hub
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit">Stocks</Button>
+          <Button color="inherit">Transactions</Button>
+          <Button color="inherit">Logout</Button>
         </Toolbar>
       </AppBar>
     </div>

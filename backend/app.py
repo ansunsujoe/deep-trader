@@ -2,6 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask import request
+import traderbase_tools as db
 
 app = Flask(__name__)
 app.config['ENV'] = "development"
@@ -18,7 +19,9 @@ def index():
 # Insert user
 @app.route("/users", methods=["POST"])
 def sign_up():
-    app.logger.debug(request.data)
+    db.insert_user(request.data)
+    data = db.select_all("trader")
+    app.logger.debug(data)
 
 # Main method
 if __name__ == "__main__":

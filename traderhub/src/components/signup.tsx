@@ -31,7 +31,7 @@ export default function Signup() {
       username: username,
       password: password
     }
-    axios.post('http://localhost:5001', {data}).then(response => {
+    axios.post('http://localhost:5001/users', {data}).then(response => {
       console.log("SUCCESS", response);
       alert("Successfully got update from App");
     }).catch(error => {

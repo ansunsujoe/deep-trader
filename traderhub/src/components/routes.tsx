@@ -1,6 +1,7 @@
 import Login from './login';
 import Signup from './signup';
 import Homepage from './homepage';
+import Dashboard from './dashboard';
 import {
   BrowserRouter as Router,
   Switch,
@@ -15,6 +16,7 @@ export default function Routes() {
         <Route path="/" component={Homepage} exact />
         <Route path="/signup" component={Signup} />
         <Route path="/login" component={Login} />
+        <Route path="/dashboard" component={Dashboard} />
       </Switch>
     </Router>
   );
