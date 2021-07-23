@@ -2,7 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask import request, session
-from traderbase_tools import Database
+from .traderbase_tools import Database
 
 app = Flask(__name__)
 app.config['ENV'] = "development"
