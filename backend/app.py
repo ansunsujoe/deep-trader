@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
+from flask import request
 
 app = Flask(__name__)
 app.config['ENV'] = "development"
@@ -15,9 +16,9 @@ def index():
     return "Hello World!"
 
 # Insert user
-@app.route("/signup", methods=["POST"])
+@app.route("/users", methods=["POST"])
 def sign_up():
-    pass
+    app.logger.debug(request.data)
 
 # Main method
 if __name__ == "__main__":
