@@ -21,8 +21,8 @@ def index():
 @app.route("/users", methods = ['GET', 'POST'])
 def sign_up():
     try:
-        app.logger.debug(request.data)
-        db.insert_user(request.data)
+        app.logger.debug(request.get_json())
+        db.insert_user(request.get_json())
         data = db.select_all("trader")
         app.logger.debug(data)
     except Exception as e:
