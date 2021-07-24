@@ -28,12 +28,17 @@ export default function Signup() {
 
   const handleSubmit = e => {
     e.preventDefault();
-    const data = {
+    const data = JSON.stringify({
       name: name,
       username: username,
       password: password
-    }
-    axios.post('http://localhost:5001/users', {data}).then(response => {
+    });
+
+    axios.post('http://localhost:5001/users', data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(response => {
       console.log("SUCCESS", response);
       history.push("/dashboard");
       alert("Successfully got update from App");

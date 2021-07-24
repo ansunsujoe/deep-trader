@@ -69,6 +69,21 @@ export default function Dashboard() {
               <Card className={styles.assets}>
                 <CardContent>
                   <p>My Assets</p>
+                  <Card>
+                    <CardContent>
+                      <Container fluid>
+                        <Row>
+                          <Col className="p-0">
+                            <p className="m-0">TSLA</p>
+                            <p className={styles.subtitle}>47 Shares</p>
+                          </Col>
+                          <Col>
+                            <h4 className={styles.price}>$22,381</h4>
+                          </Col>
+                        </Row>
+                      </Container>
+                    </CardContent>
+                  </Card>
                 </CardContent>
               </Card>
             </Col>

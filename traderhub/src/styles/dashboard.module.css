@@ -17,6 +17,7 @@
 .subtitle {
     font-weight: bold;
     text-transform: uppercase;
+    margin-bottom: 0px;
 }
 
 .noBorder {
@@ -26,4 +27,11 @@
 
 .date {
     text-transform: uppercase;
+}
+
+.price {
+    text-align: center;
+    line-height: 40px;
+    margin-bottom: 0px;
+    color: #45b565;
 }
