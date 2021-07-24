@@ -7,14 +7,23 @@
 }
 
 .assets {
-    height: 80vh;
-}
-
-.displayCard {
-    margin-bottom: 1rem;
-    padding: 0px;
+    height: 100vh;
 }
 
 .number {
     color: #45b565;
+}
+
+.subtitle {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.noBorder {
+    border: none;
+    box-shadow: none;
+}
+
+.date {
+    text-transform: uppercase;
 }

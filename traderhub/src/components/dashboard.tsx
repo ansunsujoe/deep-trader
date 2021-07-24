@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import NetWorthChart from './networth';
 import {
   Link
 } from "react-router-dom";
@@ -28,33 +29,39 @@ export default function Dashboard() {
         <Container fluid>
           <Row>
             <Col md={9}>
-              <Card className={styles.displayCard}>
+              <Card style={{ border: "none", boxShadow: "none" }}>
                 <CardContent>
                   <h1>Ansun's Portfolio</h1>
-                  <p>7/27/2021</p>
+                  <p className={styles.date}>July 27, 2021</p>
                 </CardContent>
               </Card>
               <Row>
                 <Col>
-                  <Card className={styles.displayCard}>
+                  <Card variant="outlined" style={{ border: "none", boxShadow: "none" }}>
                     <CardContent>
-                      <h1 className={styles.number}>$31,487</h1>
-                      <p>Total</p>
-                    </CardContent>
-                  </Card>
-                </Col>
-                <Col>
-                  <Card className={styles.displayCard}>
-                    <CardContent>
-                      <h1 className={styles.number}>$22,381</h1>
-                      <p>Buying Power</p>
+                      <Container fluid>
+                        <Row>
+                          <Col>
+                            <h1 className={styles.number}>$31,487</h1>
+                            <p className={styles.subtitle}>Total</p>
+                          </Col>
+                          <Col>
+                            <h1 className={styles.number}>$22,381</h1>
+                            <p className={styles.subtitle}>Buying Power</p>
+                          </Col>
+                          <Col>
+                            <h1 className={styles.number}>$7,711</h1>
+                            <p className={styles.subtitle}>Invested</p>
+                          </Col>
+                        </Row>
+                      </Container>
                     </CardContent>
                   </Card>
                 </Col>
               </Row>
-              <Card>
+              <Card variant="outlined">
                 <CardContent>
-                  <p>Good</p>
+                  <NetWorthChart />
                 </CardContent>
               </Card>
             </Col>
