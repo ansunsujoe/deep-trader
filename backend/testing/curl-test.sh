@@ -1,6 +1,5 @@
 curl 'http://localhost:5001/users' \
 -X 'POST' \
-  -H 'Connection: keep-alive' \
   -H 'Accept: application/json, text/plain, */*' \
   -H 'Content-Type: application/json;charset=UTF-8' \
   -H 'Sec-Fetch-Mode: cors' \

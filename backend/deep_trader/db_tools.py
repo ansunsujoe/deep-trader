@@ -1,4 +1,7 @@
 import psycopg2, os
+import logging
+
+logger = logging.getLogger(__name__)
 
 class Database():
     def __init__(self):
@@ -10,8 +13,7 @@ class Database():
             conn = psycopg2.connect(connection_string)
             cur = conn.cursor()
         except Exception as error:
-            print(error)
-            exit()
+            logger.error(error)
         return conn, cur
 
     def value_string(self, array):

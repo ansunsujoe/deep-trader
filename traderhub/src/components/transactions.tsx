@@ -7,7 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import NetWorthChart from './networth';
+import TransactionTable from './transactionTable';
 import {
   Link
 } from "react-router-dom";
@@ -39,55 +39,18 @@ export default function Transactions() {
           </Row>
           <Row>
             <Col md={6}>
-              <Row>
-                <Col>
-                  <Card variant="outlined" style={{ border: "none", boxShadow: "none" }}>
-                    <CardContent>
-                      <Container fluid>
-                        <Row>
-                          <Col>
-                            <h1 className={styles.number}>$31,487</h1>
-                            <p className={styles.subtitle}>Total</p>
-                          </Col>
-                          <Col>
-                            <h1 className={styles.number}>$22,381</h1>
-                            <p className={styles.subtitle}>Buying Power</p>
-                          </Col>
-                          <Col>
-                            <h1 className={styles.number}>$7,711</h1>
-                            <p className={styles.subtitle}>Invested</p>
-                          </Col>
-                        </Row>
-                      </Container>
-                    </CardContent>
-                  </Card>
-                </Col>
-              </Row>
-              <Card variant="outlined">
+              <Card style={{ border: "none", boxShadow: "none" }}>
                 <CardContent>
-                  <NetWorthChart />
+                  <h2>Buys</h2>
+                  <TransactionTable />
                 </CardContent>
               </Card>
             </Col>
             <Col md={6}>
-              <Card className={styles.assets}>
+              <Card style={{ border: "none", boxShadow: "none" }}>
                 <CardContent>
-                  <p>My Assets</p>
-                  <Card>
-                    <CardContent>
-                      <Container fluid>
-                        <Row>
-                          <Col className="p-0">
-                            <p className="m-0">TSLA</p>
-                            <p className={styles.subtitle}>47 Shares</p>
-                          </Col>
-                          <Col>
-                            <h4 className={styles.price}>$22,381</h4>
-                          </Col>
-                        </Row>
-                      </Container>
-                    </CardContent>
-                  </Card>
+                  <h2>Sells</h2>
+                  <TransactionTable />
                 </CardContent>
               </Card>
             </Col>

@@ -18,16 +18,17 @@ def index():
     return "Hello World!"
 
 # Insert user
-@app.route("/users", methods=["POST"])
+@app.route("/users", methods = ['GET', 'POST'])
 def sign_up():
     try:
+        app.logger.debug(request.data)
         db.insert_user(request.data)
         data = db.select_all("trader")
         app.logger.debug(data)
     except Exception as e:
         app.logger.debug(e)
-        return "Error"
-    return "Good"
+        return {"data": "Bad"}
+    return {"data": "Good"}
 
 # Main method
 if __name__ == "__main__":
