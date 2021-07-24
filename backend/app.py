@@ -22,7 +22,8 @@ def index():
 def sign_up():
     db.insert_user(request.data)
     data = db.select_all("trader")
-    return data
+    app.logger.debug(data)
+    return "Good"
 
 # Main method
 if __name__ == "__main__":
