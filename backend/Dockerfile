@@ -2,7 +2,7 @@ FROM python:3.9
 
 # Environment variables
 ENV FLASK_ENV=development
-ENV DATABASE_URL=postgresql://postgres:postgres2021@localhost:5432/deep_trader
+ENV DATABASE_URL=postgresql://postgres:postgres2021@host.docker.internal:5432/deep_trader
 
 # Make the backend root directory
 RUN mkdir /usr/src/backend
