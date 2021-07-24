@@ -28,11 +28,11 @@ export default function Signup() {
 
   const handleSubmit = e => {
     e.preventDefault();
-    const data = JSON.stringify({
+    const data = {
       name: name,
       username: username,
       password: password
-    });
+    };
 
     axios.post('http://localhost:5001/users', data, {
       headers: {
