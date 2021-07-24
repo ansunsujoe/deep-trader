@@ -28,13 +28,17 @@ export default function Transactions() {
       <div className={styles.container}>
         <Container fluid>
           <Row>
-            <Col md={9}>
+            <Col>
               <Card style={{ border: "none", boxShadow: "none" }}>
                 <CardContent>
-                  <h1>Ansun's Portfolio</h1>
+                  <h1>Ansun's Transactions</h1>
                   <p className={styles.date}>July 27, 2021</p>
                 </CardContent>
               </Card>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
               <Row>
                 <Col>
                   <Card variant="outlined" style={{ border: "none", boxShadow: "none" }}>
@@ -65,7 +69,7 @@ export default function Transactions() {
                 </CardContent>
               </Card>
             </Col>
-            <Col md={3}>
+            <Col md={6}>
               <Card className={styles.assets}>
                 <CardContent>
                   <p>My Assets</p>

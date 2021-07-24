@@ -20,9 +20,13 @@ def index():
 # Insert user
 @app.route("/users", methods=["POST"])
 def sign_up():
-    db.insert_user(request.data)
-    data = db.select_all("trader")
-    app.logger.debug(data)
+    try:
+        db.insert_user(request.data)
+        data = db.select_all("trader")
+        app.logger.debug(data)
+    except Exception as e:
+        app.logger.debug(e)
+        return "Error"
     return "Good"
 
 # Main method
