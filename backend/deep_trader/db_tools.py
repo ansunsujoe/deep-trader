@@ -37,7 +37,7 @@ class Database():
         password_str = self.value_string([trader_info.get("password")])
         
         # Construct query
-        values = f"{self.value_string(names_str)}, crypt({password_str}, gen_salt(\'bf\'))"
+        values = f"{names_str}, crypt({password_str}, gen_salt(\'bf\'))"
         cur.execute(f"INSERT INTO {table} VALUES ({values});")
         conn.commit()
         
