@@ -10,23 +10,23 @@ CREATE TABLE IF NOT EXISTS trader (
 );
 
 -- For a single ticker
-CREATE TABLE IF NOT EXISTS ticker {
+CREATE TABLE IF NOT EXISTS ticker (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(10) NOT NULL,
-}
+    name VARCHAR(10) NOT NULL
+);
 
 -- For a single stock price
-CREATE TABLE IF NOT EXISTS quote {
+CREATE TABLE IF NOT EXISTS quote (
     id SERIAL PRIMARY KEY,
     ticker_id INT NOT NULL,
     time TIMESTAMP NOT NULL,
     price DECIMAL NOT NULL
-}
+);
 
 -- For a single stock trade recommendation
-CREATE TABLE IF NOT EXISTS recommendation {
+CREATE TABLE IF NOT EXISTS recommendation (
     id SERIAL PRIMARY KEY,
     ticker_id INT NOT NULL,
     action VARCHAR(10) NOT NULL,
     time TIMESTAMP NOT NULL
-}
+);
