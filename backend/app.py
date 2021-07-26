@@ -28,7 +28,7 @@ def sign_up():
     except Exception as e:
         app.logger.debug(e)
         return {"data": "Bad"}
-    return {"data": "Good"}
+    return {"data": data}
 
 # Main method
 if __name__ == "__main__":

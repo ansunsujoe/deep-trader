@@ -27,5 +27,6 @@ CREATE TABLE IF NOT EXISTS quote {
 CREATE TABLE IF NOT EXISTS recommendation {
     id SERIAL PRIMARY KEY,
     ticker_id INT NOT NULL,
-    action 
+    action VARCHAR(10) NOT NULL,
+    time TIMESTAMP NOT NULL
 }
