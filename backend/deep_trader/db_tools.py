@@ -41,12 +41,27 @@ class Database():
         cur.execute(f"INSERT INTO {table} VALUES ({values});")
         conn.commit()
         
-    def select(self, attributes, table):
+    def authenticate_user(self, trader_info):
+        conn, cur = self.get_connection()
+        
+        
+    def select_conditions(self, table, attributes, conditions):
         _, cur = self.get_connection()
+        attribute_str = ",".join(attributes)
+        conditions_str = " AND ".join(conditions)
+        cur.execute(f"SELECT {attribute_str} FROM {table} WHERE {conditions_str};")
+        data = cur.fetchall()
+        return data
+    
+    def select(self, table, attributes):
+        _, cur = self.get_connection()
+        attribute_str = ",".join(attributes)
+        cur.execute(f"SELECT {attribute_str} FROM {table};")
+        data = cur.fetchall()
+        return data
         
     def select_all(self, table):
         _, cur = self.get_connection()
         cur.execute(f"SELECT * FROM {table}")
         data = cur.fetchall()
         return data
-    
