@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask import request, session
 from deep_trader.db_tools import Database
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['ENV'] = "development"

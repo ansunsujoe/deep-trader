@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS recommendation (
     time TIMESTAMP NOT NULL
 );
 
+-- For a transaction
 CREATE TABLE IF NOT EXISTS transaction (
     id SERIAL PRIMARY KEY,
     trader_id INT NOT NULL REFERENCES trader(id),
@@ -38,4 +39,19 @@ CREATE TABLE IF NOT EXISTS transaction (
     action VARCHAR(10) NOT NULL,
     price DECIMAL NOT NULL,
     time TIMESTAMP NOT NULL
-)
+);
+
+-- For a stock group
+CREATE TABLE IF NOT EXISTS group (
+    id SERIAL PRIMARY KEY,
+    trader_id INT NOT NULL REFERENCES trader(id),
+    name VARCHAR(30) NOT NULL,
+);
+
+-- For a stock group ticker
+CREATE TABLE IF NOT EXISTS group_item (
+    id SERIAL PRIMARY KEY,
+    trader_id INT NOT NULL REFERENCES trader(id),
+    group_id INT NOT NULL REFERENCES group(id),
+    ticker_id INT NOT NULL REFERENCES ticker(id)
+);
