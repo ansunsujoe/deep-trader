@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS ticker (
 -- For a single stock price
 CREATE TABLE IF NOT EXISTS quote (
     id SERIAL PRIMARY KEY,
-    ticker_id INT NOT NULL,
+    ticker_id INT NOT NULL REFERENCES ticker(id),
     time TIMESTAMP NOT NULL,
     price DECIMAL NOT NULL
 );
@@ -26,7 +26,16 @@ CREATE TABLE IF NOT EXISTS quote (
 -- For a single stock trade recommendation
 CREATE TABLE IF NOT EXISTS recommendation (
     id SERIAL PRIMARY KEY,
-    ticker_id INT NOT NULL,
+    ticker_id INT NOT NULL REFERENCES ticker(id),
     action VARCHAR(10) NOT NULL,
     time TIMESTAMP NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS transaction (
+    id SERIAL PRIMARY KEY,
+    trader_id INT NOT NULL REFERENCES trader(id),
+    ticker_id INT NOT NULL REFERENCES ticker(id),
+    action VARCHAR(10) NOT NULL,
+    price DECIMAL NOT NULL,
+    time TIMESTAMP NOT NULL
+)

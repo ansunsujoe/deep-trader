@@ -3,6 +3,8 @@ import Signup from './signup';
 import Homepage from './homepage';
 import Dashboard from './dashboard';
 import Transactions from './transactions';
+import StockList from './stocklist';
+import Groups from './groups';
 import {
   BrowserRouter as Router,
   Switch,
@@ -19,6 +21,8 @@ export default function Routes() {
         <Route path="/login" component={Login} />
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/transactions" component={Transactions} />
+        <Route path="/stocklist" component={StockList} />
+        <Route path="/groups" component={Groups} />
       </Switch>
     </Router>
   );

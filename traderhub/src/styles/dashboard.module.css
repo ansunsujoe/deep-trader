@@ -35,3 +35,13 @@
     margin-bottom: 0px;
     color: #45b565;
 }
+
+.navlink {
+    color: white;
+    text-decoration: none;
+}
+
+.navlink:hover {
+    color: white;
+    text-decoration: none;
+}

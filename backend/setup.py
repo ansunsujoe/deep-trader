@@ -4,7 +4,8 @@ REQUIRES = [
     "Flask",
     "Flask-Cors",
     "flask-bcrypt",
-    "psycopg2-binary"
+    "psycopg2-binary",
+    "requests"
 ]
 
 setup(

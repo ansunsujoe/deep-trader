@@ -6,6 +6,11 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import {useHistory} from "react-router-dom";
+import styles from '../styles/dashboard.module.css';
+
+import {
+  Link
+} from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,8 +43,26 @@ export default function Navbar() {
           <Typography variant="h6" className={classes.title}>
             Trader Hub
           </Typography>
-          <Button color="inherit">Stocks</Button>
-          <Button color="inherit">Transactions</Button>
+          <Link to="/dashboard" className={styles.navlink}>
+            <Button color="inherit">
+              Home
+            </Button>
+          </Link>
+          <Link to="/stocklist" className={styles.navlink}>
+            <Button color="inherit">
+              Stocks
+            </Button>
+          </Link>
+          <Link to="/groups" className={styles.navlink}>
+            <Button color="inherit">
+              My Groups
+            </Button>
+          </Link>
+          <Link to="/transactions" className={styles.navlink}>
+            <Button color="inherit">
+              Transactions
+            </Button>
+          </Link>
           <Button color="inherit" onClick={handleLogout}>Logout</Button>
         </Toolbar>
       </AppBar>
