@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import styles from '../styles/login.module.css';
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -16,6 +17,14 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function GroupForm() {
   const classes = useStyles();
+  let history = useHistory();
+
+  // Use states
+  const [name, setName] = useState(null);
+
+  function handleNameChange(e) {
+    setName(e.target.value);
+  }
 
   return (
     <div className={styles.loginform}>
@@ -27,6 +36,7 @@ export default function GroupForm() {
             label="Watchlist Name"
             placeholder="Name"
             variant="outlined"
+            onChange={handleNameChange}
           />
         </div>
       </form>

@@ -4,9 +4,11 @@ from flask_bcrypt import Bcrypt
 from flask import request, session
 from deep_trader.db_tools import Database
 from datetime import datetime
+import os
 
 app = Flask(__name__)
 app.config['ENV'] = "development"
+app.secret_key = os.environ.get("SECRET_KEY")
 
 # Set up some configurations for the app
 CORS(app)

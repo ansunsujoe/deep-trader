@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styles from '../styles/home.module.css';
 import axios from 'axios';
 import {
@@ -6,14 +6,6 @@ import {
 } from "react-router-dom";
 
 export default function Homepage() {
-  useEffect(() => {
-    axios.get('http://localhost:5001').then(response => {
-      console.log("SUCCESS", response);
-      alert("Successfully got update from App");
-    }).catch(error => {
-      console.log(error);
-    })
-  }, [])
 
   return (
     <div className={styles.container}>
