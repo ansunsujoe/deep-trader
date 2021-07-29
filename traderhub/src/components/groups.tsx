@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../styles/dashboard.module.css';
 import axios from 'axios';
 import Navbar from './navbar';
@@ -10,10 +10,12 @@ import Col from 'react-bootstrap/Col';
 import GroupList from './grouplist';
 
 export default function Groups() {
+  const [data, setData] = useState([]);
+
   useEffect(() => {
     axios.get('http://localhost:5001/watchlist').then(response => {
       console.log("SUCCESS", response);
-      alert("Successfully got update from App");
+      setData(response.data);
     }).catch(error => {
       console.log(error);
     })
@@ -35,7 +37,7 @@ export default function Groups() {
           </Row>
           <Card style={{ border: "none", boxShadow: "none" }}>
             <CardContent>
-              <GroupList />
+              <GroupList data={data} />
             </CardContent>
           </Card>
         </Container>

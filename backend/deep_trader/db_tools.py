@@ -48,7 +48,7 @@ class Database():
         
         # Construct query
         values = f"{names_str}, crypt({password_str}, gen_salt(\'bf\'))"
-        cur.execute(f"INSERT INTO {table} VALUES ({values});")
+        cur.execute(f"INSERT INTO {table} VALUES (DEFAULT, {values});")
         conn.commit()
         
     def run_insert(self, table, data):
