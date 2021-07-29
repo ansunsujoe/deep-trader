@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../styles/dashboard.module.css';
 import axios from 'axios';
 import Navbar from './navbar';
@@ -8,16 +8,23 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import TransactionTable from './transactionTable';
+import TickerTable from './tickerTable';
 
 export default function StockList() {
+  const [stocks, setStocks] = useState([]);
+
   useEffect(() => {
-    axios.get('http://localhost:5001').then(response => {
+    axios.get('http://localhost:5001/tickers').then(response => {
       console.log("SUCCESS", response);
       alert("Successfully got update from App");
     }).catch(error => {
       console.log(error);
     })
   }, [])
+
+  const data = [
+    {"name": "good", "price": "good"}
+  ];
 
   return (
     <div>
@@ -35,7 +42,7 @@ export default function StockList() {
           </Row>
           <Card style={{ border: "none", boxShadow: "none" }}>
             <CardContent>
-              <TransactionTable />
+              <TickerTable data={data} />
             </CardContent>
           </Card>
         </Container>

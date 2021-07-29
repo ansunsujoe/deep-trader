@@ -13,6 +13,10 @@ CORS(app)
 bcrypt = Bcrypt(app)
 db = Database()
 
+# Fill tables with data if not already
+if db.is_empty("quote"):
+    db.init_stock_data("resources/tickers.txt")
+
 # Root endpoint
 @app.route("/")
 def index():
@@ -24,16 +28,44 @@ def sign_up():
     try:
         app.logger.debug(request.get_json())
         db.insert_user(request.get_json())
-        data = db.select("trader", attributes=["id"])
-        app.logger.debug(data)
+        userid = db.run_select("SELECT MAX(id) FROM trader;")
+        session["userid"] = userid
+        app.logger.debug(userid)
     except Exception as e:
-        app.logger.debug(e)
-        return {"data": "Bad"}
-    return {"data": data}
+        app.logger.debug("Exception " + e)
+        return "Bad Request", 400
+    return {"userid": userid}
 
+# Login as user
+@app.route("/login", methods=['POST'])
+def login():
+    try:
+        response = request.get_json()
+        user_id = db.authenticate_user(response)
+        if user_id is None:
+            return "Unauthorized", 401
+        else:
+            session["userid"] = user_id
+            return {"userid": user_id}
+    except Exception as e:
+        app.logger.debug("Exception " + e)
+        return "Bad Request", 400
+        
+
+# Log out user
 @app.route("/logout")
 def logout():
-    return {"userid": 8}
+    userid = session.get("userid")
+    session["userid"] = None
+    return {"userid": userid}
+
+# Tickers
+@app.route("/tickers", methods=["GET", "POST"])
+def tickers():
+    if request.method == "GET":
+        data = db.run_select("SELECT quote.ticker_id, quote.price FROM (SELECT ticker_id, MAX(time) as max_time FROM quote GROUP by ticker_id) AS latest_prices INNER JOIN ticker INNER JOIN quote ON quote.ticker_id = latest_prices.ticker_id AND quote.time = latest_prices.max_time;")
+        response = db.to_dict(data, ["name", "price"])
+        return response
 
 # Main method
 if __name__ == "__main__":
