@@ -93,12 +93,16 @@ class Database():
         _, cur = self.get_connection()
         cur.execute(f"SELECT * FROM {table}")
         data = cur.fetchall()
+        if len(data) == 0:
+            return data
         return data[0]
     
     def run_select(self, query):
         _, cur = self.get_connection()
         cur.execute(query)
         data = cur.fetchall()
+        if len(data) == 0:
+            return data
         return data[0]
     
     def init_stock_data(self, ticker_fp):
