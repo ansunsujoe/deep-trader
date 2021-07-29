@@ -58,6 +58,9 @@ export default function GroupList() {
           </Button>
         </AccordionActions>
       </Accordion>
+      <Button>
+        Create Watchlist
+      </Button>
     </div>
   );
 }

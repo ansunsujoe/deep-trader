@@ -7,6 +7,7 @@ ENV DATABASE_URL=postgresql://postgres:postgres2021@host.docker.internal:5432/de
 # Make the backend root directory
 RUN mkdir /usr/src/backend
 WORKDIR /usr/src/backend
+ENV PYTHONPATH=/usr/src/backend
 
 # Copy backend code
 COPY backend .

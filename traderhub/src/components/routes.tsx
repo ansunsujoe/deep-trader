@@ -5,6 +5,7 @@ import Dashboard from './dashboard';
 import Transactions from './transactions';
 import StockList from './stocklist';
 import Groups from './groups';
+import GroupForm from './groupform';
 import {
   BrowserRouter as Router,
   Switch,
@@ -23,6 +24,7 @@ export default function Routes() {
         <Route path="/transactions" component={Transactions} />
         <Route path="/stocklist" component={StockList} />
         <Route path="/groups" component={Groups} />
+        <Route path="/addgroup" component={GroupForm} />
       </Switch>
     </Router>
   );
