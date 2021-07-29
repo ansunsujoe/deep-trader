@@ -1,6 +1,6 @@
 import psycopg2, os
 import logging
-import market_data as md
+from deep_trader import market_data as md
 
 logger = logging.getLogger(__name__)
 

@@ -58,7 +58,7 @@ export default function GroupList() {
           </Button>
         </AccordionActions>
       </Accordion>
-      <Button>
+      <Button variant="contained" color="primary" className="mt-4">
         Create Watchlist
       </Button>
     </div>
