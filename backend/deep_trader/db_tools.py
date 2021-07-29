@@ -57,7 +57,7 @@ class Database():
         table_name = table_names.get(table)
         
         # Create query
-        values = ",".join(data)
+        values = self.value_string(data)
         cur.execute(f"INSERT INTO {table_name} VALUES (DEFAULT, {values}) RETURNING id;")
         data = cur.fetchall()
         conn.commit()
