@@ -28,7 +28,7 @@ export default function Groups() {
             <Col>
               <Card style={{ border: "none", boxShadow: "none" }}>
                 <CardContent>
-                  <h1>My Groups</h1>
+                  <h1>My Watchlists</h1>
                 </CardContent>
               </Card>
             </Col>

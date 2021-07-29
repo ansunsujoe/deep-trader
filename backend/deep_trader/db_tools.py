@@ -7,7 +7,10 @@ logger = logging.getLogger(__name__)
 table_names = {
     "trader": "trader(id, name, username, password)",
     "ticker": "ticker(id, name)",
-    "quote": "quote(id, ticker_id, time, price)"
+    "quote": "quote(id, ticker_id, time, price)",
+    "transaction": "transaction(id, trader_id, ticker_id, action, price, time)",
+    "watchlist": "watchlist(id, trader_id, name)",
+    "watchlist_item": "watchlist_item(id, trader_id, watchlist_id, ticker_id)"
 }
 
 class Database():

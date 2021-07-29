@@ -42,16 +42,16 @@ CREATE TABLE IF NOT EXISTS transaction (
 );
 
 -- For a stock group
-CREATE TABLE IF NOT EXISTS group (
+CREATE TABLE IF NOT EXISTS watchlist (
     id SERIAL PRIMARY KEY,
     trader_id INT NOT NULL REFERENCES trader(id),
     name VARCHAR(30) NOT NULL,
 );
 
 -- For a stock group ticker
-CREATE TABLE IF NOT EXISTS group_item (
+CREATE TABLE IF NOT EXISTS watchlist_item (
     id SERIAL PRIMARY KEY,
     trader_id INT NOT NULL REFERENCES trader(id),
-    group_id INT NOT NULL REFERENCES group(id),
+    watchlist_id INT NOT NULL REFERENCES watchlist(id),
     ticker_id INT NOT NULL REFERENCES ticker(id)
 );
