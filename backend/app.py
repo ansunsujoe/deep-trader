@@ -65,7 +65,7 @@ def logout():
 @app.route("/tickers", methods=["GET", "POST"])
 def tickers():
     if request.method == "GET":
-        data = db.run_select("SELECT quote.ticker_id, quote.price FROM (SELECT ticker_id, MAX(time) as max_time FROM quote GROUP by ticker_id) AS latest_prices INNER JOIN ticker INNER JOIN quote ON quote.ticker_id = latest_prices.ticker_id AND quote.time = latest_prices.max_time;")
+        data = db.run_select("SELECT quote.ticker_id, quote.price FROM (SELECT ticker_id, MAX(time) AS max_time FROM quote GROUP BY ticker_id) AS latest_prices INNER JOIN ticker USING(ticker_id) INNER JOIN quote ON quote.ticker_id = latest_prices.ticker_id AND quote.time = latest_prices.max_time;")
         response = db.to_dict(data, ["name", "price"])
         return response
 
@@ -75,6 +75,12 @@ def watchlist():
         data = db.run_select("SELECT name FROM watchlist;")
         response = db.to_dict(data, ["name"])
         return response
+    elif request.method == "POST":
+        response = request.get_json()
+        group_name = response.get("name")
+        db.run_insert("watchlist", [session.get("userid"), group_name])
+        app.logger.debug(f"Inserted group {group_name}")
+        return "OK", 200
 
 # Main method
 if __name__ == "__main__":
