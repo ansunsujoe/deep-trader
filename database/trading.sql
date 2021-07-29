@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS transaction (
 CREATE TABLE IF NOT EXISTS watchlist (
     id SERIAL PRIMARY KEY,
     trader_id INT NOT NULL REFERENCES trader(id),
-    name VARCHAR(30) NOT NULL,
+    name VARCHAR(30) NOT NULL
 );
 
 -- For a stock group ticker

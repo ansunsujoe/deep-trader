@@ -67,6 +67,13 @@ def tickers():
         response = db.to_dict(data, ["name", "price"])
         return response
 
+@app.route("/watchlist", methods=["GET", "POST"])
+def watchlist():
+    if request.method == "GET":
+        data = db.run_select("SELECT name FROM watchlist;")
+        response = db.to_dict(data, ["name"])
+        return response
+
 # Main method
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5001, debug=True)

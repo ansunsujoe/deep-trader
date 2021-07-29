@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function GroupList() {
+export default function GroupList(props) {
   const classes = useStyles();
 
   return (
