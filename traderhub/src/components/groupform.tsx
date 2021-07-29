@@ -3,6 +3,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import styles from '../styles/login.module.css';
 import { useHistory } from "react-router-dom";
+import axios from 'axios';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,6 +23,24 @@ export default function GroupForm() {
   // Use states
   const [name, setName] = useState(null);
 
+  const handleSubmit = e => {
+    e.preventDefault();
+    const data = {
+      name: name,
+    };
+
+    axios.post('http://localhost:5001/watchlist', data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(response => {
+      console.log("SUCCESS", response);
+      history.push("/groups");
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+
   function handleNameChange(e) {
     setName(e.target.value);
   }
@@ -29,7 +48,7 @@ export default function GroupForm() {
   return (
     <div className={styles.loginform}>
       <h1>Login</h1>
-      <form className={classes.root} noValidate autoComplete="off">
+      <form className={classes.root} noValidate autoComplete="off" onSubmit={handleSubmit}>
         <div>
           <TextField
             id="outlined-error"
