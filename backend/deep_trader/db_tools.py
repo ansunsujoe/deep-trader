@@ -121,7 +121,7 @@ class Database():
             return True
         return False
     
-    def to_dict(data, keys):
+    def to_dict(self, data, keys):
         array = []
         for entry in data:
             dictionary = {}

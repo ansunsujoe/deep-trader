@@ -65,7 +65,21 @@ def logout():
 @app.route("/tickers", methods=["GET", "POST"])
 def tickers():
     if request.method == "GET":
-        data = db.run_select("SELECT quote.ticker_id, quote.price FROM (SELECT ticker_id, MAX(time) AS max_time FROM quote GROUP BY ticker_id) AS latest_prices INNER JOIN ticker ON latest_prices.ticker_id = ticker.id INNER JOIN quote ON quote.ticker_id = latest_prices.ticker_id AND quote.time = latest_prices.max_time;")
+        query = """
+        SELECT quote.ticker_id, quote.price
+        FROM 
+        (
+            SELECT ticker_id, MAX(time) AS max_time 
+            FROM quote 
+            GROUP BY ticker_id) 
+        AS latest_prices 
+        INNER JOIN ticker 
+        ON latest_prices.ticker_id = ticker.id 
+        INNER JOIN quote 
+        ON quote.ticker_id = latest_prices.ticker_id 
+        AND quote.time = latest_prices.max_time;
+        """
+        data = db.run_select(query)
         response = db.to_dict(data, ["name", "price"])
         return response
 
