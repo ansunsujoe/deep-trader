@@ -5,12 +5,13 @@ from deep_trader import market_data as md
 logger = logging.getLogger(__name__)
 
 table_names = {
-    "trader": "trader(id, name, username, password)",
+    "trader": "trader(id, name, username, password, cash)",
     "ticker": "ticker(id, name)",
     "quote": "quote(id, ticker_id, time, price, is_current)",
     "transaction": "transaction(id, trader_id, ticker_id, action, price, time)",
     "watchlist": "watchlist(id, trader_id, name)",
-    "watchlist_item": "watchlist_item(id, trader_id, watchlist_id, ticker_id)"
+    "watchlist_item": "watchlist_item(id, trader_id, watchlist_id, ticker_id)",
+    "asset": "asset(id, trader_id, ticker_id, shares)"
 }
 
 class Database():
@@ -29,7 +30,10 @@ class Database():
     def value_string(self, array):
         str_array = []
         for val in array:
-            str_array.append(f"\'{val}\'")
+            if isinstance(val, int) or isinstance(val, float):
+                str_array.append(val)
+            else:
+                str_array.append(f"\'{val}\'")
         return ",".join(str_array)
 
     def clear_table(self, table_name):
@@ -45,9 +49,10 @@ class Database():
         # Get value strings
         names_str = self.value_string([trader_info.get("name"), trader_info.get("username")])
         password_str = self.value_string([trader_info.get("password")])
+        cash = 20000
         
         # Construct query
-        values = f"{names_str}, crypt({password_str}, gen_salt(\'bf\'))"
+        values = f"{names_str}, crypt({password_str}, gen_salt(\'bf\')), {cash}"
         cur.execute(f"INSERT INTO {table} VALUES (DEFAULT, {values});")
         conn.commit()
         
