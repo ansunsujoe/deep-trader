@@ -30,7 +30,7 @@ def sign_up():
     try:
         app.logger.debug(request.get_json())
         db.insert_user(request.get_json())
-        userid = db.run_select("SELECT MAX(id) FROM trader;")
+        userid = db.run_select("SELECT MAX(id) FROM trader;")[0][0]
         session["userid"] = userid
         app.logger.debug(userid)
     except Exception as e:
@@ -72,7 +72,7 @@ def tickers():
         ON q.ticker_id = t.id
         WHERE q.is_current;
         """
-        data = db.run_select(query);
+        data = db.run_select(query)
         app.logger.debug(data)
         response = db.to_dict(data, ["name", "price"])
         return response

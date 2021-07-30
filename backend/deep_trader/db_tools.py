@@ -92,7 +92,7 @@ class Database():
         attribute_str = ",".join(attributes)
         cur.execute(f"SELECT {attribute_str} FROM {table};")
         data = cur.fetchall()
-        return data[0]
+        return data
         
     def select_all(self, table):
         _, cur = self.get_connection()
@@ -100,7 +100,7 @@ class Database():
         data = cur.fetchall()
         if len(data) == 0:
             return data
-        return data[0]
+        return data
     
     def run_select(self, query):
         _, cur = self.get_connection()
@@ -108,7 +108,7 @@ class Database():
         data = cur.fetchall()
         if len(data) == 0:
             return data
-        return data[0]
+        return data
     
     def init_stock_data(self, ticker_fp):
         with open(ticker_fp, "r") as f:
