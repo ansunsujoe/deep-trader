@@ -31,7 +31,7 @@ class Database():
         str_array = []
         for val in array:
             if isinstance(val, int) or isinstance(val, float):
-                str_array.append(val)
+                str_array.append(str(val))
             else:
                 str_array.append(f"\'{val}\'")
         return ",".join(str_array)
