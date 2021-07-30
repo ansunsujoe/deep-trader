@@ -20,7 +20,8 @@ CREATE TABLE IF NOT EXISTS quote (
     id SERIAL PRIMARY KEY,
     ticker_id INT NOT NULL REFERENCES ticker(id),
     time TIMESTAMP NOT NULL,
-    price DECIMAL NOT NULL
+    price DECIMAL NOT NULL,
+    is_current BOOLEAN NOT NULL
 );
 
 -- For a single stock trade recommendation

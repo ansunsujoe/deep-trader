@@ -6,6 +6,7 @@ import Transactions from './transactions';
 import StockList from './stocklist';
 import Groups from './groups';
 import GroupForm from './groupform';
+import Stock from './stock';
 import {
   BrowserRouter as Router,
   Switch,
@@ -25,6 +26,7 @@ export default function Routes() {
         <Route path="/stocklist" component={StockList} />
         <Route path="/groups" component={Groups} />
         <Route path="/addgroup" component={GroupForm} />
+        <Route path="/stock/:id" component={Stock} />
       </Switch>
     </Router>
   );

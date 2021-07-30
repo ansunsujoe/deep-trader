@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 table_names = {
     "trader": "trader(id, name, username, password)",
     "ticker": "ticker(id, name)",
-    "quote": "quote(id, ticker_id, time, price)",
+    "quote": "quote(id, ticker_id, time, price, is_current)",
     "transaction": "transaction(id, trader_id, ticker_id, action, price, time)",
     "watchlist": "watchlist(id, trader_id, name)",
     "watchlist_item": "watchlist_item(id, trader_id, watchlist_id, ticker_id)"
@@ -111,10 +111,12 @@ class Database():
             for ticker in tickers:
                 ticker_data = md.read_intraday(ticker)
                 ticker_id = self.run_insert("ticker", data=[ticker])
+                is_current = True
                 for quote in ticker_data:
                     time = quote.get("time")
                     price = quote.get("price")
-                    self.run_insert("quote", [ticker_id, time, price])
+                    self.run_insert("quote", [ticker_id, time, price, is_current])
+                    is_current = False
                     
     def is_empty(self, table):
         if len(self.select_all(table)) == 0:
