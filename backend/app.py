@@ -65,21 +65,14 @@ def logout():
 @app.route("/tickers", methods=["GET", "POST"])
 def tickers():
     if request.method == "GET":
-        # query = """
-        # SELECT quote.ticker_id, quote.price
-        # FROM 
-        # (
-        #     SELECT ticker_id, MAX(time) AS max_time 
-        #     FROM quote 
-        #     GROUP BY ticker_id) 
-        # AS latest_prices 
-        # INNER JOIN ticker 
-        # ON latest_prices.ticker_id = ticker.id 
-        # INNER JOIN quote 
-        # ON quote.ticker_id = latest_prices.ticker_id 
-        # AND quote.time = latest_prices.max_time;
-        # """
-        data = db.run_select("SELECT name, price FROM quote WHERE is_current");
+        query = f"""
+        SELECT t.name, q.price 
+        FROM quote q 
+        INNER JOIN ticker t
+        ON q.ticker_id = t.id
+        WHERE q.is_current;
+        """
+        data = db.run_select(query);
         app.logger.debug(data)
         response = db.to_dict(data, ["name", "price"])
         return response
@@ -100,7 +93,14 @@ def watchlist():
 @app.route("/stock/<id>", methods=["GET", "POST"])
 def stock(id):
     if request.method == "GET":
-        data = db.run_select(f"SELECT name, price FROM quote WHERE ticker_id = {id} AND is_current;")
+        query = f"""
+        SELECT t.name, q.price 
+        FROM quote q 
+        INNER JOIN ticker t
+        ON q.ticker_id = t.id
+        WHERE t.id = {id} AND q.is_current;
+        """
+        data = db.run_select(query)
         app.logger.debug(data)
         return data, 200
 
