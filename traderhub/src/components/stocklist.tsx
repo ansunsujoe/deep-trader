@@ -16,7 +16,7 @@ export default function StockList() {
   useEffect(() => {
     axios.get('http://localhost:5001/tickers').then(response => {
       console.log("SUCCESS", response);
-      alert("Successfully got update from App");
+      setStocks(response.data);
     }).catch(error => {
       console.log(error);
     })
@@ -42,7 +42,7 @@ export default function StockList() {
           </Row>
           <Card style={{ border: "none", boxShadow: "none" }}>
             <CardContent>
-              <TickerTable data={data} />
+              <TickerTable data={stocks} />
             </CardContent>
           </Card>
         </Container>
