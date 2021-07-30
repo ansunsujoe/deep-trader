@@ -103,6 +103,22 @@ def stock(id):
         data = db.run_select(query)
         app.logger.debug(data)
         return data, 200
+    
+@app.route("/asset", methods=["GET", "POST"])
+def asset():
+    if request.method == "GET":
+        userid = session.get("userid")
+        if userid is None:
+            return "Unauthorized", 401
+        query = f"""
+        SELECT t.name, a.shares
+        FROM asset a
+        INNER JOIN ticker t
+        ON a.ticker_id = t.id
+        WHERE a.trader_id = {userid};
+        """
+        data = db.run_select(query)
+        return data, 200
 
 # Main method
 if __name__ == "__main__":
