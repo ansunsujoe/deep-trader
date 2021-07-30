@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS trader (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     username VARCHAR(30) UNIQUE NOT NULL,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
+    cash DECIMAL NOT NULL
 );
 
 -- For a single ticker
@@ -56,3 +57,11 @@ CREATE TABLE IF NOT EXISTS watchlist_item (
     watchlist_id INT NOT NULL REFERENCES watchlist(id),
     ticker_id INT NOT NULL REFERENCES ticker(id)
 );
+
+-- For a single asset owned by a user
+CREATE TABLE IF NOT EXISTS asset (
+    id SERIAL PRIMARY KEY,
+    trader_id INT NOT NULL REFERENCES trader(id),
+    ticker_id INT NOT NULL REFERENCES ticker(id),
+    shares INT NOT NULL
+)
