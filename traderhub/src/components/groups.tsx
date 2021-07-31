@@ -40,7 +40,6 @@ export default function Groups() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [name, setName] = useState(null);
   const [data, setData] = useState([])
-  const [loading, setLoading] = useState(false);
 
   const handleDialogOpen = () => {
     setDialogOpen(true);
@@ -67,18 +66,16 @@ export default function Groups() {
         'Content-Type': 'application/json'
       }
     }).then(response => {
-      console.log("SUCCESS", response);
       setDialogOpen(false);
-      setLoading(true);
+      axios.get('http://localhost:5001/watchlist').then(response => {
+        setData(response.data.watchlists);
+      }).catch(error => {
+        console.log(error);
+      })
     }).catch(error => {
       console.log(error);
     })
   }
-
-  // On startup, load components
-  useEffect(() => {
-    setLoading(true);
-  }, []);
 
   // When the loading prop changes, get all watchlist items
   useEffect(() => {
@@ -88,7 +85,7 @@ export default function Groups() {
     }).catch(error => {
       console.log(error);
     })
-  }, [loading]);
+  }, []);
 
   return (
     <div className={classes.root}>

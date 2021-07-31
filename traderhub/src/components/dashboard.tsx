@@ -25,6 +25,7 @@ export default function Dashboard() {
   axios.defaults.withCredentials = true;
   useEffect(() => {
     axios.get('http://localhost:5001/traderinfo').then(response => {
+      console.log(response)
       setUsername(response.data.username);
       setTotal(response.data.total);
       setCash(response.data.cash);
