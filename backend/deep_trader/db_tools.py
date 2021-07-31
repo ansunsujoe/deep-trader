@@ -116,8 +116,6 @@ class Database():
         _, cur = self.get_connection()
         cur.execute(query)
         data = cur.fetchone()
-        if len(data) == 0:
-            return data
         return data
     
     def init_stock_data(self, ticker_fp):

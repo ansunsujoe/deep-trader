@@ -173,11 +173,17 @@ def trader_info():
 
 @app.route("/stockid", methods=["GET"])
 def get_stock_id():
-    ticker = request.args.get('ticker', None)
+    ticker = request.args.get('ticker')
+    app.logger.debug(f"Ticker requested: {ticker}")
     if ticker is None:
         return "Bad Request", 400
     ticker_str = db.value_string([ticker])
-    data = db.run_select_one(f"SELECT id FROM ticker WHERE name = {ticker_str};")[0]
+    data = db.run_select_one(f"SELECT id FROM ticker WHERE name = {ticker_str};")
+    if data is None:
+        return "Bad Request", 400
+    else:
+        return data[0]
+    
     return data
 
 # Main method

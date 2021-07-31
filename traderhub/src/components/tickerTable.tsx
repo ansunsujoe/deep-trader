@@ -69,11 +69,13 @@ export default function TickerTable() {
   };
 
   const handleClick = (id: string) => {
-    const data = {
-      ticker: id
-    };
+
     // Make axios call to get ID of ticker
-    axios.get('http://localhost:5001/stockid', {params: data}).then(response => {
+    axios.get('http://localhost:5001/stockid', {
+      params: {
+        ticker: id
+      }
+    }).then(response => {
       console.log("SUCCESS", response);
       history.push("/stocks/" + response.data)
     }).catch(error => {
