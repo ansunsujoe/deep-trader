@@ -75,7 +75,7 @@ def tickers():
         data = db.run_select(query)
         app.logger.debug(data)
         response = db.to_dict(data, ["name", "price"])
-        return response
+        return {"stocks": response}
 
 @app.route("/watchlist", methods=["GET", "POST"])
 def watchlist():

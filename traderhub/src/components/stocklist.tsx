@@ -16,7 +16,7 @@ export default function StockList() {
   useEffect(() => {
     axios.get('http://localhost:5001/tickers').then(response => {
       console.log("SUCCESS", response);
-      setStocks(response.data);
+      setStocks(response.data.stocks);
     }).catch(error => {
       console.log(error);
     })
