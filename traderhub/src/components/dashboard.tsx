@@ -15,9 +15,8 @@ import {
 export default function Dashboard() {
   axios.defaults.withCredentials = true;
   useEffect(() => {
-    axios.get('http://localhost:5001').then(response => {
+    axios.get('http://localhost:5001/traderinfo').then(response => {
       console.log("SUCCESS", response);
-      alert("Successfully got update from App");
     }).catch(error => {
       console.log(error);
     })

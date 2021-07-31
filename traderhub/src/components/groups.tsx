@@ -14,13 +14,34 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionActions from '@material-ui/core/AccordionActions';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Divider from '@material-ui/core/Divider';
 import axios from 'axios';
-import {useHistory} from "react-router-dom";
+import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      width: '100%',
+    },
+    heading: {
+      fontSize: theme.typography.pxToRem(15),
+      fontWeight: theme.typography.fontWeightRegular,
+    },
+  }),
+);
 
 export default function Groups() {
+  const classes = useStyles();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [name, setName] = useState(null);
-  let history = useHistory()
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(false);
 
   const handleDialogOpen = () => {
     setDialogOpen(true);
@@ -39,7 +60,8 @@ export default function Groups() {
     const data = {
       name: name
     };
-    
+
+    // Make request to insert watchlist
     axios.defaults.withCredentials = true;
     axios.post('http://localhost:5001/watchlist', data, {
       headers: {
@@ -48,14 +70,29 @@ export default function Groups() {
     }).then(response => {
       console.log("SUCCESS", response);
       setDialogOpen(false);
-      history.push("/groups");
+      setLoading(true);
     }).catch(error => {
       console.log(error);
     })
   }
 
+  // On startup, load components
+  useEffect(() => {
+    setLoading(true);
+  }, []);
+
+  // When the loading prop changes, get all watchlist items
+  useEffect(() => {
+    axios.get('http://localhost:5001/watchlist').then(response => {
+      console.log("SUCCESS", response);
+      setData(response.data.watchlists);
+    }).catch(error => {
+      console.log(error);
+    })
+  }, [loading]);
+
   return (
-    <div>
+    <div className={classes.root}>
       <Navbar />
       <div className={styles.container}>
         <Dialog open={dialogOpen} onClose={handleDialogClose} aria-labelledby="form-dialog-title">
@@ -95,7 +132,37 @@ export default function Groups() {
           </Row>
           <Card style={{ border: "none", boxShadow: "none" }}>
             <CardContent>
-              <GroupList />
+              {data.map((entry) => (
+                <Accordion>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                  >
+                    <Typography className={classes.heading}>{entry.name}</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Row>
+                      <Col xs={4}>
+                        <p>Image</p>
+                      </Col>
+                      <Col xs={8}>
+                        <Typography>
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+                          sit amet blandit leo lobortis eget.
+                        </Typography>
+                      </Col>
+                    </Row>
+                  </AccordionDetails>
+                  <Divider />
+                  <AccordionActions>
+                    <Button size="small">Edit Image</Button>
+                    <Button size="small" color="secondary">
+                      Delete
+                    </Button>
+                  </AccordionActions>
+                </Accordion>
+              ))}
               <Button variant="contained" color="primary" className="mt-4" onClick={handleDialogOpen}>
                 Create Watchlist
               </Button>
