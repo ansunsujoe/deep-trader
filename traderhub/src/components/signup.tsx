@@ -34,6 +34,7 @@ export default function Signup() {
       password: password
     };
 
+    axios.defaults.withCredentials = true;
     axios.post('http://localhost:5001/users', data, {
       headers: {
         'Content-Type': 'application/json'

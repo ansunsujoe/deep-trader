@@ -55,6 +55,7 @@ export default function TickerTable() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [originalRows, setOriginalRows] = useState<Ticker[]>([]);
   const [rows, setRows] = useState<Ticker[]>([]);
+  axios.defaults.withCredentials = true;
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);

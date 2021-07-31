@@ -21,6 +21,7 @@ export default function Stock() {
 
   const { id } = useParams<StockParams>();
 
+  axios.defaults.withCredentials = true;
   useEffect(() => {
     axios.get('http://localhost:5001').then(response => {
       console.log("SUCCESS", response);

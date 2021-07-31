@@ -13,6 +13,7 @@ import {
 } from "react-router-dom";
 
 export default function Dashboard() {
+  axios.defaults.withCredentials = true;
   useEffect(() => {
     axios.get('http://localhost:5001').then(response => {
       console.log("SUCCESS", response);

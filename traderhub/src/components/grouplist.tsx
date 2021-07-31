@@ -28,6 +28,7 @@ export default function GroupList(props) {
   const classes = useStyles();
   const [data, setData] = useState([]);
 
+  axios.defaults.withCredentials = true;
   useEffect(() => {
     axios.get('http://localhost:5001/watchlist').then(response => {
       console.log("SUCCESS", response);

@@ -8,10 +8,11 @@ import os
 
 app = Flask(__name__)
 app.config['ENV'] = "development"
+app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True)
 app.secret_key = os.environ.get("SECRET_KEY")
 
 # Set up some configurations for the app
-CORS(app)
+CORS(app, supports_credentials=True)
 bcrypt = Bcrypt(app)
 db = Database()
 
@@ -25,7 +26,7 @@ def index():
     return "Hello World!"
 
 # Insert user
-@app.route("/users", methods=['GET', 'POST'])
+@app.route("/users", methods=['POST'])
 def sign_up():
     try:
         app.logger.debug(request.get_json())
@@ -127,6 +128,10 @@ def asset():
         data = db.run_select(query)
         response = db.to_dict(data, ["name", "shares"])
         return {"assets": response}
+    
+@app.route("/traderinfo", methods=["GET"])
+def trader_info():
+    pass
 
 # Main method
 if __name__ == "__main__":

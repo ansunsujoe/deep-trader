@@ -40,6 +40,7 @@ export default function Login() {
       password: password
     };
 
+    axios.defaults.withCredentials = true;
     axios.post('http://localhost:5001/login', data, {
       headers: {
         'Content-Type': 'application/json'

@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function Navbar() {
   const classes = useStyles();
   let history = useHistory();
+  axios.defaults.withCredentials = true;
 
   const handleLogout = e => {
     axios.get('http://localhost:5001/logout').then(response => {

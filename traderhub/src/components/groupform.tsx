@@ -29,6 +29,7 @@ export default function GroupForm() {
       name: name,
     };
 
+    axios.defaults.withCredentials = true;
     axios.post('http://localhost:5001/watchlist', data, {
       headers: {
         'Content-Type': 'application/json'

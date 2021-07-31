@@ -39,7 +39,8 @@ export default function Groups() {
     const data = {
       name: name
     };
-
+    
+    axios.defaults.withCredentials = true;
     axios.post('http://localhost:5001/watchlist', data, {
       headers: {
         'Content-Type': 'application/json'
