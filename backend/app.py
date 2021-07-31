@@ -131,7 +131,10 @@ def asset():
     
 @app.route("/traderinfo", methods=["GET"])
 def trader_info():
-    pass
+    user_id = session.get("userid")
+    if user_id is None:
+        return "Unauthorized", 401
+    return {"data": "Good"}
 
 # Main method
 if __name__ == "__main__":
