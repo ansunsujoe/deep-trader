@@ -101,6 +101,7 @@ def watchlist():
 @app.route("/stock/<id>", methods=["GET", "POST"])
 def stock(id):
     if request.method == "GET":
+        # Name and price of ticker
         query = f"""
         SELECT t.name, q.price 
         FROM quote q 
@@ -109,6 +110,18 @@ def stock(id):
         WHERE t.id = {id} AND q.is_current;
         """
         data = db.run_select(query)
+        ticker_dict = db.to_dict(data, ["ticker", "price"])[0]
+        
+        # Cash of the user
+        user_id = session.get("userid")
+        if user_id is None:
+            return "Unauthorized", 401
+        userid_str = db.value_string(user_id)
+        cash = db.run_select_one(f"SELECT cash FROM trader WHERE id = {userid_str};")
+        if cash is None:
+            return "Bad Request", 400
+        cash = float(cash[0])
+        
         app.logger.debug(data)
         return data, 200
     

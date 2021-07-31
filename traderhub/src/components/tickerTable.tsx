@@ -77,7 +77,7 @@ export default function TickerTable() {
       }
     }).then(response => {
       console.log("SUCCESS", response);
-      history.push("/stocks/" + response.data)
+      history.push("/stock/" + response.data)
     }).catch(error => {
       console.log(error);
     })

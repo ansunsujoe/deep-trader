@@ -45,3 +45,8 @@
     color: white;
     text-decoration: none;
 }
+
+.rightprice {
+    margin-left: auto;
+    text-align: right;
+}
