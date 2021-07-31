@@ -146,11 +146,14 @@ def trader_info():
     
     # Get all trader assets
     asset_query = f"""
-        SELECT t.name, t.price, a.shares
+        SELECT t.name, q.price, a.shares
         FROM asset a
         INNER JOIN ticker t
         ON a.ticker_id = t.id
-        WHERE a.trader_id = {user_id};
+        INNER JOIN quote q
+        ON t.id = q.ticker_id
+        WHERE a.trader_id = {user_id}
+        AND q.is_current;
         """
     assets = db.run_select(asset_query)
     assets = db.to_dict(assets, keys=["ticker", "price", "shares"])
@@ -183,8 +186,6 @@ def get_stock_id():
         return "Bad Request", 400
     else:
         return data[0]
-    
-    return data
 
 # Main method
 if __name__ == "__main__":
