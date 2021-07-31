@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../styles/dashboard.module.css';
 import axios from 'axios';
 import Navbar from './navbar';
@@ -11,10 +11,14 @@ import NetWorthChart from './networth';
 import InvestedChart from './investedchart';
 
 export default function Dashboard() {
+  const [cash, setCash] = useState(0);
+  const [username, setUsername] = useState(null);
+
   axios.defaults.withCredentials = true;
   useEffect(() => {
     axios.get('http://localhost:5001/traderinfo').then(response => {
-      console.log("SUCCESS", response);
+      setCash(response.data.cash);
+      setUsername(response.data.username);
     }).catch(error => {
       console.log(error);
     })
@@ -29,7 +33,7 @@ export default function Dashboard() {
             <Col lg={9}>
               <Card style={{ border: "none", boxShadow: "none" }}>
                 <CardContent>
-                  <h1>Ansun's Portfolio</h1>
+                  <h1>{username}'s Portfolio</h1>
                   <p className={styles.date}>July 27, 2021</p>
                 </CardContent>
               </Card>
@@ -44,7 +48,7 @@ export default function Dashboard() {
                             <p className={styles.subtitle}>Total</p>
                           </Col>
                           <Col>
-                            <h1 className={styles.number}>$22,381</h1>
+                            <h1 className={styles.number}>${cash}</h1>
                             <p className={styles.subtitle}>Buying Power</p>
                           </Col>
                           <Col>

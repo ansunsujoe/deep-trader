@@ -135,10 +135,12 @@ def trader_info():
     if user_id is None:
         return "Unauthorized", 401
     userid_str = db.value_string([user_id])
-    cash = db.run_select(f"SELECT cash FROM trader WHERE id = {userid_str};")[0][0]
-    # assets = db.run_select(f"SELECT ")
-    return cash
-    
+    data = db.run_select_one(f"SELECT username, cash FROM trader WHERE id = {userid_str};")
+    data_dict = {
+        "username": data[0],
+        "cash": data[1]
+    }
+    return data_dict
 
 @app.route("/stockid", methods=["GET"])
 def get_stock_id():
@@ -146,7 +148,7 @@ def get_stock_id():
     if ticker is None:
         return "Bad Request", 400
     ticker_str = db.value_string([ticker])
-    data = db.run_select(f"SELECT id FROM ticker WHERE name = {ticker_str};")[0][0]
+    data = db.run_select_one(f"SELECT id FROM ticker WHERE name = {ticker_str};")[0]
     return data
 
 # Main method

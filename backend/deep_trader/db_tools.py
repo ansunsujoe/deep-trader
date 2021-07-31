@@ -112,6 +112,14 @@ class Database():
             return data
         return data
     
+    def run_select_one(self, query):
+        _, cur = self.get_connection()
+        cur.execute(query)
+        data = cur.fetchone()
+        if len(data) == 0:
+            return data
+        return data
+    
     def init_stock_data(self, ticker_fp):
         with open(ticker_fp, "r") as f:
             tickers = f.read().split("\n")
