@@ -75,6 +75,7 @@ class Database():
         username = self.value_string([trader_info.get("username")])
         password = self.value_string([trader_info.get("password")])
         data = self.run_select(f"SELECT id FROM trader WHERE username = {username} AND password = crypt({password}, password);")
+        logger.debug(f"LOGIN: User found has ID {data}")
         if len(data) == 0:
             return
         else:

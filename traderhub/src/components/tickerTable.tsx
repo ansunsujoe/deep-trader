@@ -53,6 +53,7 @@ export default function TickerTable() {
   const [page, setPage] = useState(0);
   const [searched, setSearched] = useState<string>("");
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [originalRows, setOriginalRows] = useState<Ticker[]>([]);
   const [rows, setRows] = useState<Ticker[]>([]);
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -65,7 +66,7 @@ export default function TickerTable() {
   };
 
   const requestSearch = (searchedVal: string) => {
-    const filteredRows = rows.filter((row) => {
+    const filteredRows = originalRows.filter((row) => {
       return row.name.toLowerCase().includes(searchedVal.toLowerCase());
     });
     setRows(filteredRows);
@@ -79,7 +80,8 @@ export default function TickerTable() {
   useEffect(() => {
     axios.get('http://localhost:5001/tickers').then(response => {
       console.log("SUCCESS", response);
-      setRows(response.data.stocks.map((entry: any) => createData(entry.name, entry.price)));
+      setOriginalRows(response.data.stocks.map((entry: any) => createData(entry.name, entry.price)));
+      setRows(response.data.stocks);
     }).catch(error => {
       console.log(error);
     })
