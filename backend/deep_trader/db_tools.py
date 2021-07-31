@@ -1,6 +1,7 @@
 import psycopg2, os
 import logging
 from deep_trader import market_data as md
+from decimal import Decimal
 
 logger = logging.getLogger(__name__)
 
@@ -71,8 +72,8 @@ class Database():
         return data[0][0]
         
     def authenticate_user(self, trader_info):
-        username = trader_info.get("username")
-        password = trader_info.get("password")
+        username = self.value_string([trader_info.get("username")])
+        password = self.value_string([trader_info.get("password")])
         data = self.run_select(f"SELECT id FROM trader WHERE username = {username} AND password = crypt({password}, password);")
         if len(data) == 0:
             return
@@ -133,6 +134,10 @@ class Database():
         for entry in data:
             dictionary = {}
             for i in range(len(keys)):
-                dictionary[keys[i]] = entry[i]
+                val = entry[i]
+                if isinstance(val, Decimal):
+                    dictionary[keys[i]] = float(val)
+                else:
+                    dictionary[keys[i]] = val
             array.append(dictionary)
         return array

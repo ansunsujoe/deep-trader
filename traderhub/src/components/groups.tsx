@@ -8,9 +8,25 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import GroupList from './grouplist';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button'
 
 export default function Groups() {
   const [data, setData] = useState([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleDialogOpen = () => {
+    setDialogOpen(true);
+  }
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  }
 
   useEffect(() => {
     axios.get('http://localhost:5001/watchlist').then(response => {
@@ -25,6 +41,30 @@ export default function Groups() {
     <div>
       <Navbar />
       <div className={styles.container}>
+        <Dialog open={dialogOpen} onClose={handleDialogClose} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Enter a name for a new watchlist that you would like to create.
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Watchlist Name"
+              type="name"
+              fullWidth
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDialogClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleDialogClose} color="primary">
+              Create
+            </Button>
+          </DialogActions>
+        </Dialog>
         <Container fluid>
           <Row>
             <Col>
@@ -38,6 +78,9 @@ export default function Groups() {
           <Card style={{ border: "none", boxShadow: "none" }}>
             <CardContent>
               <GroupList data={data} />
+              <Button variant="contained" color="primary" className="mt-4" onClick={handleDialogOpen}>
+                Create Watchlist
+              </Button>
             </CardContent>
           </Card>
         </Container>

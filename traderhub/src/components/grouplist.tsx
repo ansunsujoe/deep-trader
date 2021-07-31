@@ -25,15 +25,6 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function GroupList(props) {
   const classes = useStyles();
-  const [dialogOpen, setDialogOpen] = useState(false);
-
-  const handleDialogOpen = () => {
-    setDialogOpen(true);
-  }
-
-  const handleDialogClose = () => {
-    setDialogOpen(false);
-  }
 
   return (
     <div className={classes.root}>
@@ -67,9 +58,6 @@ export default function GroupList(props) {
           </Button>
         </AccordionActions>
       </Accordion>
-      <Button variant="contained" color="primary" className="mt-4">
-        Create Watchlist
-      </Button>
     </div>
   );
 }
