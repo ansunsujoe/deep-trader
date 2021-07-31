@@ -185,7 +185,7 @@ def get_stock_id():
     if data is None:
         return "Bad Request", 400
     else:
-        return data[0]
+        return str(data[0]), 200
 
 # Main method
 if __name__ == "__main__":
