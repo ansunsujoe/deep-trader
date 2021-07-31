@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/dashboard.module.css';
-import axios from 'axios';
 import Navbar from './navbar';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -17,7 +16,6 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button'
 
 export default function Groups() {
-  const [data, setData] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleDialogOpen = () => {
@@ -27,15 +25,6 @@ export default function Groups() {
   const handleDialogClose = () => {
     setDialogOpen(false);
   }
-
-  useEffect(() => {
-    axios.get('http://localhost:5001/watchlist').then(response => {
-      console.log("SUCCESS", response);
-      setData(response.data);
-    }).catch(error => {
-      console.log(error);
-    })
-  }, [])
 
   return (
     <div>
@@ -77,7 +66,7 @@ export default function Groups() {
           </Row>
           <Card style={{ border: "none", boxShadow: "none" }}>
             <CardContent>
-              <GroupList data={data} />
+              <GroupList />
               <Button variant="contained" color="primary" className="mt-4" onClick={handleDialogOpen}>
                 Create Watchlist
               </Button>

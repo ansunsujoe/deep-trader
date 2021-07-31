@@ -82,7 +82,7 @@ def watchlist():
     if request.method == "GET":
         data = db.run_select("SELECT name FROM watchlist;")
         response = db.to_dict(data, ["name"])
-        return response
+        return {"watchlists": response}
     elif request.method == "POST":
         response = request.get_json()
         group_name = response.get("name")

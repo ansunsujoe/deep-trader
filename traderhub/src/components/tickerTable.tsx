@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -9,6 +9,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import SearchBar from "material-ui-search-bar";
+import axios from "axios";
 
 interface Column {
   id: 'name' | 'price';
@@ -37,11 +38,6 @@ function createData(name: string, price: number): Ticker {
   return { name, price };
 }
 
-const originalRows = [
-  createData("BUY", 3287263),
-  createData("BUY", 9596961),
-];
-
 const useStyles = makeStyles({
   root: {
     width: '100%',
@@ -51,12 +47,13 @@ const useStyles = makeStyles({
   },
 });
 
-export default function TickerTable(props) {
+
+export default function TickerTable() {
   const classes = useStyles();
-  const [page, setPage] = React.useState(0);
-  const [searched, setSearched] = React.useState<string>("");
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [rows, setRows] = React.useState<Ticker[]>(props.data.map((entry) => createData(entry.name, entry.price)));
+  const [page, setPage] = useState(0);
+  const [searched, setSearched] = useState<string>("");
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rows, setRows] = useState<Ticker[]>([]);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -68,7 +65,7 @@ export default function TickerTable(props) {
   };
 
   const requestSearch = (searchedVal: string) => {
-    const filteredRows = originalRows.filter((row) => {
+    const filteredRows = rows.filter((row) => {
       return row.name.toLowerCase().includes(searchedVal.toLowerCase());
     });
     setRows(filteredRows);
@@ -78,6 +75,15 @@ export default function TickerTable(props) {
     setSearched("");
     requestSearch(searched);
   };
+
+  useEffect(() => {
+    axios.get('http://localhost:5001/tickers').then(response => {
+      console.log("SUCCESS", response);
+      setRows(response.data.stocks);
+    }).catch(error => {
+      console.log(error);
+    })
+  }, [])
 
   return (
     <Paper className={classes.root}>
