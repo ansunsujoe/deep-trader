@@ -131,16 +131,45 @@ def asset():
     
 @app.route("/traderinfo", methods=["GET"])
 def trader_info():
+    # Get the user ID or return as unauthorized
     user_id = session.get("userid")
     if user_id is None:
         return "Unauthorized", 401
     userid_str = db.value_string([user_id])
+    
+    # Get the basic trader data
     data = db.run_select_one(f"SELECT username, cash FROM trader WHERE id = {userid_str};")
     data_dict = {
         "username": data[0],
         "cash": float(data[1])
     }
-    return data_dict
+    
+    # Get all trader assets
+    asset_query = f"""
+        SELECT t.name, t.price, a.shares
+        FROM asset a
+        INNER JOIN ticker t
+        ON a.ticker_id = t.id
+        WHERE a.trader_id = {user_id};
+        """
+    assets = db.run_select(asset_query)
+    assets = db.to_dict(assets, keys=["ticker", "price", "shares"])
+    
+    # Perform calculation on assets
+    total_invested = 0
+    for asset in assets:
+        total_invested += asset.get("price") * asset.get("shares")
+    total = data_dict.get("cash") + total_invested
+    
+    # Format and return output dictionary
+    trader_info = {
+        "username": data_dict.get("username"),
+        "total": total,
+        "cash": data_dict.get("cash"),
+        "invested": total_invested,
+        "assets": assets
+    }
+    return trader_info
 
 @app.route("/stockid", methods=["GET"])
 def get_stock_id():

@@ -10,15 +10,26 @@ import Col from 'react-bootstrap/Col';
 import NetWorthChart from './networth';
 import InvestedChart from './investedchart';
 
+interface Asset {
+  ticker: string;
+  shares: number;
+}
+
 export default function Dashboard() {
-  const [cash, setCash] = useState(0);
   const [username, setUsername] = useState(null);
+  const [total, setTotal] = useState(0);
+  const [cash, setCash] = useState(0);
+  const [invested, setInvested] = useState(0);
+  const [assets, setAssets] = useState<Asset[]>([]);
 
   axios.defaults.withCredentials = true;
   useEffect(() => {
     axios.get('http://localhost:5001/traderinfo').then(response => {
-      setCash(response.data.cash);
       setUsername(response.data.username);
+      setTotal(response.data.total);
+      setCash(response.data.cash);
+      setInvested(response.data.invested);
+      setAssets(response.data.assets);
     }).catch(error => {
       console.log(error);
     })
@@ -44,7 +55,7 @@ export default function Dashboard() {
                       <Container fluid>
                         <Row>
                           <Col>
-                            <h1 className={styles.number}>$31,487</h1>
+                            <h1 className={styles.number}>${total}</h1>
                             <p className={styles.subtitle}>Total</p>
                           </Col>
                           <Col>
@@ -52,7 +63,7 @@ export default function Dashboard() {
                             <p className={styles.subtitle}>Buying Power</p>
                           </Col>
                           <Col>
-                            <h1 className={styles.number}>$7,711</h1>
+                            <h1 className={styles.number}>${invested}</h1>
                             <p className={styles.subtitle}>Invested</p>
                           </Col>
                         </Row>
