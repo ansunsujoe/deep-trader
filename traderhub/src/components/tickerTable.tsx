@@ -79,7 +79,7 @@ export default function TickerTable() {
   useEffect(() => {
     axios.get('http://localhost:5001/tickers').then(response => {
       console.log("SUCCESS", response);
-      setRows(response.data.stocks);
+      setRows(response.data.stocks.map((entry: any) => createData(entry.name, entry.price)));
     }).catch(error => {
       console.log(error);
     })
