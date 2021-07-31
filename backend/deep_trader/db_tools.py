@@ -79,7 +79,7 @@ class Database():
         if len(data) == 0:
             return
         else:
-            return data[0]
+            return data[0][0]
         
     def select_conditions(self, table, attributes, conditions):
         _, cur = self.get_connection()

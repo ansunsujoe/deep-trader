@@ -79,14 +79,21 @@ def tickers():
 
 @app.route("/watchlist", methods=["GET", "POST"])
 def watchlist():
+    # Get user id, and if not the request is unauthorized
+    user_id = session.get("userid")
+    if user_id is None:
+        return "Unauthorized", 401
+    
+    # Request GET
     if request.method == "GET":
-        data = db.run_select("SELECT name FROM watchlist;")
+        data = db.run_select(f"SELECT name FROM watchlist WHERE trader_id = {db.value_string([user_id])};")
         response = db.to_dict(data, ["name"])
         return {"watchlists": response}
+    # Request POST
     elif request.method == "POST":
         response = request.get_json()
         group_name = response.get("name")
-        db.run_insert("watchlist", [session.get("userid"), group_name])
+        db.run_insert("watchlist", [user_id, group_name])
         app.logger.debug(f"Inserted group {group_name}")
         return "OK", 200
     
@@ -118,7 +125,8 @@ def asset():
         WHERE a.trader_id = {userid};
         """
         data = db.run_select(query)
-        return data, 200
+        response = db.to_dict(data, ["name", "shares"])
+        return {"assets": response}
 
 # Main method
 if __name__ == "__main__":
