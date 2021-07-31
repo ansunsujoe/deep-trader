@@ -134,4 +134,5 @@ class Database():
             dictionary = {}
             for i in range(len(keys)):
                 dictionary[keys[i]] = entry[i]
+            array.append(dictionary)
         return array
