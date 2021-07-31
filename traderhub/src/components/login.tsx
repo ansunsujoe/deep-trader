@@ -46,7 +46,7 @@ export default function Login() {
         'Content-Type': 'application/json'
       }
     }).then(response => {
-      if (response.status == 200) {
+      if (response.status === 200) {
         console.log("SUCCESS", response);
         history.push("/dashboard");
       }

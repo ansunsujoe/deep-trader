@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -10,6 +10,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import SearchBar from "material-ui-search-bar";
 import axios from "axios";
+import {useHistory} from "react-router-dom";
 
 interface Column {
   id: 'name' | 'price';
@@ -50,6 +51,7 @@ const useStyles = makeStyles({
 
 export default function TickerTable() {
   const classes = useStyles();
+  let history = useHistory();
   const [page, setPage] = useState(0);
   const [searched, setSearched] = useState<string>("");
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -65,6 +67,19 @@ export default function TickerTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  const handleClick = (id: string) => {
+    const data = {
+      ticker: id
+    };
+    // Make axios call to get ID of ticker
+    axios.get('http://localhost:5001/tickers', {params: data}).then(response => {
+      console.log("SUCCESS", response);
+      history.push("/stocks/" + response.data)
+    }).catch(error => {
+      console.log(error);
+    })
+  }
 
   const requestSearch = (searchedVal: string) => {
     const filteredRows = originalRows.filter((row) => {
@@ -117,7 +132,7 @@ export default function TickerTable() {
                   {columns.map((column) => {
                     const value = row[column.id];
                     return (
-                      <TableCell key={column.id} align={column.align}>
+                      <TableCell key={column.id} align={column.align} onClick={() => handleClick(column.id)}>
                         {column.format && typeof value === 'number' ? column.format(value) : value}
                       </TableCell>
                     );

@@ -8,9 +8,6 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import TransactionTable from './transactionTable';
-import {
-  Link
-} from "react-router-dom";
 
 export default function Transactions() {
   axios.defaults.withCredentials = true;

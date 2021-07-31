@@ -136,6 +136,15 @@ def trader_info():
         return "Unauthorized", 401
     return {"data": "Good"}
 
+@app.route("stockid", methods=["GET"])
+def get_stock_id():
+    ticker = request.args.get('ticker', None)
+    if ticker is None:
+        return "Bad Request", 400
+    ticker_str = db.value_string([ticker])
+    data = db.run_select(f"SELECT id FROM ticker WHERE name = {ticker_str};")[0][0]
+    return data
+
 # Main method
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5001, debug=True)

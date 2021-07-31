@@ -8,9 +8,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import NetWorthChart from './networth';
-import {
-  Link
-} from "react-router-dom";
+import InvestedChart from './investedchart';
 
 export default function Dashboard() {
   axios.defaults.withCredentials = true;
@@ -28,7 +26,7 @@ export default function Dashboard() {
       <div className={styles.container}>
         <Container fluid>
           <Row>
-            <Col md={9}>
+            <Col lg={9}>
               <Card style={{ border: "none", boxShadow: "none" }}>
                 <CardContent>
                   <h1>Ansun's Portfolio</h1>
@@ -61,11 +59,18 @@ export default function Dashboard() {
               </Row>
               <Card variant="outlined">
                 <CardContent>
-                  <NetWorthChart />
+                  <Row>
+                    <Col xs={6}>
+                      <NetWorthChart />
+                    </Col>
+                    <Col xs={6}>
+                      <InvestedChart />
+                    </Col>
+                  </Row>
                 </CardContent>
               </Card>
             </Col>
-            <Col md={3}>
+            <Col lg={3}>
               <Card className={styles.assets}>
                 <CardContent>
                   <p>My Assets</p>
