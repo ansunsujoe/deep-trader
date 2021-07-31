@@ -138,7 +138,7 @@ def trader_info():
     data = db.run_select_one(f"SELECT username, cash FROM trader WHERE id = {userid_str};")
     data_dict = {
         "username": data[0],
-        "cash": data[1]
+        "cash": float(data[1])
     }
     return data_dict
 
