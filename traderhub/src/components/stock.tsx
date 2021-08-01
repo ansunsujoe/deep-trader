@@ -21,6 +21,7 @@ export default function Stock() {
   const [price, setPrice] = useState(0);
   const [maxBuy, setMaxBuy] = useState(0);
   const [watchlists, setWatchlists] = useState([]);
+  const [watchlist, setWatchlist] = useState("");
   const [timeseries, setTimeseries] = useState([]);
   const [shares, setShares] = useState(0)
 
@@ -124,12 +125,12 @@ export default function Stock() {
                               <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
-                                value={watchlists}
+                                value={watchlist}
                                 className="mt-2"
                               >
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
+                                {watchlists.map((entry) => (
+                                  <MenuItem value={entry}>{entry}</MenuItem>
+                                ))}
                               </Select>
                             </div>
 
