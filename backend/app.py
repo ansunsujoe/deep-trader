@@ -114,6 +114,7 @@ def stock(id):
         WHERE t.id = {id} AND q.is_current;
         """
         data = db.run_select(query)
+        app.logger.debug(data)
         ticker_dict = db.to_dict(data, ["ticker", "price"])[0]
         
         # Cash of the user
@@ -174,7 +175,7 @@ def stock(id):
         return stock_info, 200
     
     
-@app.route("/asset", methods=["GET", "POST"])
+@app.route("/asset", methods=["GET", "PUT", "DELETE"])
 def asset():
     if request.method == "GET":
         userid = session.get("userid")
