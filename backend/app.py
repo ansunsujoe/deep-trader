@@ -248,6 +248,7 @@ def get_stock_id():
     if data is None:
         return "Bad Request", 400
     else:
+        app.logger.debug(data)
         return str(data[0]), 200
 
 # Main method
