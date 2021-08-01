@@ -98,6 +98,10 @@ def watchlist():
         app.logger.debug(f"Inserted group {group_name}")
         return "OK", 200
     
+@app.route("/watchlist/stocks", methods=["GET"])
+def watchlist_stocks():
+    pass
+    
 @app.route("/stock/<id>", methods=["GET", "POST"])
 def stock(id):
     if request.method == "GET":

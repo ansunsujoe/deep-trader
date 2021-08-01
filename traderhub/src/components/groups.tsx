@@ -84,7 +84,7 @@ export default function Groups() {
       setData(response.data.watchlists);
     }).catch(error => {
       console.log(error);
-    })
+    });
   }, []);
 
   return (
