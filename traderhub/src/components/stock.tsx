@@ -17,7 +17,12 @@ import Select from '@material-ui/core/Select';
 import { useParams } from "react-router-dom";
 
 export default function Stock() {
-  const [watchlist, setWatchlist] = useState('');
+  const [ticker, setTicker] = useState("");
+  const [price, setPrice] = useState(0);
+  const [maxBuy, setMaxBuy] = useState(0);
+  const [watchlists, setWatchlists] = useState([]);
+  const [timeseries, setTimeseries] = useState([]);
+  const [shares, setShares] = useState(0)
 
   type StockParams = {
     id: string;
@@ -27,9 +32,8 @@ export default function Stock() {
 
   axios.defaults.withCredentials = true;
   useEffect(() => {
-    axios.get('http://localhost:5001').then(response => {
+    axios.get('http://localhost:5001/stock/' + id).then(response => {
       console.log("SUCCESS", response);
-      alert("Successfully got update from App");
     }).catch(error => {
       console.log(error);
     })
@@ -46,11 +50,11 @@ export default function Stock() {
                 <CardContent>
                   <Row>
                     <Col>
-                      <h1>ID {id}</h1>
+                      <h1>{ticker}</h1>
                       <p className={styles.date}>July 27, 2021</p>
                     </Col>
                     <Col className={styles.rightprice}>
-                      <h1 className={styles.number}>$31,487</h1>
+                      <h1 className={styles.number}>${price}</h1>
                       <p className={styles.subtitle}>Per Share</p>
                     </Col>
                   </Row>
@@ -69,7 +73,7 @@ export default function Stock() {
                   <Card variant="outlined">
                     <CardContent>
                       <p className={styles.subtitle}>Buy</p>
-                      <p>Maximum Shares: 110</p>
+                      <p>Maximum Shares: {maxBuy}</p>
                       <form noValidate autoComplete="off">
                         <div className={stockstyles.formmargin}>
                           <Slider
@@ -78,7 +82,7 @@ export default function Stock() {
                             step={1}
                             marks
                             min={0}
-                            max={110}
+                            max={maxBuy}
                             valueLabelDisplay="on"
                           />
                         </div>
@@ -90,7 +94,7 @@ export default function Stock() {
                   <Card variant="outlined" className="mt-4">
                     <CardContent>
                       <p className={styles.subtitle}>Sell</p>
-                      <p>Maximum Shares: 5</p>
+                      <p>Maximum Shares: {shares}</p>
                       <form noValidate autoComplete="off">
                         <div className={stockstyles.formmargin}>
                           <Slider
@@ -99,7 +103,7 @@ export default function Stock() {
                             step={1}
                             marks
                             min={0}
-                            max={5}
+                            max={shares}
                             valueLabelDisplay="on"
                             color="secondary"
                           />
@@ -112,7 +116,7 @@ export default function Stock() {
                   <Card variant="outlined" className="mt-4">
                     <CardContent>
                       <Row>
-                        <Col md={6}>
+                        <Col>
                           <p className={styles.subtitle}>Add to Watchlist</p>
                           <form noValidate autoComplete="off">
                             <div>
@@ -120,7 +124,7 @@ export default function Stock() {
                               <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
-                                value={watchlist}
+                                value={watchlists}
                                 className="mt-2"
                               >
                                 <MenuItem value={10}>Ten</MenuItem>
@@ -132,29 +136,7 @@ export default function Stock() {
                             <Button className="mt-3" color="primary" variant="contained" type="submit">Add</Button>
                           </form>
                         </Col>
-                        <Col md={6}>
-                          <p className={styles.subtitle}>Remove from Watchlist</p>
-                          <form noValidate autoComplete="off">
-                            <div>
-                              <InputLabel className="mt-2" id="demo-simple-select-label">Watchlist</InputLabel>
-                              <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={watchlist}
-                                className="mt-2"
-                                color="secondary"
-                              >
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
-                              </Select>
-                            </div>
-
-                            <Button className="mt-3" color="secondary" variant="contained" type="submit">Remove</Button>
-                          </form>
-                        </Col>
                       </Row>
-
                     </CardContent>
                   </Card>
                 </Col>

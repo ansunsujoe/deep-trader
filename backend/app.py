@@ -122,8 +122,53 @@ def stock(id):
             return "Bad Request", 400
         cash = float(cash[0])
         
-        app.logger.debug(data)
-        return data, 200
+        # Watchlists of the stock
+        query = f"""
+        SELECT DISTINCT name FROM watchlist
+        WHERE trader_id = {userid_str}
+        AND id NOT IN (
+            SELECT DISTINCT watchlist_id FROM watchlist_item
+            WHERE trader_id = {userid_str}
+            AND ticker_id = {id}
+        );
+        """
+        watchlists = db.run_select(query)
+        watchlists = [w[0] for w in watchlists]
+        
+        # Last n stock prices in timeseries
+        query = f"""
+        SELECT price FROM quote
+        WHERE ticker_id = {id}
+        ORDER BY time DESC
+        LIMIT 15;
+        """
+        timeseries = db.run_select(query)
+        timeseries = [t[0] for t in timeseries]
+        
+        # Assets of the user in a specific stock
+        query = f"""
+        SELECT shares FROM asset
+        WHERE trader_id = {user_id} 
+        AND ticker_id = {id};
+        """
+        current_shares = db.run_select_one(query)
+        if current_shares is None:
+            current_shares = 0
+        else:
+            current_shares = current_shares[0]
+        
+        # Consolidate and return final data
+        stock_info = {
+            "ticker": ticker_dict.get("ticker"),
+            "price": ticker_dict.get("price"),
+            "cash": cash,
+            "watchlists": watchlists,
+            "shares": current_shares,
+            "maxBuy": cash // ticker_dict.get("price"),
+            "timeseries": timeseries
+        }
+        return stock_info, 200
+    
     
 @app.route("/asset", methods=["GET", "POST"])
 def asset():
