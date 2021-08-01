@@ -113,6 +113,7 @@ def stock(id):
         ON q.ticker_id = t.id
         WHERE t.id = {id} AND q.is_current;
         """
+        app.logger.debug(query)
         data = db.run_select(query)
         app.logger.debug(data)
         ticker_dict = db.to_dict(data, ["ticker", "price"])[0]
