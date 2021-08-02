@@ -167,7 +167,7 @@ def stock(id):
         LIMIT 15;
         """
         timeseries = db.run_select(query)
-        timeseries = [t[0] for t in timeseries]
+        timeseries = [float(t[0]) for t in timeseries]
         
         # Assets of the user in a specific stock
         query = f"""
@@ -179,7 +179,7 @@ def stock(id):
         if current_shares is None:
             current_shares = 0
         else:
-            current_shares = current_shares[0]
+            current_shares = int(current_shares[0])
         
         # Consolidate and return final data
         stock_info = {
