@@ -211,6 +211,12 @@ def asset():
         response = db.to_dict(data, ["name", "shares"])
         return {"assets": response}
     
+    if request.method == "PUT":
+        request_data = request.get_json()
+        current_shares = request.get("currentShares")
+        if request_data.get("action") == "buy":
+            pass
+    
 @app.route("/traderinfo", methods=["GET"])
 def trader_info():
     # Get the user ID or return as unauthorized

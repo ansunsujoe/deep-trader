@@ -35,7 +35,12 @@ export default function Stock() {
   axios.defaults.withCredentials = true;
   useEffect(() => {
     axios.get('http://localhost:5001/stock/' + id).then(response => {
-      console.log("SUCCESS", response);
+      setTicker(response.data.ticker);
+      setPrice(response.data.price);
+      setMaxBuy(response.data.maxBuy);
+      setWatchlists(response.data.watchlists);
+      setTimeseries(response.data.timeseries);
+      setShares(response.data.shares);
     }).catch(error => {
       console.log(error);
     })
