@@ -23,18 +23,31 @@ export default function Login() {
   axios.defaults.withCredentials = true;
 
   // Use states
-  const [username, setUsername] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [usernameError, setUsernameError] = useState(false);
   const [passwordErrText, setPasswordErrText] = useState("");
   const [passwordError, setPasswordError] = useState(false);
 
   function handleUsernameChange(e: any) {
     setUsername(e.target.value);
+    if (username === "") {
+      setUsernameError(true);
+    }
+    else {
+      setUsernameError(false);
+    }
   }
 
   function handlePasswordChange(e: any) {
     setPassword(e.target.value);
+    if (password === "") {
+      setPasswordErrText("Password must not be empty.");
+      setPasswordError(true);
+    }
+    else {
+      setPasswordError(false);
+    }
   }
 
   const handleSubmit = e => {
