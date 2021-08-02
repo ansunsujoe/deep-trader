@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       '& .MuiTextField-root': {
-        margin: theme.spacing(2),
+        marginTop: theme.spacing(2),
         width: 500,
       },
     },
@@ -28,6 +28,7 @@ export default function Signup() {
   const [disabled, setDisabled] = useState(true);
   const [nameError, setNameError] = useState(false);
   const [usernameError, setUsernameError] = useState(false);
+  const [usernameErrText, setUsernameErrText] = useState("");
   const [passwordError, setPasswordError] = useState(false);
 
   const handleSubmit = e => {
@@ -45,8 +46,15 @@ export default function Signup() {
       }
     }).then(response => {
       console.log("SUCCESS", response);
-      history.push("/dashboard");
-      alert("Successfully got update from App");
+      if (response.status === 200) {
+        history.push("/dashboard");
+      }
+      else {
+        if (response.data === "Username Exists") {
+          setUsernameErrText("Username is already taken.");
+          setUsernameError(true);
+        }
+      }
     }).catch(error => {
       console.log(error);
     })
@@ -58,13 +66,22 @@ export default function Signup() {
       setDisabled(true);
       setNameError(true);
     }
+    else {
+      setNameError(false);
+      checkEnableSubmit();
+    }
   }
 
   function handleUsernameChange(e) {
     setUsername(e.target.value);
     if (username === "") {
       setDisabled(true);
+      setUsernameErrText("Username must not be empty.");
       setUsernameError(true);
+    }
+    else {
+      setUsernameError(false);
+      checkEnableSubmit();
     }
   }
 
@@ -73,6 +90,16 @@ export default function Signup() {
     if (password.length < 8 || !(/\d/.test(password)) || !(!/[^a-zA-Z0-9]/.test(password))) {
       setDisabled(true);
       setPasswordError(true);
+    }
+    else {
+      setPasswordError(false);
+      checkEnableSubmit();
+    }
+  }
+
+  function checkEnableSubmit() {
+    if (nameError === false && usernameError === false && passwordError === false) {
+      setDisabled(false);
     }
   }
 
@@ -86,6 +113,7 @@ export default function Signup() {
             id="outlined-error"
             label="Full Name"
             placeholder="Full Name"
+            helperText="Name must not be empty."
             variant="outlined"
             onChange={handleNameChange}
           />
@@ -96,6 +124,7 @@ export default function Signup() {
             id="outlined-error"
             label="Username"
             placeholder="Username"
+            helperText={usernameErrText}
             variant="outlined"
             onChange={handleUsernameChange}
           />
