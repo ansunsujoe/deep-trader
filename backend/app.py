@@ -191,6 +191,7 @@ def stock(id):
             "maxBuy": cash // price,
             "timeseries": timeseries
         }
+        app.logger.debug(stock_info)
         return stock_info, 200
     
     
