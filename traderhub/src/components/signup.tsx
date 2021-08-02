@@ -22,9 +22,9 @@ export default function Signup() {
   let history = useHistory();
 
   // Use states
-  const [name, setName] = useState(null);
-  const [username, setUsername] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [disabled, setDisabled] = useState(true);
   const [nameError, setNameError] = useState(false);
   const [usernameError, setUsernameError] = useState(false);
