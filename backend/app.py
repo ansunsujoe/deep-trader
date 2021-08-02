@@ -111,7 +111,7 @@ def stock(id):
         FROM quote q 
         INNER JOIN ticker t
         ON q.ticker_id = t.id
-        WHERE t.id = {id} AND q.is_current;
+        WHERE q.ticker_id = {id} AND q.is_current;
         """
         app.logger.debug(query)
         data = db.run_select(query)
