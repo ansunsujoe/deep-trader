@@ -70,6 +70,14 @@ class Database():
         
         # Return ID
         return data[0][0]
+    
+    def run_update(self, query):
+        # Get connections
+        conn, cur = self.get_connection()
+        
+        # Execute and commit query
+        cur.execute(query)
+        conn.commit()
         
     def authenticate_user(self, trader_info):
         username = self.value_string([trader_info.get("username")])
@@ -80,6 +88,18 @@ class Database():
             return
         else:
             return data[0][0]
+        
+    def edit_asset(self, trader_id, ticker_id, new_shares):
+        value_string = self.value_string([trader_id, ticker_id, new_shares])
+        query = f"""
+        UPDATE asset SET shares = {new_shares}
+        WHERE trader_id = {trader_id}
+        AND ticker_id = {ticker_id}; 
+        IF NOT FOUND THEN 
+        INSERT INTO {table_names.get("asset")} values (DEFAULT, {value_string}); 
+        END IF; 
+        """
+        self.run_update(query)
         
     def select_conditions(self, table, attributes, conditions):
         _, cur = self.get_connection()

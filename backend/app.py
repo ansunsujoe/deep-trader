@@ -214,8 +214,11 @@ def asset():
     if request.method == "PUT":
         request_data = request.get_json()
         current_shares = request.get("currentShares")
+        share_change = request.get("shareChange")
+        
         if request_data.get("action") == "buy":
-            pass
+            new_shares = current_shares + share_change
+            
     
 @app.route("/traderinfo", methods=["GET"])
 def trader_info():
