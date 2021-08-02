@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS trader (
     name VARCHAR(50) NOT NULL,
     username VARCHAR(30) UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    cash DECIMAL NOT NULL
+    cash DECIMAL NOT NULL,
+    admin BOOLEAN NOT NULL
 );
 
 -- For a single ticker

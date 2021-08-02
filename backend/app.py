@@ -29,11 +29,27 @@ def index():
 @app.route("/users", methods=['POST'])
 def sign_up():
     try:
-        app.logger.debug(request.get_json())
-        db.insert_user(request.get_json())
+        request_data = request.get_json()
+        app.logger.debug(request_data)
+        
+        # Check if username is taken
+        username_str = db.value_string([request_data.get("username")])
+        existing_id = db.run_select_one(f"SELECT id FROM trader WHERE username = {username_str}")
+        if existing_id is not None:
+            return "Username Exists", 400
+        
+        db.insert_user(request_data)
         userid = db.run_select("SELECT MAX(id) FROM trader;")[0][0]
+        
+        # Set UserID and Admin credentials
         session["userid"] = userid
+        if request_data.get("username") == "admin":
+            session["admin"] = True
+        else:
+            session["admin"] = False
         app.logger.debug(userid)
+    
+    # Catch exception
     except Exception as e:
         app.logger.debug("Exception " + e)
         return "Bad Request", 400
@@ -49,6 +65,10 @@ def login():
             return "Unauthorized", 401
         else:
             session["userid"] = user_id
+            if response.get("username") == "admin":
+                session["admin"] = True
+            else:
+                session["admin"] = False
             return {"userid": user_id}
     except Exception as e:
         app.logger.debug("Exception " + e)

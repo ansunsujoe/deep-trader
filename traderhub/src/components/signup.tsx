@@ -25,6 +25,10 @@ export default function Signup() {
   const [name, setName] = useState(null);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
+  const [disabled, setDisabled] = useState(true);
+  const [nameError, setNameError] = useState(false);
+  const [usernameError, setUsernameError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -50,14 +54,26 @@ export default function Signup() {
 
   function handleNameChange(e) {
     setName(e.target.value);
+    if (name === "") {
+      setDisabled(true);
+      setNameError(true);
+    }
   }
 
   function handleUsernameChange(e) {
     setUsername(e.target.value);
+    if (username === "") {
+      setDisabled(true);
+      setUsernameError(true);
+    }
   }
 
   function handlePasswordChange(e) {
     setPassword(e.target.value);
+    if (password.length < 8 || !(/\d/.test(password)) || !(!/[^a-zA-Z0-9]/.test(password))) {
+      setDisabled(true);
+      setPasswordError(true);
+    }
   }
 
   return (
@@ -66,6 +82,7 @@ export default function Signup() {
       <form className={classes.root} noValidate autoComplete="off" onSubmit={handleSubmit}>
         <div>
           <TextField
+            error={nameError}
             id="outlined-error"
             label="Full Name"
             placeholder="Full Name"
@@ -75,6 +92,7 @@ export default function Signup() {
         </div>
         <div>
           <TextField
+            error={usernameError}
             id="outlined-error"
             label="Username"
             placeholder="Username"
@@ -84,6 +102,7 @@ export default function Signup() {
         </div>
         <div>
           <TextField
+            error={passwordError}
             id="outlined-error"
             label="Password"
             placeholder="Password"
@@ -92,7 +111,7 @@ export default function Signup() {
             onChange={handlePasswordChange}
           />
         </div>
-        <Button color="primary" type="submit">Submit</Button>
+        <Button color="primary" type="submit" disabled={disabled}>Submit</Button>
       </form>
     </div>
   );

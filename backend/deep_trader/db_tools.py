@@ -6,7 +6,7 @@ from decimal import Decimal
 logger = logging.getLogger(__name__)
 
 table_names = {
-    "trader": "trader(id, name, username, password, cash)",
+    "trader": "trader(id, name, username, password, cash, admin)",
     "ticker": "ticker(id, name)",
     "quote": "quote(id, ticker_id, time, price, is_current)",
     "transaction": "transaction(id, trader_id, ticker_id, action, price, time)",
@@ -53,7 +53,7 @@ class Database():
         cash = 20000
         
         # Construct query
-        values = f"{names_str}, crypt({password_str}, gen_salt(\'bf\')), {cash}"
+        values = f"{names_str}, crypt({password_str}, gen_salt(\'bf\')), {cash}, FALSE"
         cur.execute(f"INSERT INTO {table} VALUES (DEFAULT, {values});")
         conn.commit()
         
