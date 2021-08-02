@@ -105,18 +105,22 @@ def watchlist_stocks():
 @app.route("/stock/<id>", methods=["GET", "POST"])
 def stock(id):
     if request.method == "GET":
-        # Name and price of ticker
+        ticker = db.run_select_one(f"SELECT name FROM trader WHERE id = {id};")[0]
+        
         query = f"""
-        SELECT t.name, q.price 
-        FROM quote q 
-        INNER JOIN ticker t
-        ON q.ticker_id = t.id
-        WHERE q.ticker_id = {id} AND q.is_current;
+        SELECT * from quote;
         """
-        app.logger.debug(query)
         data = db.run_select(query)
         app.logger.debug(data)
-        ticker_dict = db.to_dict(data, ["ticker", "price"])[0]
+        
+        # Price of ticker
+        query = f"""
+        SELECT q.price 
+        FROM quote q
+        WHERE q.ticker_id = {id} AND q.is_current;
+        """
+        data = db.run_select_one(query)
+        price = float(data[0])
         
         # Cash of the user
         user_id = session.get("userid")
@@ -165,12 +169,12 @@ def stock(id):
         
         # Consolidate and return final data
         stock_info = {
-            "ticker": ticker_dict.get("ticker"),
-            "price": ticker_dict.get("price"),
+            "ticker": ticker,
+            "price": price,
             "cash": cash,
             "watchlists": watchlists,
             "shares": current_shares,
-            "maxBuy": cash // ticker_dict.get("price"),
+            "maxBuy": cash // price,
             "timeseries": timeseries
         }
         return stock_info, 200

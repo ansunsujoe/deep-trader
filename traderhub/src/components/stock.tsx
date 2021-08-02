@@ -14,6 +14,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Slider from '@material-ui/core/Slider';
 import Select from '@material-ui/core/Select';
+import Timeseries from './timeseries';
 import { useParams } from "react-router-dom";
 
 export default function Stock() {
@@ -66,7 +67,7 @@ export default function Stock() {
                 <Col>
                   <Card variant="outlined" style={{ border: "none", boxShadow: "none" }}>
                     <CardContent>
-                      <NetWorthChart />
+                      <Timeseries />
                     </CardContent>
                   </Card>
                 </Col>
