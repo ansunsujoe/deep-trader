@@ -87,7 +87,7 @@ export default function Signup() {
 
   function handlePasswordChange(e) {
     setPassword(e.target.value);
-    if (password.length < 8 || !(/\d/.test(password)) || !(!/[^a-zA-Z0-9]/.test(password))) {
+    if (password.length < 8 || !(/\d/.test(password)) || (!/[^a-zA-Z0-9]/.test(password))) {
       setDisabled(true);
       setPasswordError(true);
     }
