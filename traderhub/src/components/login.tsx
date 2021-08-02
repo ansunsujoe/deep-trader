@@ -109,7 +109,7 @@ export default function Login() {
             onChange={handlePasswordChange}
           />
         </div>
-        <Button color="primary" type="submit" variant="contained">Submit</Button>
+        <Button color="primary" type="submit" variant="contained" className="mt-3">Submit</Button>
       </form>
     </div>
   );

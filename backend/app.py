@@ -128,12 +128,6 @@ def stock(id):
     if request.method == "GET":
         ticker = db.run_select_one(f"SELECT name FROM trader WHERE id = {id};")[0]
         
-        query = f"""
-        SELECT * from quote;
-        """
-        data = db.run_select(query)
-        app.logger.debug(data)
-        
         # Price of ticker
         query = f"""
         SELECT q.price 
@@ -147,8 +141,7 @@ def stock(id):
         user_id = session.get("userid")
         if user_id is None:
             return "Unauthorized", 401
-        userid_str = db.value_string(user_id)
-        cash = db.run_select_one(f"SELECT cash FROM trader WHERE id = {userid_str};")
+        cash = db.run_select_one(f"SELECT cash FROM trader WHERE id = {user_id};")
         if cash is None:
             return "Bad Request", 400
         cash = float(cash[0])
@@ -156,10 +149,10 @@ def stock(id):
         # Watchlists of the stock
         query = f"""
         SELECT DISTINCT name FROM watchlist
-        WHERE trader_id = {userid_str}
+        WHERE trader_id = {user_id}
         AND id NOT IN (
             SELECT DISTINCT watchlist_id FROM watchlist_item
-            WHERE trader_id = {userid_str}
+            WHERE trader_id = {user_id}
             AND ticker_id = {id}
         );
         """
