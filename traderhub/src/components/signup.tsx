@@ -140,7 +140,7 @@ export default function Signup() {
             onChange={handlePasswordChange}
           />
         </div>
-        <Button color="primary" type="submit" disabled={disabled}>Submit</Button>
+        <Button color="primary" type="submit" variant="contained" disabled={disabled}>Submit</Button>
       </form>
     </div>
   );
