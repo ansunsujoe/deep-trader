@@ -53,7 +53,7 @@ def sign_up():
     except Exception as e:
         app.logger.debug("Exception " + e)
         return "Bad Request", 400
-    return {"userid": userid}
+    return {"userid": userid, "admin": session.get("admin")}
 
 # Login as user
 @app.route("/login", methods=['POST'])
@@ -69,7 +69,7 @@ def login():
                 session["admin"] = True
             else:
                 session["admin"] = False
-            return {"userid": user_id}
+            return {"userid": user_id, "admin": session.get("admin")}
     except Exception as e:
         app.logger.debug("Exception " + e)
         return "Bad Request", 400
@@ -80,7 +80,8 @@ def login():
 def logout():
     userid = session.get("userid")
     session["userid"] = None
-    return {"userid": userid}
+    session["admin"] = None
+    return {"userid": userid, "admin": session.get("admin")}
 
 # Tickers
 @app.route("/tickers", methods=["GET", "POST"])
@@ -275,6 +276,14 @@ def get_stock_id():
     else:
         app.logger.debug(data)
         return str(data[0]), 200
+    
+@app.route("/currentuser", methods=["GET"])
+def get_current_user():
+    userid = session.get("userid")
+    if userid is None:
+        return "Unauthorized", 401
+    admin = session.get("admin")
+    return {"userid": userid, "admin": admin}
 
 # Main method
 if __name__ == "__main__":
