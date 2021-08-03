@@ -116,6 +116,7 @@ export default function Signup() {
             helperText="Name must not be empty."
             variant="outlined"
             onChange={handleNameChange}
+            onBlur={handleNameChange}
           />
         </div>
         <div>
@@ -127,6 +128,7 @@ export default function Signup() {
             helperText={usernameErrText}
             variant="outlined"
             onChange={handleUsernameChange}
+            onBlur={handleUsernameChange}
           />
         </div>
         <div>
@@ -138,6 +140,7 @@ export default function Signup() {
             helperText="Must contain 8+ characters, 1+ numbers, 1+ special characters"
             variant="outlined"
             onChange={handlePasswordChange}
+            onBlur={handlePasswordChange}
           />
         </div>
         <Button color="primary" type="submit" variant="contained" className="mt-3" disabled={disabled}>Submit</Button>
