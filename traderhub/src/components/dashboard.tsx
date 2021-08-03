@@ -12,6 +12,7 @@ import InvestedChart from './investedchart';
 
 interface Asset {
   ticker: string;
+  price: number;
   shares: number;
 }
 
@@ -21,6 +22,11 @@ export default function Dashboard() {
   const [cash, setCash] = useState(0);
   const [invested, setInvested] = useState(0);
   const [assets, setAssets] = useState<Asset[]>([]);
+
+  function getDate() {
+    var today = new Date();
+    return today.getMonth() + " " + today.getDay() + ", " + today.getFullYear();
+  }
 
   axios.defaults.withCredentials = true;
   useEffect(() => {
@@ -46,7 +52,7 @@ export default function Dashboard() {
               <Card style={{ border: "none", boxShadow: "none" }}>
                 <CardContent>
                   <h1>{username}'s Portfolio</h1>
-                  <p className={styles.date}>July 27, 2021</p>
+                  <p className={styles.date}>{getDate()}</p>
                 </CardContent>
               </Card>
               <Row>
@@ -77,10 +83,13 @@ export default function Dashboard() {
                 <CardContent>
                   <Row>
                     <Col xs={6}>
-                      <NetWorthChart />
+                      <NetWorthChart invested={invested} cash={cash} />
                     </Col>
                     <Col xs={6}>
-                      <InvestedChart />
+                      <InvestedChart
+                        labels={assets.map((a) => a.ticker)}
+                        data={assets.map((a) => a.price * a.shares)}
+                      />
                     </Col>
                   </Row>
                 </CardContent>
@@ -90,21 +99,23 @@ export default function Dashboard() {
               <Card className={styles.assets}>
                 <CardContent>
                   <p>My Assets</p>
-                  <Card>
-                    <CardContent>
-                      <Container fluid>
-                        <Row>
-                          <Col className="p-0">
-                            <p className="m-0">TSLA</p>
-                            <p className={styles.subtitle}>47 Shares</p>
-                          </Col>
-                          <Col>
-                            <h4 className={styles.price}>$22,381</h4>
-                          </Col>
-                        </Row>
-                      </Container>
-                    </CardContent>
-                  </Card>
+                  {assets.map((a) => (
+                    <Card>
+                      <CardContent>
+                        <Container fluid>
+                          <Row>
+                            <Col className="p-0">
+                              <p className="m-0">{a.ticker}</p>
+                              <p className={styles.subtitle}>{a.shares} Shares</p>
+                            </Col>
+                            <Col>
+                              <h4 className={styles.price}>${a.price}</h4>
+                            </Col>
+                          </Row>
+                        </Container>
+                      </CardContent>
+                    </Card>
+                  ))}
                 </CardContent>
               </Card>
             </Col>

@@ -262,7 +262,7 @@ def trader_info():
     data = db.run_select_one(f"SELECT username, cash FROM trader WHERE id = {userid_str};")
     data_dict = {
         "username": data[0],
-        "cash": float(data[1])
+        "cash": round(float(data[1]), 2)
     }
     
     # Get all trader assets
@@ -283,6 +283,7 @@ def trader_info():
     total_invested = 0
     for asset in assets:
         total_invested += asset.get("price") * asset.get("shares")
+    total_invested = round(total_invested, 2)
     total = data_dict.get("cash") + total_invested
     
     # Format and return output dictionary

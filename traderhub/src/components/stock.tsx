@@ -58,6 +58,11 @@ export default function Stock() {
     }
   }
 
+  function getDate() {
+    var today = new Date();
+    return today.getMonth() + " " + today.getDay() + ", " + today.getFullYear();
+  }
+
   function modifyAsset(data) {
     axios.put('http://localhost:5001/asset', data, {
       headers: {
@@ -122,7 +127,7 @@ export default function Stock() {
                   <Row>
                     <Col>
                       <h1>{ticker}</h1>
-                      <p className={styles.date}>July 27, 2021</p>
+                      <p className={styles.date}>{getDate()}</p>
                     </Col>
                     <Col className={styles.rightprice}>
                       <h1 className={styles.number}>${price}</h1>

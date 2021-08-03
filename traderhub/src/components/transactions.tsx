@@ -10,6 +10,11 @@ import TransactionTable from './transactionTable';
 
 export default function Transactions() {
 
+  function getDate() {
+    var today = new Date();
+    return today.getMonth() + " " + today.getDay() + ", " + today.getFullYear();
+  }
+
   return (
     <div>
       <Navbar />
@@ -19,8 +24,8 @@ export default function Transactions() {
             <Col>
               <Card style={{ border: "none", boxShadow: "none" }}>
                 <CardContent>
-                  <h1>Ansun's Transactions</h1>
-                  <p className={styles.date}>July 27, 2021</p>
+                  <h1>Transactions</h1>
+                  <p className={styles.date}>{getDate()}</p>
                 </CardContent>
               </Card>
             </Col>

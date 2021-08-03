@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
-export default function NetWorthChart() {
-  const timeLabels = ["9:00", "9:30", "10:00", "10:30"];
-  const moneyData = ["24044", "25939", "26059", "25940"];
+export default function NetWorthChart({invested, cash}) {
 
   return (
     <div>
@@ -15,7 +13,7 @@ export default function NetWorthChart() {
           ],
           datasets: [{
             label: 'My First Dataset',
-            data: [300, 50],
+            data: [invested, cash],
             backgroundColor: [
               'rgb(0, 185, 0)',
               '#ebd834',

@@ -1,27 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
-export default function InvestedChart() {
-  const timeLabels = ["9:00", "9:30", "10:00", "10:30"];
-  const moneyData = ["24044", "25939", "26059", "25940"];
+export default function InvestedChart({labels, data}) {
 
   return (
     <div>
       <Doughnut
         data={{
-          labels: [
-            'Red',
-            'Blue',
-            'Yellow'
-          ],
+          labels: labels,
           datasets: [{
             label: 'Investments',
-            data: [300, 50, 100],
-            backgroundColor: [
-              'rgb(255, 99, 132)',
-              'rgb(54, 162, 235)',
-              'rgb(255, 205, 86)'
-            ],
+            data: data,
             hoverOffset: 4
           }]
         }}
