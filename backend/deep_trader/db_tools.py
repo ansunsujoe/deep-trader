@@ -2,6 +2,7 @@ import psycopg2, os
 import logging
 from deep_trader import market_data as md
 from decimal import Decimal
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -166,6 +167,8 @@ class Database():
                 val = entry[i]
                 if isinstance(val, Decimal):
                     dictionary[keys[i]] = float(val)
+                if isinstance(val, datetime):
+                    dictionary[keys[i]] = str(val)
                 else:
                     dictionary[keys[i]] = val
             array.append(dictionary)
