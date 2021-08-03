@@ -8,7 +8,7 @@ export default function Timeseries(props) {
       <Line
         data={{
           labels: [
-            props.data.map((x: any) => '')
+            Array(props.data.length).fill('')
           ],
           datasets: [{
             label: 'Timeseries',
