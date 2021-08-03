@@ -9,7 +9,7 @@ table_names = {
     "trader": "trader(id, name, username, password, cash, admin)",
     "ticker": "ticker(id, name)",
     "quote": "quote(id, ticker_id, time, price, is_current)",
-    "transaction": "transaction(id, trader_id, ticker_id, action, price, time)",
+    "transaction": "transaction(id, trader_id, ticker_id, action, price, shares, time)",
     "watchlist": "watchlist(id, trader_id, name)",
     "watchlist_item": "watchlist_item(id, trader_id, watchlist_id, ticker_id)",
     "asset": "asset(id, trader_id, ticker_id, shares)"
@@ -57,9 +57,10 @@ class Database():
         cur.execute(f"INSERT INTO {table} VALUES (DEFAULT, {values});")
         conn.commit()
         
-    def run_insert(self, table, data):
+    def run_insert(self, table, data, conn=None, cur=None):
         # Get connections
-        conn, cur = self.get_connection()
+        if conn is None:
+            conn, cur = self.get_connection()
         table_name = table_names.get(table)
         
         # Create query

@@ -215,7 +215,7 @@ def asset():
     
     if request.method == "PUT":
         request_data = request.get_json()
-        ticker_id = request_data.get("tickerId")
+        ticker_id = int(request_data.get("tickerId"))
         current_price = request_data.get("currentPrice")
         current_shares = request_data.get("currentShares")
         share_change = request_data.get("shareChange")
@@ -228,21 +228,24 @@ def asset():
             new_shares = current_shares - share_change
             cash_change = round(share_change * current_price, 2)
             
+        conn, cur = db.get_connection()
+            
         # Create the asset
         if current_shares == 0:
-            db.run_insert("asset", [userid, ticker_id, new_shares])
+            db.run_insert("asset", [userid, ticker_id, new_shares], conn, cur)
         
         # Update the asset
         elif new_shares == 0:
-            db.run_update(f"DELETE FROM asset WHERE trader_id = {userid} AND ticker_id = {ticker_id};")
+            cur.execute(f"DELETE FROM asset WHERE trader_id = {userid} AND ticker_id = {ticker_id};")
         else:
-            db.run_update(f"UPDATE asset SET shares = {new_shares} WHERE trader_id = {userid} AND ticker_id = {ticker_id};")
+            cur.execute(f"UPDATE asset SET shares = {new_shares} WHERE trader_id = {userid} AND ticker_id = {ticker_id};")
             
         # Create the transaction
-        db.run_insert("transaction", [userid, ticker_id, action, current_price, share_change, datetime.now()])
+        db.run_insert("transaction", [userid, ticker_id, action, current_price, share_change, datetime.now()], conn, cur)
         
         # Change the cash value
-        db.run_update(f"UPDATE trader SET cash = cash + {cash_change} WHERE id = {userid};")
+        cur.execute(f"UPDATE trader SET cash = cash + {cash_change} WHERE id = {userid};")
+        conn.commit()
         
         return "Success", 200
         
