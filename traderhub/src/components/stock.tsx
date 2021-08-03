@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/dashboard.module.css';
 import stockstyles from '../styles/stock.module.css';
-import axios from 'axios';
 import Navbar from './navbar';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -14,9 +13,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Slider from '@material-ui/core/Slider';
 import Select from '@material-ui/core/Select';
 import Timeseries from './timeseries';
-import { useParams } from "react-router-dom";
+import axios from 'axios';
+import { useParams, useHistory } from "react-router-dom";
 
 export default function Stock() {
+  axios.defaults.withCredentials = true;
+  let history = useHistory();
+
   const [ticker, setTicker] = useState("");
   const [price, setPrice] = useState(0);
   const [maxBuy, setMaxBuy] = useState(0);
@@ -55,7 +58,45 @@ export default function Stock() {
     }
   }
 
-  axios.defaults.withCredentials = true;
+  function modifyAsset(data) {
+    axios.put('http://localhost:5001/asset', data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(response => {
+      console.log("SUCCESS", response);
+      if (response.status === 200) {
+        history.push("/dashboard");
+      }
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+
+  const handleBuySubmit = (e :any) => {
+    e.preventDefault();
+    const data = {
+      tickerId: id,
+      currentPrice: price,
+      currentShares: shares,
+      shareChange: currentBuy,
+      action: "buy"
+    };
+    modifyAsset(data);
+  }
+
+  const handleSellSubmit = (e: any) => {
+    e.preventDefault();
+    const data = {
+      tickerId: id,
+      currentPrice: price,
+      currentShares: shares,
+      shareChange: currentBuy,
+      action: "buy"
+    };
+    modifyAsset(data);
+  }
+
   useEffect(() => {
     axios.get('http://localhost:5001/stock/' + id).then(response => {
       setTicker(response.data.ticker);
@@ -130,7 +171,7 @@ export default function Stock() {
                     <CardContent>
                       <p className={styles.subtitle}>Buy</p>
                       <p>Maximum Shares: {maxBuy}</p>
-                      <form noValidate autoComplete="off">
+                      <form noValidate autoComplete="off" onSubmit={handleBuySubmit}>
                         <div className={stockstyles.formmargin}>
                           <Slider
                             defaultValue={0}
@@ -143,7 +184,7 @@ export default function Stock() {
                             onChange={handleBuyChange}
                           />
                         </div>
-                        <p>Current Purchase: ${currentBuy * price}</p>
+                        <p>Current Purchase: ${Math.round(currentBuy * price * 100) / 100}</p>
                         <Button color="primary" variant="contained" type="submit" disabled={buyDisabled}>Buy</Button>
                       </form>
                     </CardContent>
@@ -152,7 +193,7 @@ export default function Stock() {
                     <CardContent>
                       <p className={styles.subtitle}>Sell</p>
                       <p>Maximum Shares: {shares}</p>
-                      <form noValidate autoComplete="off">
+                      <form noValidate autoComplete="off" onSubmit={handleSellSubmit}>
                         <div className={stockstyles.formmargin}>
                           <Slider
                             defaultValue={0}
@@ -166,7 +207,7 @@ export default function Stock() {
                             onChange={handleSellChange}
                           />
                         </div>
-                        <p>Cash Added: ${currentSell * price}</p>
+                        <p>Cash Added: ${Math.round(currentSell * price * 100) / 100}</p>
                         <Button color="secondary" variant="contained" type="submit" disabled={sellDisabled}>Sell</Button>
                       </form>
                     </CardContent>

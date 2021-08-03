@@ -4,7 +4,7 @@ from flask_bcrypt import Bcrypt
 from flask import request, session
 from deep_trader.db_tools import Database
 from datetime import datetime
-import os
+import os, json
 
 app = Flask(__name__)
 app.config['ENV'] = "development"
@@ -195,12 +195,13 @@ def stock(id):
         return stock_info, 200
     
     
-@app.route("/asset", methods=["GET", "PUT", "DELETE"])
+@app.route("/asset", methods=["GET", "PUT"])
 def asset():
+    userid = session.get("userid")
+    if userid is None:
+        return "Unauthorized", 401
+    
     if request.method == "GET":
-        userid = session.get("userid")
-        if userid is None:
-            return "Unauthorized", 401
         query = f"""
         SELECT t.name, a.shares
         FROM asset a
@@ -214,12 +215,37 @@ def asset():
     
     if request.method == "PUT":
         request_data = request.get_json()
-        current_shares = request.get("currentShares")
-        share_change = request.get("shareChange")
+        ticker_id = request_data.get("tickerId")
+        current_price = request_data.get("currentPrice")
+        current_shares = request_data.get("currentShares")
+        share_change = request_data.get("shareChange")
+        action = request_data.get("action")
         
-        if request_data.get("action") == "buy":
+        if action == "buy":
             new_shares = current_shares + share_change
+            cash_change = -round(share_change * current_price, 2)
+        elif action == "sell":
+            new_shares = current_shares - share_change
+            cash_change = round(share_change * current_price, 2)
             
+        # Create the asset
+        if current_shares == 0:
+            db.run_insert("asset", [userid, ticker_id, new_shares])
+        
+        # Update the asset
+        elif new_shares == 0:
+            db.run_update(f"DELETE FROM asset WHERE trader_id = {userid} AND ticker_id = {ticker_id};")
+        else:
+            db.run_update(f"UPDATE asset SET shares = {new_shares} WHERE trader_id = {userid} AND ticker_id = {ticker_id};")
+            
+        # Create the transaction
+        db.run_insert("transaction", [userid, ticker_id, action, current_price, share_change, datetime.now()])
+        
+        # Change the cash value
+        db.run_update(f"UPDATE trader SET cash = cash + {cash_change} WHERE id = {userid};")
+        
+        return "Success", 200
+        
     
 @app.route("/traderinfo", methods=["GET"])
 def trader_info():
@@ -288,6 +314,45 @@ def get_current_user():
     admin = session.get("admin")
     return {"userid": userid, "admin": admin}
 
+@app.route("/transactions/buy", methods=["GET"])
+def get_buy_transactions():
+    userid = session.get("userid")
+    if userid is None:
+        return "Unauthorized", 401
+    
+    # Query to get all buy transactions
+    query = f"""
+    SELECT tr.time, t.name, tr.action, tr.shares, tr.price
+    FROM transaction tr
+    INNER JOIN ticker t
+    ON tr.ticker_id = t.id
+    WHERE tr.action = {db.value_string(["buy"])}
+    ORDER BY tr.time DESC;
+    """
+    data = db.run_select(query)
+    transactions = db.to_dict(data, ["time", "name", "action", "shares", "price"])
+    return json.dumps(transactions)
+
+    
+@app.route("/transactions/sell", methods=["GET"])
+def get_sell_transactions():
+    userid = session.get("userid")
+    if userid is None:
+        return "Unauthorized", 401
+    
+    # Query to get all sell transactions
+    query = f"""
+    SELECT tr.time, t.name, tr.action, tr.shares, tr.price
+    FROM transaction tr
+    INNER JOIN ticker t
+    ON tr.ticker_id = t.id
+    WHERE tr.action = {db.value_string(["sell"])}
+    ORDER BY tr.time DESC;
+    """
+    data = db.run_select(query)
+    transactions = db.to_dict(data, ["time", "name", "action", "shares", "price"])
+    return json.dumps(transactions)
+    
 # Main method
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5001, debug=True)

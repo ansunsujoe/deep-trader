@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS transaction (
     ticker_id INT NOT NULL REFERENCES ticker(id),
     action VARCHAR(10) NOT NULL,
     price DECIMAL NOT NULL,
+    shares INT NOT NULL,
     time TIMESTAMP NOT NULL
 );
 
