@@ -57,7 +57,7 @@ class Database():
         cur.execute(f"INSERT INTO {table} VALUES (DEFAULT, {values});")
         conn.commit()
         
-    def run_insert(self, table, data, conn=None, cur=None):
+    def run_insert(self, table, data, conn=None, cur=None, commit=True):
         # Get connections
         if conn is None:
             conn, cur = self.get_connection()
@@ -67,7 +67,8 @@ class Database():
         values = self.value_string(data)
         cur.execute(f"INSERT INTO {table_name} VALUES (DEFAULT, {values}) RETURNING id;")
         data = cur.fetchall()
-        conn.commit()
+        if commit:
+            conn.commit()
         
         # Return ID
         return data[0][0]

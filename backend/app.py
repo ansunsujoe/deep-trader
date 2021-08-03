@@ -232,7 +232,7 @@ def asset():
             
         # Create the asset
         if current_shares == 0:
-            db.run_insert("asset", [userid, ticker_id, new_shares], conn, cur)
+            db.run_insert("asset", [userid, ticker_id, new_shares], conn, cur, commit=False)
         
         # Update the asset
         elif new_shares == 0:
@@ -241,7 +241,7 @@ def asset():
             cur.execute(f"UPDATE asset SET shares = {new_shares} WHERE trader_id = {userid} AND ticker_id = {ticker_id};")
             
         # Create the transaction
-        db.run_insert("transaction", [userid, ticker_id, action, current_price, share_change, datetime.now()], conn, cur)
+        db.run_insert("transaction", [userid, ticker_id, action, current_price, share_change, datetime.now()], conn, cur, commit=False)
         
         # Change the cash value
         cur.execute(f"UPDATE trader SET cash = cash + {cash_change} WHERE id = {userid};")
