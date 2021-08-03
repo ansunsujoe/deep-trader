@@ -1,22 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 
-export default function Timeseries() {
-  const timeLabels = ["9:00", "9:30", "10:00", "10:30"];
-  const moneyData = ["24044", "25939", "26059", "25940"];
+export default function Timeseries(props) {
 
   return (
     <div>
       <Line
         data={{
           labels: [
-            '',
-            '',
-            ''
+            props.data.map((x: any) => '')
           ],
           datasets: [{
             label: 'Timeseries',
-            data: [300, 50, 100],
+            data: props.data,
             borderColor: '#11c26f',
             hoverOffset: 4
           }]

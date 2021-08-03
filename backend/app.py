@@ -126,7 +126,7 @@ def watchlist_stocks():
 @app.route("/stock/<id>", methods=["GET", "POST"])
 def stock(id):
     if request.method == "GET":
-        ticker = db.run_select_one(f"SELECT name FROM trader WHERE id = {id};")[0]
+        ticker = db.run_select_one(f"SELECT name FROM ticker WHERE id = {id};")[0]
         
         # Price of ticker
         query = f"""

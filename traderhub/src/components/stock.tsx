@@ -24,13 +24,37 @@ export default function Stock() {
   const [watchlists, setWatchlists] = useState([]);
   const [watchlist, setWatchlist] = useState("");
   const [timeseries, setTimeseries] = useState([]);
-  const [shares, setShares] = useState(0)
+  const [shares, setShares] = useState(0);
+  const [buyDisabled, setBuyDisabled] = useState(true);
+  const [sellDisabled, setSellDisabled] = useState(true);
+  const [currentBuy, setCurrentBuy] = useState(0);
+  const [currentSell, setCurrentSell] = useState(0);
 
   type StockParams = {
     id: string;
   };
 
   const { id } = useParams<StockParams>();
+
+  const handleBuyChange = (e, val) => {
+    setCurrentBuy(val);
+    if (val === 0) {
+      setBuyDisabled(true);
+    }
+    else {
+      setBuyDisabled(false);
+    }
+  }
+
+  const handleSellChange = (e, val) => {
+    setCurrentSell(val);
+    if (val === 0) {
+      setSellDisabled(true);
+    }
+    else {
+      setSellDisabled(false);
+    }
+  }
 
   axios.defaults.withCredentials = true;
   useEffect(() => {
@@ -72,7 +96,7 @@ export default function Stock() {
                 <Col>
                   <Card variant="outlined" style={{ border: "none", boxShadow: "none" }}>
                     <CardContent>
-                      <Timeseries />
+                      <Timeseries data={timeseries}/>
                     </CardContent>
                   </Card>
                 </Col>
@@ -91,10 +115,11 @@ export default function Stock() {
                             min={0}
                             max={maxBuy}
                             valueLabelDisplay="on"
+                            onChange={handleBuyChange}
                           />
                         </div>
-                        <p>Current Purchase: $572.22</p>
-                        <Button color="primary" variant="contained" type="submit">Buy</Button>
+                        <p>Current Purchase: ${currentBuy * price}</p>
+                        <Button color="primary" variant="contained" type="submit" disabled={buyDisabled}>Buy</Button>
                       </form>
                     </CardContent>
                   </Card>
@@ -113,10 +138,11 @@ export default function Stock() {
                             max={shares}
                             valueLabelDisplay="on"
                             color="secondary"
+                            onChange={handleSellChange}
                           />
                         </div>
-                        <p>Cash Added: $572.22</p>
-                        <Button color="secondary" variant="contained" type="submit">Sell</Button>
+                        <p>Cash Added: ${currentSell * price}</p>
+                        <Button color="secondary" variant="contained" type="submit" disabled={sellDisabled}>Sell</Button>
                       </form>
                     </CardContent>
                   </Card>
