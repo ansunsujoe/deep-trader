@@ -110,7 +110,33 @@ def watchlist():
     if request.method == "GET":
         data = db.run_select(f"SELECT name FROM watchlist WHERE trader_id = {db.value_string([user_id])};")
         response = db.to_dict(data, ["name"])
+        
+        # Get stocks in watchlist
+        for list_entry in response:
+            name = list_entry.get("name")
+            query = f"""
+            SELECT t.name, q.price
+            FROM ticker t
+            INNER JOIN quote q
+            ON t.id = q.ticker_id
+            WHERE q.is_current
+            AND t.id IN (
+                SELECT DISTINCT ticker_id
+                FROM watchlist_item
+                WHERE trader_id = {user_id}
+                AND watchlist_id IN (
+                    SELECT id FROM watchlist
+                    WHERE name = {db.value_string([name])}
+                )
+            );
+            """
+            data = db.run_select(query)
+            stocks = db.to_dict(data, keys=["ticker", "price"])
+            list_entry["stocks"] = stocks
+        
+        app.logger.debug(response)
         return {"watchlists": response}
+    
     # Request POST
     elif request.method == "POST":
         response = request.get_json()
@@ -283,7 +309,7 @@ def trader_info():
     total_invested = 0
     for asset in assets:
         total_invested += asset.get("price") * asset.get("shares")
-    total_invested = round(total_invested, 2)
+    total_invested = round(float(total_invested), 2)
     total = data_dict.get("cash") + total_invested
     
     # Format and return output dictionary
