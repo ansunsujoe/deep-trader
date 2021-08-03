@@ -8,7 +8,6 @@ import CardContent from '@material-ui/core/CardContent';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import NetWorthChart from './networth';
 import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -99,6 +98,32 @@ export default function Stock() {
                       <Timeseries data={timeseries}/>
                     </CardContent>
                   </Card>
+                  <Card variant="outlined" className="mt-4">
+                    <CardContent>
+                      <Row>
+                        <Col>
+                          <p className={styles.subtitle}>Add to Watchlist</p>
+                          <form noValidate autoComplete="off">
+                            <div>
+                              <InputLabel className="mt-2" id="demo-simple-select-label">Watchlist</InputLabel>
+                              <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={watchlist}
+                                className="mt-2"
+                              >
+                                {watchlists.map((entry) => (
+                                  <MenuItem value={entry}>{entry}</MenuItem>
+                                ))}
+                              </Select>
+                            </div>
+
+                            <Button className="mt-3" color="primary" variant="contained" type="submit">Add</Button>
+                          </form>
+                        </Col>
+                      </Row>
+                    </CardContent>
+                  </Card>
                 </Col>
                 <Col>
                   <Card variant="outlined">
@@ -144,32 +169,6 @@ export default function Stock() {
                         <p>Cash Added: ${currentSell * price}</p>
                         <Button color="secondary" variant="contained" type="submit" disabled={sellDisabled}>Sell</Button>
                       </form>
-                    </CardContent>
-                  </Card>
-                  <Card variant="outlined" className="mt-4">
-                    <CardContent>
-                      <Row>
-                        <Col>
-                          <p className={styles.subtitle}>Add to Watchlist</p>
-                          <form noValidate autoComplete="off">
-                            <div>
-                              <InputLabel className="mt-2" id="demo-simple-select-label">Watchlist</InputLabel>
-                              <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={watchlist}
-                                className="mt-2"
-                              >
-                                {watchlists.map((entry) => (
-                                  <MenuItem value={entry}>{entry}</MenuItem>
-                                ))}
-                              </Select>
-                            </div>
-
-                            <Button className="mt-3" color="primary" variant="contained" type="submit">Add</Button>
-                          </form>
-                        </Col>
-                      </Row>
                     </CardContent>
                   </Card>
                 </Col>
