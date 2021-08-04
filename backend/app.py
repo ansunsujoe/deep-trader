@@ -140,7 +140,6 @@ def activate_ticker():
 @app.route("/tickers/description", methods=["PUT"])
 def edit_description():
     request_data = request.form
-    app.logger.debug("Request form: " + request_data)
     ticker = request_data.get("ticker")
     desc = request_data.get("desc")
     db.run_update(f"UPDATE ticker SET description = {db.value_string([desc])} WHERE name = {db.value_string([ticker])};")
@@ -198,21 +197,32 @@ def watchlist():
         app.logger.debug(f"Inserted group {group_name}")
         return "OK", 200
     
-@app.route("/watchlistItem", methods=["POST"])
+@app.route("/watchlistItem", methods=["POST", "PUT"])
 def watchlist_item():
     # Get user id, and if not the request is unauthorized
     user_id = session.get("userid")
     if user_id is None:
         return "Unauthorized", 401
     
-    request_data = request.get_json()
-    watchlist = request_data.get("watchlist")
-    ticker_id= request_data.get("tickerId")
+    if request.method == "POST":
+        request_data = request.get_json()
+        watchlist = request_data.get("watchlist")
+        ticker_id= request_data.get("tickerId")
 
-    watchlist_id = db.run_select_one(f"SELECT id FROM watchlist WHERE name = {db.value_string([watchlist])}")[0]
-    db.run_insert("watchlist_item", [user_id, watchlist_id, ticker_id])
-    return "Success", 200
+        watchlist_id = db.run_select_one(f"SELECT id FROM watchlist WHERE name = {db.value_string([watchlist])}")[0]
+        db.run_insert("watchlist_item", [user_id, watchlist_id, ticker_id])
+        return "Success", 200
     
+    if request.method == "PUT":
+        request_data = request.get_json()
+        watchlist = request_data.get("watchlist")
+        ticker = request_data.get("ticker")
+        
+        ticker_id = db.run_select_one(f"SELECT id FROM ticker WHERE name = {db.value_string([ticker])}")[0]
+        watchlist_id = db.run_select_one(f"SELECT id FROM watchlist WHERE name = {db.value_string([watchlist])}")[0]
+        
+        db.run_update(f"DELETE FROM watchlist_item WHERE id = {watchlist_id};")
+        return "Success", 200
     
 @app.route("/stock/<id>", methods=["GET", "POST"])
 def stock(id):

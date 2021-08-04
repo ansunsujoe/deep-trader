@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function Groups() {
+  axios.defaults.withCredentials = true;
   const classes = useStyles();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [name, setName] = useState(null);
@@ -53,6 +54,24 @@ export default function Groups() {
     setName(e.target.value);
   }
 
+  function handleListItemDelete(ticker: string, watchlist: string) {
+    const data = {
+      ticker: ticker,
+      watchlist: watchlist,
+    }
+
+    // Make request to insert watchlist
+    axios.put('http://localhost:5001/watchlist', data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(response => {
+      initialize();
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+
   const handleWatchlistSubmit = (e: any) => {
     e.preventDefault();
     const data = {
@@ -60,31 +79,30 @@ export default function Groups() {
     };
 
     // Make request to insert watchlist
-    axios.defaults.withCredentials = true;
     axios.post('http://localhost:5001/watchlist', data, {
       headers: {
         'Content-Type': 'application/json'
       }
     }).then(response => {
       setDialogOpen(false);
-      axios.get('http://localhost:5001/watchlist').then(response => {
-        setData(response.data.watchlists);
-      }).catch(error => {
-        console.log(error);
-      })
+      initialize();
     }).catch(error => {
       console.log(error);
     })
   }
 
-  // When the loading prop changes, get all watchlist items
-  useEffect(() => {
+  function initialize() {
     axios.get('http://localhost:5001/watchlist').then(response => {
       console.log("SUCCESS", response);
       setData(response.data.watchlists);
     }).catch(error => {
       console.log(error);
     });
+  }
+
+  // When the loading prop changes, get all watchlist items
+  useEffect(() => {
+    initialize();
   }, []);
 
   return (
