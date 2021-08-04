@@ -33,6 +33,8 @@ services:
       - database
     ports:
       - "5001:5001"
+    volumes:
+      - ./images:/usr/src/images
     restart: unless-stopped
 
   frontend:

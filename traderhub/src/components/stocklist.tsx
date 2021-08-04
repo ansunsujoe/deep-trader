@@ -92,7 +92,7 @@ export default function StockList() {
             {dialogError ? (
               <p>The ticker does not exist.</p>
             ) : undefined}
-            
+
           </DialogContent>
           <DialogActions>
             <Button onClick={handleDialogClose} color="primary">

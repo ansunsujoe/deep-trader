@@ -82,12 +82,14 @@ export default function TickerTable({ admin }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [tickerDesc, setTickerDesc] = useState("");
   const [editedTicker, setEditedTicker] = useState("");
+  const [imageFile, setImageFile] = useState(null);
 
   // Filter controls
   const [upperPrice, setUpperPrice] = useState(null);
   const [lowerPrice, setLowerPrice] = useState(null);
   const [activeChecked, setActiveChecked] = useState(true);
   const [deletedChecked, setDeletedChecked] = useState(false);
+
 
   axios.defaults.withCredentials = true;
 
@@ -197,6 +199,10 @@ export default function TickerTable({ admin }) {
     }
   }
 
+  const handleImageChange = (e) => {
+    setImageFile(e.target.files[0]);
+  }
+
   function statusMatch(status, active, deleted) {
     var statusBool = false;
     if (status === "Active") {
@@ -237,10 +243,10 @@ export default function TickerTable({ admin }) {
   return (
     <Paper className={classes.root} style={{ border: "none", boxShadow: "none" }}>
       <Dialog open={dialogOpen} onClose={handleDialogClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">New Ticker</DialogTitle>
+        <DialogTitle id="form-dialog-title">Edit Ticker</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Enter a ticker name for a new stock to trade.
+            Enter new details for the stock {editedTicker}.
           </DialogContentText>
           <TextField
             autoFocus
@@ -251,13 +257,22 @@ export default function TickerTable({ admin }) {
             fullWidth
             onChange={handleDescChange}
           />
+          <p>Image</p>
+          <Button
+            variant="contained"
+            component="label"
+            color="primary"
+          >
+            Upload File
+            <input type="file" hidden onChange={handleImageChange} />
+          </Button>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose} color="primary">
             Cancel
           </Button>
           <Button onClick={handleEditSubmit} color="primary">
-            Create
+            Edit
           </Button>
         </DialogActions>
       </Dialog>
@@ -274,7 +289,7 @@ export default function TickerTable({ admin }) {
                 label="Greater Than"
                 type="name"
                 fullWidth
-                // onChange={handleNameChange}
+                onChange={handleUpperChange}
               />
               <TextField
                 autoFocus
@@ -283,18 +298,18 @@ export default function TickerTable({ admin }) {
                 label="Less Than"
                 type="name"
                 fullWidth
-                // onChange={handleNameChange}
+                onChange={handleLowerChange}
               />
             </Col>
             <Col>
               <p>Status</p>
               <FormGroup row>
                 <FormControlLabel
-                  control={<Checkbox checked={activeChecked} name="Active" color="primary" />}
+                  control={<Checkbox checked={activeChecked} name="Active" color="primary" onChange={handleActiveChecked} />}
                   label="Active"
                 />
                 <FormControlLabel
-                  control={<Checkbox checked={deletedChecked} name="Deleted" color="primary" />}
+                  control={<Checkbox checked={deletedChecked} name="Deleted" color="primary" onChange={handleDeletedChecked} />}
                   label="Deleted"
                 />
               </FormGroup>
