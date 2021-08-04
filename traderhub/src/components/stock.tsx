@@ -168,19 +168,26 @@ export default function Stock() {
 
                 </CardContent>
               </Card>
-              <Row>
-                {description.length > 0 ? (
-                  <Col>
-                    <p className={styles.subtitle}>About</p>
-                    <p>{description}</p>
-                  </Col>
-                ) : undefined}
-                {imageValid ? (
-                  <Col>
-                    <img src={"/usr/src/images/" + ticker} alt={ticker} className={stockstyles.stockimage} />
-                  </Col>
-                ) : undefined}
-              </Row>
+
+              <Card style={{ border: "none", boxShadow: "none" }}>
+                <CardContent>
+                  <Row>
+                    {description.length > 0 ? (
+                      <Col>
+                        <p className={styles.subtitle}>About</p>
+                        <p>{description}</p>
+                      </Col>
+                    ) : undefined}
+                    {imageValid ? (
+                      <Col>
+                        <img src={"/usr/src/images/" + ticker} alt={ticker} className={stockstyles.stockimage} />
+                      </Col>
+                    ) : undefined}
+                  </Row>
+                </CardContent>
+              </Card>
+
+
               <Row>
                 <Col>
                   <Card variant="outlined" style={{ border: "none", boxShadow: "none" }}>

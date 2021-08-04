@@ -109,10 +109,12 @@ export default function StockList() {
               id="name"
               label="Description"
               type="name"
+              className="mt-2"
               fullWidth
               onChange={handleDescChange}
             />
             <Button
+              className="mt-2"
               variant="contained"
               component="label"
               color="primary"
