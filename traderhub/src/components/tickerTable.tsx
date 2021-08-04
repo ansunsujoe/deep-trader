@@ -10,6 +10,12 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import SearchBar from "material-ui-search-bar";
 import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from '@material-ui/core/TextField';
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
@@ -65,6 +71,9 @@ export default function TickerTable({ admin }) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [originalRows, setOriginalRows] = useState<Ticker[]>([]);
   const [rows, setRows] = useState<Ticker[]>([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [tickerDesc, setTickerDesc] = useState("");
+  const [editedTicker, setEditedTicker] = useState("");
   axios.defaults.withCredentials = true;
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -92,7 +101,6 @@ export default function TickerTable({ admin }) {
   }
 
   const handleStatusClick = (ticker: string, status: string) => {
-    var url = "";
     const data = {
       ticker: ticker,
       status: status
@@ -122,6 +130,37 @@ export default function TickerTable({ admin }) {
     requestSearch(searched);
   };
 
+  const handleDialogOpen = (name) => {
+    setEditedTicker(name);
+    setDialogOpen(true);
+  }
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  }
+
+  const handleDescChange = (e) => {
+    setTickerDesc(e.target.value);
+  }
+
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    const data = {
+      ticker: editedTicker,
+      desc: tickerDesc
+    }
+    axios.put('http://localhost:5001/tickers/description', data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(response => {
+      console.log("SUCCESS", response);
+      initialize();
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+
   function initialize() {
     axios.get('http://localhost:5001/tickers').then(response => {
       console.log("SUCCESS", response);
@@ -138,6 +177,31 @@ export default function TickerTable({ admin }) {
 
   return (
     <Paper className={classes.root}>
+      <Dialog open={dialogOpen} onClose={handleDialogClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">New Ticker</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Enter a ticker name for a new stock to trade.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Description"
+            type="name"
+            fullWidth
+            onChange={handleDescChange}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleEditSubmit} color="primary">
+            Create
+          </Button>
+        </DialogActions>
+      </Dialog>
       <SearchBar
         value={searched}
         onChange={(searchVal) => requestSearch(searchVal)}
@@ -182,7 +246,7 @@ export default function TickerTable({ admin }) {
                   })}
                   {admin ? (
                     <TableCell>
-                      <Button variant="contained" color="primary">Edit</Button>
+                      <Button variant="contained" color="primary" onClick={() => handleDialogOpen(row.name)}>Edit</Button>
                     </TableCell>
                   ) : undefined}
                   {admin ? (

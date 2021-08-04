@@ -88,7 +88,7 @@ def logout():
 def tickers():
     if request.method == "GET":
         query = f"""
-        SELECT t.name, q.price, t.is_active
+        SELECT t.name, q.price, t.is_active. t.description
         FROM quote q 
         INNER JOIN ticker t
         ON q.ticker_id = t.id
@@ -96,7 +96,7 @@ def tickers():
         """
         data = db.run_select(query)
         app.logger.debug(data)
-        response = db.to_dict(data, ["name", "price", "status"])
+        response = db.to_dict(data, ["name", "price", "status", "desc"])
         return {"stocks": response}
     
     if request.method == "POST":
@@ -137,6 +137,14 @@ def activate_ticker():
     db.run_update(query)
     return "Success", 200
 
+@app.route("/tickers/description", methods=["PUT"])
+def edit_description():
+    request_data = request.get_json()
+    ticker = request_data.get("ticker")
+    desc = request_data.get("desc")
+    db.run_update(f"UPDATE ticker SET description = {db.value_string([desc])} WHERE name = {db.value_string([ticker])};")
+    return "Success", 200
+    
 
 @app.route("/watchlist", methods=["GET", "POST"])
 def watchlist():
