@@ -100,10 +100,19 @@ def tickers():
         return {"stocks": response}
     
     if request.method == "POST":
-        request_data = request.get_json()
+        request_data = request.form
         ticker = request_data.get("ticker")
+        desc = request_data.get("desc")
+        file = request.files.get("image")
+        
         try:
-            db.add_stock_data(ticker)
+            ticker_id = db.add_stock_data(ticker)
+            if not desc:
+                desc = ""
+            db.run_update(f"UPDATE ticker set description = {db.value_string([desc])} WHERE id = {ticker_id}")
+            if file:
+                file.save(f"/usr/src/images/{ticker}.jpg")
+                db.run_update(f"UPDATE ticker SET image_valid = TRUE WHERE id = {ticker_id};")
         except Exception:
             return "Invalid Ticker Name", 400
         return "Success", 200
@@ -144,9 +153,11 @@ def edit_description():
     desc = request_data.get("desc")
     db.run_update(f"UPDATE ticker SET description = {db.value_string([desc])} WHERE name = {db.value_string([ticker])};")
     
-    file = request.files["image"]
+    # Get image if it exists
+    file = request.files.get("image")
     if file:
-        file.save("/usr/src/images/stock.jpg")
+        file.save(f"/usr/src/images/{ticker}.jpg")
+        db.run_update(f"UPDATE ticker SET image_valid = TRUE WHERE name = {db.value_string([ticker])};")
         
     return "Success", 200
     
@@ -227,7 +238,9 @@ def watchlist_item():
 @app.route("/stock/<id>", methods=["GET", "POST"])
 def stock(id):
     if request.method == "GET":
-        ticker, is_active = db.run_select_one(f"SELECT name, is_active FROM ticker WHERE id = {id};")
+        ticker, is_active, desc = db.run_select_one(f"SELECT name, is_active, description FROM ticker WHERE id = {id};")
+        if desc is None:
+            desc = ""
         
         # Price of ticker
         query = f"""
@@ -286,6 +299,7 @@ def stock(id):
         stock_info = {
             "ticker": ticker,
             "isActive": is_active,
+            "desc": desc,
             "price": price,
             "cash": cash,
             "watchlists": watchlists,

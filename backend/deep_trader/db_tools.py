@@ -156,6 +156,7 @@ class Database():
             price = quote.get("price")
             self.run_insert("quote", [ticker_id, time, price, is_current])
             is_current = False
+        return ticker_id
                     
     def is_empty(self, table):
         if len(self.select_all(table)) == 0:

@@ -23,6 +23,8 @@ export default function StockList() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [newStock, setNewStock] = useState(null);
   const [dialogError, setDialogError] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+  const [tickerDesc, setTickerDesc] = useState("");
 
   axios.defaults.withCredentials = true;
   useEffect(() => {
@@ -45,23 +47,32 @@ export default function StockList() {
     setNewStock(e.target.value);
   }
 
+  const handleDescChange = (e) => {
+    setTickerDesc(e.target.value);
+  }
+
+  const handleImageChange = (e) => {
+    setImageFile(e.target.files[0]);
+  }
+
   const handleNewStockSubmit = (e: any) => {
     e.preventDefault();
-    const data = {
-      ticker: newStock
-    };
+    let formdata = new FormData();
+    formdata.append('image', imageFile);
+    formdata.append('ticker', newStock);
+    formdata.append('desc', tickerDesc);
 
     // Make request to insert watchlist
     axios.defaults.withCredentials = true;
-    axios.post('http://localhost:5001/tickers', data, {
+    axios.post('http://localhost:5001/tickers', formdata, {
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'multipart/form-data'
       }
     }).then(response => {
       if (response.status === 200) {
         history.push("/dashboard");
       }
-      else if (response.status === 400) {
+      else {
         setDialogError(true);
       }
     }).catch(error => {
@@ -92,6 +103,23 @@ export default function StockList() {
             {dialogError ? (
               <p>The ticker does not exist.</p>
             ) : undefined}
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Description"
+              type="name"
+              fullWidth
+              onChange={handleDescChange}
+            />
+            <Button
+              variant="contained"
+              component="label"
+              color="primary"
+            >
+              Upload Image
+              <input type="file" hidden onChange={handleImageChange} />
+            </Button>
 
           </DialogContent>
           <DialogActions>

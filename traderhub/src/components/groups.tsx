@@ -169,7 +169,7 @@ export default function Groups() {
                                   <h4 className={styles.price}>${stock.price}</h4>
                                 </Col>
                                 <Col xs={4}>
-                                  <Button color="secondary" variant="contained" className={styles.watchlistCenter}>Delete</Button>
+                                  <Button color="secondary" variant="contained" className={styles.watchlistCenter} onClick={() => handleListItemDelete(stock.ticker, entry.name)}>Delete</Button>
                                 </Col>
                               </Row>
                             </Container>
@@ -180,7 +180,6 @@ export default function Groups() {
                   </AccordionDetails>
                   <Divider />
                   <AccordionActions>
-                    <Button size="small">Edit Image</Button>
                     <Button size="small" color="secondary">
                       Delete
                     </Button>

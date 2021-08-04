@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS ticker (
     name VARCHAR(10) UNIQUE NOT NULL,
     is_active BOOLEAN NOT NULL,
     description TEXT,
-    image_path VARCHAR(255)
+    image_exists BOOLEAN DEFAULT FALSE
 );
 
 -- For a single stock price
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS watchlist (
 CREATE TABLE IF NOT EXISTS watchlist_item (
     id SERIAL PRIMARY KEY,
     trader_id INT NOT NULL REFERENCES trader(id),
-    watchlist_id INT NOT NULL REFERENCES watchlist(id),
+    watchlist_id INT NOT NULL REFERENCES watchlist(id) ON DELETE CASCADE ON UPDATE CASCADE,
     ticker_id INT NOT NULL REFERENCES ticker(id)
 );
 
