@@ -62,43 +62,49 @@ export default function Signup() {
 
   function handleNameChange(e) {
     setName(e.target.value);
-    if (name.length === 0) {
+    if (e.target.value.length === 0) {
       setDisabled(true);
       setNameError(true);
     }
     else {
       setNameError(false);
-      checkEnableSubmit();
+      if (!usernameError && !passwordError) {
+        setDisabled(false);
+      }
     }
   }
 
   function handleUsernameChange(e) {
     setUsername(e.target.value);
-    if (username.length === 0) {
+    if (e.target.value.length === 0) {
       setDisabled(true);
       setUsernameErrText("Username must not be empty.");
       setUsernameError(true);
     }
     else {
       setUsernameError(false);
-      checkEnableSubmit();
+      if (!nameError && !passwordError) {
+        setDisabled(false);
+      }
     }
   }
 
   function handlePasswordChange(e) {
     setPassword(e.target.value);
-    if (password.length < 8 || !(/\d/.test(password)) || (!/[^a-zA-Z0-9]/.test(password))) {
+    if (e.target.value.length < 8 || !(/\d/.test(e.target.value)) || (!/[^a-zA-Z0-9]/.test(e.target.value))) {
       setDisabled(true);
       setPasswordError(true);
     }
     else {
       setPasswordError(false);
-      checkEnableSubmit();
+      if (!nameError && !usernameError) {
+        setDisabled(false);
+      }
     }
   }
 
   function checkEnableSubmit() {
-    if (nameError === false && usernameError === false && passwordError === false) {
+    if (!nameError && !usernameError && !passwordError) {
       setDisabled(false);
     }
     else {

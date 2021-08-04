@@ -180,7 +180,7 @@ export default function Stock() {
                     ) : undefined}
                     {imageValid ? (
                       <Col>
-                        <img src={"/usr/src/images/" + ticker} alt={ticker} className={stockstyles.stockimage} />
+                        <img src={"file:///usr/src/images/" + ticker} alt={ticker} className={stockstyles.stockimage} />
                       </Col>
                     ) : undefined}
                   </Row>
