@@ -138,39 +138,27 @@ export default function Groups() {
                     <Typography className={classes.heading}>{entry.name}</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Row>
-                      <Col xs={4}>
-                        <Typography>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                          sit amet blandit leo lobortis eget.
-                        </Typography>
+                    {entry.stocks.map((stock) => (
+                      <Col md={4} xs={6}>
+                        <Card className="m-2">
+                          <CardContent>
+                            <Container fluid className="p-2">
+                              <Row>
+                                <Col xs={4} className="p-0">
+                                  <h4 className={styles.watchlistStock}>{stock.ticker}</h4>
+                                </Col>
+                                <Col xs={4}>
+                                  <h4 className={styles.price}>${stock.price}</h4>
+                                </Col>
+                                <Col xs={4}>
+                                  <Button color="secondary" variant="contained" className={styles.watchlistCenter}>Delete</Button>
+                                </Col>
+                              </Row>
+                            </Container>
+                          </CardContent>
+                        </Card>
                       </Col>
-                      <Col xs={8}>
-                        <Row>
-                          {entry.stocks.map((stock) => (
-                            <Col xs={6}>
-                              <Card>
-                                <CardContent>
-                                  <Container fluid className="p-1">
-                                    <Row>
-                                      <Col xs={5} className="p-0">
-                                        <h4 className={styles.watchlistStock}>{stock.ticker}</h4>
-                                      </Col>
-                                      <Col xs={5}>
-                                        <h4 className={styles.price}>${stock.price}</h4>
-                                      </Col>
-                                      <Col xs={2}>
-                                        <Button color="secondary" variant="contained" size="small" className={styles.watchlistCenter}>X</Button>
-                                      </Col>
-                                    </Row>
-                                  </Container>
-                                </CardContent>
-                              </Card>
-                            </Col>
-                          ))}
-                        </Row>
-                      </Col>
-                    </Row>
+                    ))}
                   </AccordionDetails>
                   <Divider />
                   <AccordionActions>

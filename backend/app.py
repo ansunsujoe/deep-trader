@@ -252,7 +252,7 @@ def stock(id):
         LIMIT 15;
         """
         timeseries = db.run_select(query)
-        timeseries = [float(t[0]) for t in timeseries]
+        timeseries = [float(t[0]) for t in timeseries][::-1]
         
         # Assets of the user in a specific stock
         query = f"""
