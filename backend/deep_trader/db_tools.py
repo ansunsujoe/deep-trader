@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 table_names = {
     "trader": "trader(id, name, username, password, cash, admin)",
-    "ticker": "ticker(id, name)",
+    "ticker": "ticker(id, name, is_active)",
     "quote": "quote(id, ticker_id, time, price, is_current)",
     "transaction": "transaction(id, trader_id, ticker_id, action, price, shares, time)",
     "watchlist": "watchlist(id, trader_id, name)",
@@ -145,18 +145,11 @@ class Database():
         with open(ticker_fp, "r") as f:
             tickers = f.read().split("\n")
             for ticker in tickers:
-                ticker_data = md.read_intraday(ticker)
-                ticker_id = self.run_insert("ticker", data=[ticker])
-                is_current = True
-                for quote in ticker_data:
-                    time = quote.get("time")
-                    price = quote.get("price")
-                    self.run_insert("quote", [ticker_id, time, price, is_current])
-                    is_current = False
+                self.add_stock_data(ticker)
     
     def add_stock_data(self, ticker):
         ticker_data = md.read_intraday(ticker)
-        ticker_id = self.run_insert("ticker", data=[ticker])
+        ticker_id = self.run_insert("ticker", data=[ticker, True])
         is_current = True
         for quote in ticker_data:
             time = quote.get("time")

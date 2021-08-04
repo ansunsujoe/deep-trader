@@ -84,11 +84,11 @@ def logout():
     return {"userid": userid, "admin": session.get("admin")}
 
 # Tickers
-@app.route("/tickers", methods=["GET", "POST"])
+@app.route("/tickers", methods=["GET", "POST", "DELETE"])
 def tickers():
     if request.method == "GET":
         query = f"""
-        SELECT t.name, q.price 
+        SELECT t.name, q.price, t.is_active
         FROM quote q 
         INNER JOIN ticker t
         ON q.ticker_id = t.id
@@ -96,8 +96,44 @@ def tickers():
         """
         data = db.run_select(query)
         app.logger.debug(data)
-        response = db.to_dict(data, ["name", "price"])
+        response = db.to_dict(data, ["name", "price", "status"])
         return {"stocks": response}
+    
+    if request.method == "POST":
+        request_data = request.get_json()
+        ticker = request_data.get("ticker")
+        db.add_stock_data(ticker)
+        return "Success", 200
+    
+    if request.method == "DELETE":
+        request_data = request.get_json()
+        ticker = request_data.get("ticker")
+        query = f"""
+        UPDATE ticker
+        SET is_active = FALSE
+        WHERE name = {db.value_string([ticker])};
+        """
+        db.run_update(query)
+        return "Success", 200
+    
+# Ticker status
+@app.route("/tickers/status", methods=["PUT"])
+def activate_ticker():
+    request_data = request.get_json()
+    ticker = request_data.get("ticker")
+    status = request_data.get("status")
+    if status == "Deleted":
+        bool_value = "TRUE"
+    else:
+        bool_value = "FALSE"
+    query = f"""
+    UPDATE ticker
+    SET is_active = {bool_value}
+    WHERE name = {db.value_string([ticker])};
+    """
+    db.run_update(query)
+    return "Success", 200
+
 
 @app.route("/watchlist", methods=["GET", "POST"])
 def watchlist():

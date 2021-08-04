@@ -14,7 +14,7 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 
 interface Column {
-  id: 'name' | 'price';
+  id: 'name' | 'price' | 'status';
   label: string;
   minWidth?: number;
   align?: 'right';
@@ -28,16 +28,23 @@ const columns: Column[] = [
     label: 'Price',
     minWidth: 100,
     format: (value: number) => value.toFixed(2)
+  },
+  {
+    id: 'status',
+    label: 'Status',
+    minWidth: 100
   }
 ];
 
 interface Ticker {
   name: string;
   price: number;
+  status: string;
 }
 
-function createData(name: string, price: number): Ticker {
-  return { name, price };
+function createData(name: string, price: number, statusBool: boolean): Ticker {
+  var status = statusBool ? "Active" : "Deleted"
+  return { name, price, status };
 }
 
 const useStyles = makeStyles({
@@ -84,6 +91,24 @@ export default function TickerTable({ admin }) {
     })
   }
 
+  const handleStatusClick = (ticker: string, status: string) => {
+    var url = "";
+    const data = {
+      ticker: ticker,
+      status: status
+    };
+    
+    axios.put('http://localhost:5001/tickers/status', data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(response => {
+      console.log("SUCCESS", response);
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+
   const requestSearch = (searchedVal: string) => {
     const filteredRows = originalRows.filter((row) => {
       return row.name.toLowerCase().includes(searchedVal.toLowerCase());
@@ -99,8 +124,8 @@ export default function TickerTable({ admin }) {
   useEffect(() => {
     axios.get('http://localhost:5001/tickers').then(response => {
       console.log("SUCCESS", response);
-      setOriginalRows(response.data.stocks.map((entry: any) => createData(entry.name, entry.price)));
-      setRows(response.data.stocks);
+      setOriginalRows(response.data.stocks.map((entry: any) => createData(entry.name, entry.price, entry.status)));
+      setRows(response.data.stocks.map((entry: any) => createData(entry.name, entry.price, entry.status)));
     }).catch(error => {
       console.log(error);
     })
@@ -126,6 +151,16 @@ export default function TickerTable({ admin }) {
                   {column.label}
                 </TableCell>
               ))}
+              {admin ? (
+                <TableCell>
+                  Edit
+                </TableCell>
+              ) : undefined}
+              {admin ? (
+                <TableCell>
+                  Delete
+                </TableCell>
+              ) : undefined}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -147,7 +182,13 @@ export default function TickerTable({ admin }) {
                   ) : undefined}
                   {admin ? (
                     <TableCell>
-                      <Button variant="contained" color="secondary">Delete</Button>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => handleStatusClick(row.name, row.status)}
+                      >
+                        {"Delete" ? row.status === "Active" : "Activate"}
+                      </Button>
                     </TableCell>
                   ) : undefined}
                 </TableRow>

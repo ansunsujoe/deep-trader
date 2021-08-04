@@ -14,7 +14,10 @@ CREATE TABLE IF NOT EXISTS trader (
 -- For a single ticker
 CREATE TABLE IF NOT EXISTS ticker (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(10) NOT NULL
+    name VARCHAR(10) UNIQUE NOT NULL,
+    is_active BOOLEAN NOT NULL,
+    description TEXT,
+    image_path VARCHAR(255)
 );
 
 -- For a single stock price
