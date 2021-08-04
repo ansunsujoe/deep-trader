@@ -10,6 +10,11 @@ import Col from 'react-bootstrap/Col';
 import Divider from '@material-ui/core/Divider';
 import AccordionActions from '@material-ui/core/AccordionActions';
 import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Container from 'react-bootstrap/Container';
+import styles from '../styles/dashboard.module.css';
+
 import axios from 'axios';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -52,13 +57,35 @@ export default function GroupList(props) {
           <AccordionDetails>
             <Row>
               <Col xs={4}>
-                <p>Image</p>
-              </Col>
-              <Col xs={8}>
                 <Typography>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
                   sit amet blandit leo lobortis eget.
                 </Typography>
+              </Col>
+              <Col xs={8}>
+                <Row>
+                  {entry.stocks.map((stock) => (
+                    <Col md={4} xs={6}>
+                      <Card>
+                        <CardContent>
+                          <Container fluid>
+                            <Row>
+                              <Col className="p-0">
+                                <h4 className="m-0">{stock.ticker}</h4>
+                              </Col>
+                              <Col>
+                                <h4 className={styles.price}>${stock.price}</h4>
+                              </Col>
+                              <Col>
+                                <Button color="secondary">X</Button>
+                              </Col>
+                            </Row>
+                          </Container>
+                        </CardContent>
+                      </Card>
+                    </Col>
+                  ))}
+                </Row>
               </Col>
             </Row>
           </AccordionDetails>
