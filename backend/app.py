@@ -143,6 +143,11 @@ def edit_description():
     ticker = request_data.get("ticker")
     desc = request_data.get("desc")
     db.run_update(f"UPDATE ticker SET description = {db.value_string([desc])} WHERE name = {db.value_string([ticker])};")
+    
+    file = request.files["image"]
+    if file:
+        file.save("/usr/src/images/stock.jpg")
+        
     return "Success", 200
     
 
