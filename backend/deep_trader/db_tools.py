@@ -167,7 +167,7 @@ class Database():
                 val = entry[i]
                 if isinstance(val, Decimal):
                     dictionary[keys[i]] = float(val)
-                if isinstance(val, datetime):
+                elif isinstance(val, datetime):
                     dictionary[keys[i]] = str(val)
                 else:
                     dictionary[keys[i]] = val

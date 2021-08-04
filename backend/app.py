@@ -302,8 +302,8 @@ def trader_info():
         WHERE a.trader_id = {user_id}
         AND q.is_current;
         """
-    assets = db.run_select(asset_query)
-    assets = db.to_dict(assets, keys=["ticker", "price", "shares"])
+    results = db.run_select(asset_query)
+    assets = db.to_dict(results, keys=["ticker", "price", "shares"])
     
     # Perform calculation on assets
     total_invested = 0
