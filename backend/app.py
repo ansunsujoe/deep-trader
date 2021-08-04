@@ -112,7 +112,7 @@ def tickers():
             db.run_update(f"UPDATE ticker set description = {db.value_string([desc])} WHERE id = {ticker_id}")
             if file:
                 file.save(f"/usr/src/images/{ticker}.jpg")
-                db.run_update(f"UPDATE ticker SET image_valid = TRUE WHERE id = {ticker_id};")
+                db.run_update(f"UPDATE ticker SET image_exists = TRUE WHERE id = {ticker_id};")
         except Exception:
             return "Invalid Ticker Name", 400
         return "Success", 200
