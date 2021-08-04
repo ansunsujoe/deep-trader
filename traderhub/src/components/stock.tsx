@@ -16,7 +16,7 @@ import Timeseries from './timeseries';
 import { Badge } from 'react-bootstrap';
 import axios from 'axios';
 import { useParams, useHistory } from "react-router-dom";
-import {getDate} from '../modules/getDate';
+import { getDate } from '../modules/getDate';
 
 export default function Stock() {
   axios.defaults.withCredentials = true;
@@ -34,6 +34,7 @@ export default function Stock() {
   const [currentBuy, setCurrentBuy] = useState(0);
   const [currentSell, setCurrentSell] = useState(0);
   const [isActive, setIsActive] = useState(true);
+  const [description, setDescription] = useState("");
 
   type StockParams = {
     id: string;
@@ -60,12 +61,12 @@ export default function Stock() {
       setSellDisabled(false);
     }
   }
-  
+
   const handleWatchlistChange = (e) => {
     setWatchlist(e.target.value);
   }
 
-  const handleWatchlistSubmit = (e :any) => {
+  const handleWatchlistSubmit = (e: any) => {
     e.preventDefault();
     const data = {
       tickerId: id,
@@ -100,7 +101,7 @@ export default function Stock() {
     })
   }
 
-  const handleBuySubmit = (e :any) => {
+  const handleBuySubmit = (e: any) => {
     e.preventDefault();
     const data = {
       tickerId: id,
@@ -133,6 +134,7 @@ export default function Stock() {
       setWatchlists(response.data.watchlists);
       setTimeseries(response.data.timeseries);
       setShares(response.data.shares);
+      setDescription(response.data.desc);
     }).catch(error => {
       console.log(error);
     })
@@ -153,7 +155,7 @@ export default function Stock() {
                 <CardContent>
                   <Row>
                     <Col>
-                      <h1>{ticker} <Badge color="success">New</Badge></h1>
+                      <h1>{ticker} <Badge color="primary">New</Badge></h1>
                       <p className={styles.date}>{getDate()}</p>
                     </Col>
                     <Col className={styles.rightprice}>
@@ -165,10 +167,18 @@ export default function Stock() {
                 </CardContent>
               </Card>
               <Row>
+                {description.length > 0 ? (
+                  <Col>
+                    <p className={styles.subtitle}>About</p>
+                    <p>{description}</p>
+                  </Col>
+                ) : undefined}
+              </Row>
+              <Row>
                 <Col>
                   <Card variant="outlined" style={{ border: "none", boxShadow: "none" }}>
                     <CardContent>
-                      <Timeseries data={timeseries}/>
+                      <Timeseries data={timeseries} />
                     </CardContent>
                   </Card>
                   <Card variant="outlined" className="mt-4">
