@@ -157,7 +157,7 @@ def edit_description():
     file = request.files.get("image")
     if file:
         file.save(f"/usr/src/images/{ticker}.jpg")
-        db.run_update(f"UPDATE ticker SET image_valid = TRUE WHERE name = {db.value_string([ticker])};")
+        db.run_update(f"UPDATE ticker SET image_exists = TRUE WHERE name = {db.value_string([ticker])};")
         
     return "Success", 200
     

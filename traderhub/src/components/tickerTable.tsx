@@ -260,12 +260,14 @@ export default function TickerTable({ admin }) {
             id="name"
             label="Description"
             type="name"
+            className="mt-2"
             fullWidth
             onChange={handleDescChange}
           />
           <Button
             variant="contained"
             component="label"
+            className="mt-2"
             color="primary"
           >
             Upload Image
