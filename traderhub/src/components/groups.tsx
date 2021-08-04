@@ -140,13 +140,35 @@ export default function Groups() {
                   <AccordionDetails>
                     <Row>
                       <Col xs={4}>
-                        <p>Image</p>
-                      </Col>
-                      <Col xs={8}>
                         <Typography>
                           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
                           sit amet blandit leo lobortis eget.
                         </Typography>
+                      </Col>
+                      <Col xs={8}>
+                        <Row>
+                          {entry.stocks.map((stock) => (
+                            <Col md={4} xs={6}>
+                              <Card>
+                                <CardContent>
+                                  <Container fluid>
+                                    <Row>
+                                      <Col xs={5} className="p-0">
+                                        <h4 className="m-0">{stock.ticker}</h4>
+                                      </Col>
+                                      <Col xs={5}>
+                                        <h4 className={styles.price}>${stock.price}</h4>
+                                      </Col>
+                                      <Col xs={2}>
+                                        <Button color="secondary">X</Button>
+                                      </Col>
+                                    </Row>
+                                  </Container>
+                                </CardContent>
+                              </Card>
+                            </Col>
+                          ))}
+                        </Row>
                       </Col>
                     </Row>
                   </AccordionDetails>

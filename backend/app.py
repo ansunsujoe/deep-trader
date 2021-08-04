@@ -204,7 +204,7 @@ def watchlist_item():
     ticker_id= request_data.get("tickerId")
 
     watchlist_id = db.run_select_one(f"SELECT id FROM watchlist WHERE name = {db.value_string([watchlist])}")[0]
-    db.run_insert("watchlist_item", [user_id, ticker_id, watchlist_id])
+    db.run_insert("watchlist_item", [user_id, watchlist_id, ticker_id])
     return "Success", 200
     
     
