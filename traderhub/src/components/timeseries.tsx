@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 
-export default function Timeseries(props) {
+export default function Timeseries({data}) {
 
   return (
     <div>
       <Line
         data={{
           labels: [
-            Array(props.data.length).fill('')
+            Array(data.length).fill('')
           ],
           datasets: [{
             label: 'Timeseries',
-            data: props.data,
+            data: data,
             borderColor: '#11c26f',
             hoverOffset: 4
           }]
