@@ -9,6 +9,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import NetWorthChart from './networth';
 import InvestedChart from './investedchart';
+import {getDate} from '../modules/getDate';
 
 interface Asset {
   ticker: string;
@@ -22,11 +23,6 @@ export default function Dashboard() {
   const [cash, setCash] = useState(0);
   const [invested, setInvested] = useState(0);
   const [assets, setAssets] = useState<Asset[]>([]);
-
-  function getDate() {
-    var today = new Date();
-    return today.getMonth() + " " + today.getDay() + ", " + today.getFullYear();
-  }
 
   axios.defaults.withCredentials = true;
   useEffect(() => {

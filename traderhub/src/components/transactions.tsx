@@ -7,13 +7,9 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import TransactionTable from './transactionTable';
+import {getDate} from '../modules/getDate';
 
 export default function Transactions() {
-
-  function getDate() {
-    var today = new Date();
-    return today.getMonth() + " " + today.getDay() + ", " + today.getFullYear();
-  }
 
   return (
     <div>

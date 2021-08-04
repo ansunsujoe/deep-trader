@@ -320,6 +320,7 @@ def trader_info():
         "invested": total_invested,
         "assets": assets
     }
+    app.logger.debug(trader_info)
     return trader_info
 
 @app.route("/stockid", methods=["GET"])

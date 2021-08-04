@@ -15,6 +15,7 @@ import Select from '@material-ui/core/Select';
 import Timeseries from './timeseries';
 import axios from 'axios';
 import { useParams, useHistory } from "react-router-dom";
+import {getDate} from '../modules/getDate';
 
 export default function Stock() {
   axios.defaults.withCredentials = true;
@@ -56,11 +57,6 @@ export default function Stock() {
     else {
       setSellDisabled(false);
     }
-  }
-
-  function getDate() {
-    var today = new Date();
-    return today.getMonth() + " " + today.getDay() + ", " + today.getFullYear();
   }
 
   function modifyAsset(data) {
