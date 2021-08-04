@@ -238,7 +238,7 @@ def watchlist_item():
 @app.route("/stock/<id>", methods=["GET", "POST"])
 def stock(id):
     if request.method == "GET":
-        ticker, is_active, desc = db.run_select_one(f"SELECT name, is_active, description FROM ticker WHERE id = {id};")
+        ticker, is_active, desc, image_valid = db.run_select_one(f"SELECT name, is_active, description, image_valid FROM ticker WHERE id = {id};")
         if desc is None:
             desc = ""
         
@@ -300,6 +300,7 @@ def stock(id):
             "ticker": ticker,
             "isActive": is_active,
             "desc": desc,
+            "imageValid": image_valid,
             "price": price,
             "cash": cash,
             "watchlists": watchlists,

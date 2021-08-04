@@ -35,6 +35,7 @@ export default function Stock() {
   const [currentSell, setCurrentSell] = useState(0);
   const [isActive, setIsActive] = useState(true);
   const [description, setDescription] = useState("");
+  const [imageValid, setImageValid] = useState(false);
 
   type StockParams = {
     id: string;
@@ -135,6 +136,7 @@ export default function Stock() {
       setTimeseries(response.data.timeseries);
       setShares(response.data.shares);
       setDescription(response.data.desc);
+      setImageValid(response.data.imageValid);
     }).catch(error => {
       console.log(error);
     })
@@ -171,6 +173,11 @@ export default function Stock() {
                   <Col>
                     <p className={styles.subtitle}>About</p>
                     <p>{description}</p>
+                  </Col>
+                ) : undefined}
+                {imageValid ? (
+                  <Col>
+                    <img src={"/usr/src/images/" + ticker} alt={ticker} className={stockstyles.stockimage} />
                   </Col>
                 ) : undefined}
               </Row>
