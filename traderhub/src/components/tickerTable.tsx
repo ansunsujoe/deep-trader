@@ -85,8 +85,8 @@ export default function TickerTable({ admin }) {
   const [imageFile, setImageFile] = useState(null);
 
   // Filter controls
-  const [upperPrice, setUpperPrice] = useState(0);
-  const [lowerPrice, setLowerPrice] = useState(10000);
+  const [upperPrice, setUpperPrice] = useState(10000);
+  const [lowerPrice, setLowerPrice] = useState(0);
   const [activeChecked, setActiveChecked] = useState(true);
   const [deletedChecked, setDeletedChecked] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -187,31 +187,27 @@ export default function TickerTable({ admin }) {
 
   const handleActiveChecked = (e) => {
     setActiveChecked(e.target.checked);
-    console.log("Active is " + activeChecked)
   }
 
   const handleDeletedChecked = (e) => {
     setDeletedChecked(e.target.checked);
-    console.log("Active is " + deletedChecked)
   }
 
   const handleUpperChange = (e) => {
     if (!isNaN(+e.target.value)) {
       setUpperPrice(+e.target.value);
-      console.log(upperPrice);
     }
   }
 
   const handleLowerChange = (e) => {
     if (!isNaN(+e.target.value)) {
       setLowerPrice(+e.target.value);
-      console.log(lowerPrice);
     }
   }
 
-  const handleSearchValueChange = (e) => {
-    setSearchValue(e.target.value.toLowerCase());
-  }
+  // const handleSearchValueChange = (e) => {
+  //   setSearchValue(e.target.value.toLowerCase());
+  // }
 
   const handleImageChange = (e) => {
     setImageFile(e.target.files[0]);
@@ -235,8 +231,6 @@ export default function TickerTable({ admin }) {
 
   useEffect(() => {
     const filteredRows = originalRows.filter((row) => {
-      console.log(upperPrice);
-      console.log(lowerPrice);
       return row.price > lowerPrice && row.price < upperPrice && statusMatch(row.status, activeChecked, deletedChecked) && row.name.toLowerCase().includes(searchValue);
     });
     setRows(filteredRows);
@@ -339,7 +333,7 @@ export default function TickerTable({ admin }) {
       /> */}
       <SearchBar
         value={searched}
-        onChange={handleSearchValueChange}
+        onChange={(searchVal) => setSearchValue(searchVal.toLowerCase())}
         onCancelSearch={() => cancelSearch()}
       />
       <TableContainer className={classes.container}>

@@ -139,7 +139,8 @@ def activate_ticker():
 
 @app.route("/tickers/description", methods=["PUT"])
 def edit_description():
-    request_data = request.get_json()
+    request_data = request.form
+    app.logger.debug("Request form: " + request_data)
     ticker = request_data.get("ticker")
     desc = request_data.get("desc")
     db.run_update(f"UPDATE ticker SET description = {db.value_string([desc])} WHERE name = {db.value_string([ticker])};")
