@@ -421,8 +421,8 @@ def get_buy_transactions():
     ORDER BY tr.time DESC;
     """
     data = db.run_select(query)
-    transactions = db.to_dict(data, ["time", "name", "action", "shares", "price"])
-    print(transactions)
+    transactions = db.to_dict(data, ["time", "ticker", "action", "shares", "price"])
+    app.logger.debug(transactions)
     return json.dumps(transactions)
 
     
