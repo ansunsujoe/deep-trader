@@ -162,13 +162,18 @@ export default function TickerTable({ admin }) {
 
   const handleEditSubmit = (e) => {
     e.preventDefault();
+    let formdata = new FormData();
+    formdata.append('image', imageFile);
+    formdata.append('ticker', editedTicker);
+    formdata.append('desc', tickerDesc);
+
     const data = {
       ticker: editedTicker,
       desc: tickerDesc
     }
-    axios.put('http://localhost:5001/tickers/description', data, {
+    axios.put('http://localhost:5001/tickers/description', formdata, {
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'multipart/form-data'
       }
     }).then(response => {
       console.log("SUCCESS", response);
