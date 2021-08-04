@@ -191,7 +191,7 @@ def watchlist_stocks():
 @app.route("/stock/<id>", methods=["GET", "POST"])
 def stock(id):
     if request.method == "GET":
-        ticker = db.run_select_one(f"SELECT name FROM ticker WHERE id = {id};")[0]
+        ticker, is_active = db.run_select_one(f"SELECT name, is_active FROM ticker WHERE id = {id};")
         
         # Price of ticker
         query = f"""
@@ -249,6 +249,7 @@ def stock(id):
         # Consolidate and return final data
         stock_info = {
             "ticker": ticker,
+            "isActive": is_active,
             "price": price,
             "cash": cash,
             "watchlists": watchlists,

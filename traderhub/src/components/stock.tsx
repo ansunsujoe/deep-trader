@@ -13,6 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Slider from '@material-ui/core/Slider';
 import Select from '@material-ui/core/Select';
 import Timeseries from './timeseries';
+import { Badge } from 'react-bootstrap';
 import axios from 'axios';
 import { useParams, useHistory } from "react-router-dom";
 import {getDate} from '../modules/getDate';
@@ -32,6 +33,7 @@ export default function Stock() {
   const [sellDisabled, setSellDisabled] = useState(true);
   const [currentBuy, setCurrentBuy] = useState(0);
   const [currentSell, setCurrentSell] = useState(0);
+  const [isActive, setIsActive] = useState(true);
 
   type StockParams = {
     id: string;
@@ -101,6 +103,7 @@ export default function Stock() {
   useEffect(() => {
     axios.get('http://localhost:5001/stock/' + id).then(response => {
       setTicker(response.data.ticker);
+      setIsActive(response.data.isActive);
       setPrice(response.data.price);
       setMaxBuy(response.data.maxBuy);
       setWatchlists(response.data.watchlists);
@@ -122,7 +125,7 @@ export default function Stock() {
                 <CardContent>
                   <Row>
                     <Col>
-                      <h1>{ticker}</h1>
+                      <h1>{ticker} <Badge color="success">New</Badge></h1>
                       <p className={styles.date}>{getDate()}</p>
                     </Col>
                     <Col className={styles.rightprice}>
@@ -175,6 +178,7 @@ export default function Stock() {
                       <form noValidate autoComplete="off" onSubmit={handleBuySubmit}>
                         <div className={stockstyles.formmargin}>
                           <Slider
+                            disabled={!isActive}
                             defaultValue={0}
                             aria-labelledby="discrete-slider-always"
                             step={1}
