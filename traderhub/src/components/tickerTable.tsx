@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import styles from '../styles/dashboard.module.css';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -16,6 +17,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
@@ -74,6 +82,13 @@ export default function TickerTable({ admin }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [tickerDesc, setTickerDesc] = useState("");
   const [editedTicker, setEditedTicker] = useState("");
+
+  // Filter controls
+  const [upperPrice, setUpperPrice] = useState(null);
+  const [lowerPrice, setLowerPrice] = useState(null);
+  const [activeChecked, setActiveChecked] = useState(true);
+  const [deletedChecked, setDeletedChecked] = useState(false);
+
   axios.defaults.withCredentials = true;
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -155,11 +170,55 @@ export default function TickerTable({ admin }) {
       }
     }).then(response => {
       console.log("SUCCESS", response);
+      setDialogOpen(false);
       initialize();
     }).catch(error => {
       console.log(error);
     })
   }
+
+  const handleActiveChecked = (e) => {
+    setActiveChecked(e.target.checked);
+  }
+
+  const handleDeletedChecked = (e) => {
+    setDeletedChecked(e.target.checked);
+  }
+
+  const handleUpperChange = (e) => {
+    if (!isNaN(+e.target.value)) {
+      setUpperPrice(+e.target.value);
+    }
+  }
+
+  const handleLowerChange = (e) => {
+    if (!isNaN(+e.target.value)) {
+      setLowerPrice(+e.target.value);
+    }
+  }
+
+  function statusMatch(status, active, deleted) {
+    var statusBool = false;
+    if (status === "Active") {
+      statusBool = true;
+    }
+    if (statusBool && active) {
+      return true;
+    }
+    else if (!statusBool && deleted) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  useEffect(() => {
+    const filteredRows = originalRows.filter((row) => {
+      return row.price >= lowerPrice && row.price <= upperPrice && statusMatch(row.status, activeChecked, deletedChecked);
+    });
+    setRows(filteredRows);
+  }, [lowerPrice, upperPrice, deletedChecked, activeChecked])
 
   function initialize() {
     axios.get('http://localhost:5001/tickers').then(response => {
@@ -176,7 +235,7 @@ export default function TickerTable({ admin }) {
   }, [])
 
   return (
-    <Paper className={classes.root}>
+    <Paper className={classes.root} style={{ border: "none", boxShadow: "none" }}>
       <Dialog open={dialogOpen} onClose={handleDialogClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">New Ticker</DialogTitle>
         <DialogContent>
@@ -202,6 +261,47 @@ export default function TickerTable({ admin }) {
           </Button>
         </DialogActions>
       </Dialog>
+      <Card variant="outlined" className="mb-3">
+        <CardContent>
+          <p className={styles.subtitle}>Filter</p>
+          <Row className="mt-3">
+            <Col>
+              <p>Price</p>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="name"
+                label="Greater Than"
+                type="name"
+                fullWidth
+                // onChange={handleNameChange}
+              />
+              <TextField
+                autoFocus
+                margin="dense"
+                id="name"
+                label="Less Than"
+                type="name"
+                fullWidth
+                // onChange={handleNameChange}
+              />
+            </Col>
+            <Col>
+              <p>Status</p>
+              <FormGroup row>
+                <FormControlLabel
+                  control={<Checkbox checked={activeChecked} name="Active" color="primary" />}
+                  label="Active"
+                />
+                <FormControlLabel
+                  control={<Checkbox checked={deletedChecked} name="Deleted" color="primary" />}
+                  label="Deleted"
+                />
+              </FormGroup>
+            </Col>
+          </Row>
+        </CardContent>
+      </Card>
       <SearchBar
         value={searched}
         onChange={(searchVal) => requestSearch(searchVal)}
