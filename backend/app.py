@@ -88,7 +88,7 @@ def logout():
 def tickers():
     if request.method == "GET":
         query = f"""
-        SELECT t.name, q.price, t.is_active. t.description
+        SELECT t.name, q.price, t.is_active, t.description
         FROM quote q 
         INNER JOIN ticker t
         ON q.ticker_id = t.id
