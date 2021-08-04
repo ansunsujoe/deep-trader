@@ -13,7 +13,7 @@ export default function NetWorthChart({invested, cash}) {
           ],
           datasets: [{
             label: 'My First Dataset',
-            data: [invested, cash],
+            data: [cash, invested],
             backgroundColor: [
               'rgb(0, 185, 0)',
               '#ebd834',

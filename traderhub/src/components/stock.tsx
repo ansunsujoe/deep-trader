@@ -92,8 +92,8 @@ export default function Stock() {
       tickerId: id,
       currentPrice: price,
       currentShares: shares,
-      shareChange: currentBuy,
-      action: "buy"
+      shareChange: currentSell,
+      action: "sell"
     };
     modifyAsset(data);
   }

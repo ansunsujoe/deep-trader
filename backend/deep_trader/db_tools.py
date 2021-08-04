@@ -153,6 +153,16 @@ class Database():
                     price = quote.get("price")
                     self.run_insert("quote", [ticker_id, time, price, is_current])
                     is_current = False
+    
+    def add_stock_data(self, ticker):
+        ticker_data = md.read_intraday(ticker)
+        ticker_id = self.run_insert("ticker", data=[ticker])
+        is_current = True
+        for quote in ticker_data:
+            time = quote.get("time")
+            price = quote.get("price")
+            self.run_insert("quote", [ticker_id, time, price, is_current])
+            is_current = False
                     
     def is_empty(self, table):
         if len(self.select_all(table)) == 0:

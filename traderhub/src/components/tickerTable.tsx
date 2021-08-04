@@ -9,8 +9,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import SearchBar from "material-ui-search-bar";
+import Button from '@material-ui/core/Button';
 import axios from "axios";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 interface Column {
   id: 'name' | 'price';
@@ -49,7 +50,7 @@ const useStyles = makeStyles({
 });
 
 
-export default function TickerTable() {
+export default function TickerTable({ admin }) {
   const classes = useStyles();
   let history = useHistory();
   const [page, setPage] = useState(0);
@@ -139,6 +140,16 @@ export default function TickerTable() {
                       </TableCell>
                     );
                   })}
+                  {admin ? (
+                    <TableCell>
+                      <Button variant="contained" color="primary">Edit</Button>
+                    </TableCell>
+                  ) : undefined}
+                  {admin ? (
+                    <TableCell>
+                      <Button variant="contained" color="secondary">Delete</Button>
+                    </TableCell>
+                  ) : undefined}
                 </TableRow>
               );
             })}

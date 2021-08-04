@@ -38,7 +38,7 @@ export default function StockList() {
           </Row>
           <Card style={{ border: "none", boxShadow: "none" }}>
             <CardContent>
-              <TickerTable />
+              <TickerTable admin={admin} />
             </CardContent>
           </Card>
           {admin ? (

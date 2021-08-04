@@ -1,5 +1,6 @@
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
+import {colors} from '../modules/colors.js';
 
 export default function InvestedChart({labels, data}) {
 
@@ -11,6 +12,7 @@ export default function InvestedChart({labels, data}) {
           datasets: [{
             label: 'Investments',
             data: data,
+            backgroundColor: colors.slice(0, labels.length),
             hoverOffset: 4
           }]
         }}
