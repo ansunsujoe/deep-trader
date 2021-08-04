@@ -97,13 +97,14 @@ export default function TickerTable({ admin }) {
       ticker: ticker,
       status: status
     };
-    
+
     axios.put('http://localhost:5001/tickers/status', data, {
       headers: {
         'Content-Type': 'application/json'
       }
     }).then(response => {
       console.log("SUCCESS", response);
+      initialize();
     }).catch(error => {
       console.log(error);
     })
@@ -121,7 +122,7 @@ export default function TickerTable({ admin }) {
     requestSearch(searched);
   };
 
-  useEffect(() => {
+  function initialize() {
     axios.get('http://localhost:5001/tickers').then(response => {
       console.log("SUCCESS", response);
       setOriginalRows(response.data.stocks.map((entry: any) => createData(entry.name, entry.price, entry.status)));
@@ -129,6 +130,10 @@ export default function TickerTable({ admin }) {
     }).catch(error => {
       console.log(error);
     })
+  }
+
+  useEffect(() => {
+    initialize();
   }, [])
 
   return (
@@ -187,7 +192,7 @@ export default function TickerTable({ admin }) {
                         color="secondary"
                         onClick={() => handleStatusClick(row.name, row.status)}
                       >
-                        {"Delete" ? row.status === "Active" : "Activate"}
+                        {row.status === "Active" ? "Delete" : "Activate"}
                       </Button>
                     </TableCell>
                   ) : undefined}

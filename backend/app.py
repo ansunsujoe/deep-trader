@@ -102,7 +102,10 @@ def tickers():
     if request.method == "POST":
         request_data = request.get_json()
         ticker = request_data.get("ticker")
-        db.add_stock_data(ticker)
+        try:
+            db.add_stock_data(ticker)
+        except Exception:
+            return "Invalid Ticker Name", 400
         return "Success", 200
     
     if request.method == "DELETE":

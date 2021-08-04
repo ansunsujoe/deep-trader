@@ -92,7 +92,7 @@ export default function Groups() {
       <Navbar />
       <div className={styles.container}>
         <Dialog open={dialogOpen} onClose={handleDialogClose} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+          <DialogTitle id="form-dialog-title">Watchlist</DialogTitle>
           <DialogContent>
             <DialogContentText>
               Enter a name for a new watchlist that you would like to create.
