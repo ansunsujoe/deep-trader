@@ -220,7 +220,7 @@ def watchlist_item():
         watchlist = request_data.get("watchlist")
         ticker_id= request_data.get("tickerId")
 
-        watchlist_id = db.run_select_one(f"SELECT id FROM watchlist WHERE name = {db.value_string([watchlist])}")[0]
+        watchlist_id = db.run_select_one(f"SELECT id FROM watchlist WHERE name = {db.value_string([watchlist])};")[0]
         db.run_insert("watchlist_item", [user_id, watchlist_id, ticker_id])
         return "Success", 200
     
@@ -229,8 +229,8 @@ def watchlist_item():
         watchlist = request_data.get("watchlist")
         ticker = request_data.get("ticker")
         
-        ticker_id = db.run_select_one(f"SELECT id FROM ticker WHERE name = {db.value_string([ticker])}")[0]
-        watchlist_id = db.run_select_one(f"SELECT id FROM watchlist WHERE name = {db.value_string([watchlist])}")[0]
+        ticker_id = db.run_select_one(f"SELECT id FROM ticker WHERE name = {db.value_string([ticker])};")[0]
+        watchlist_id = db.run_select_one(f"SELECT id FROM watchlist WHERE name = {db.value_string([watchlist])};")[0]
         
         db.run_update(f"DELETE FROM watchlist_item WHERE id = {watchlist_id};")
         return "Success", 200
@@ -238,7 +238,7 @@ def watchlist_item():
 @app.route("/stock/<id>", methods=["GET", "POST"])
 def stock(id):
     if request.method == "GET":
-        ticker, is_active, desc, image_valid = db.run_select_one(f"SELECT name, is_active, description, image_valid FROM ticker WHERE id = {id};")
+        ticker, is_active, desc, image_exists = db.run_select_one(f"SELECT name, is_active, description, image_exists FROM ticker WHERE id = {id};")
         if desc is None:
             desc = ""
         
@@ -300,7 +300,7 @@ def stock(id):
             "ticker": ticker,
             "isActive": is_active,
             "desc": desc,
-            "imageValid": image_valid,
+            "imageValid": image_exists,
             "price": price,
             "cash": cash,
             "watchlists": watchlists,
