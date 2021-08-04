@@ -115,7 +115,6 @@ export default function Signup() {
             placeholder="Full Name"
             helperText="Name must not be empty."
             variant="outlined"
-            onChange={handleNameChange}
             onBlur={handleNameChange}
           />
         </div>
@@ -127,7 +126,6 @@ export default function Signup() {
             placeholder="Username"
             helperText={usernameErrText}
             variant="outlined"
-            onChange={handleUsernameChange}
             onBlur={handleUsernameChange}
           />
         </div>
@@ -139,7 +137,6 @@ export default function Signup() {
             placeholder="Password"
             helperText="Must contain 8+ characters, 1+ numbers, 1+ special characters"
             variant="outlined"
-            onChange={handlePasswordChange}
             onBlur={handlePasswordChange}
           />
         </div>

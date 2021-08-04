@@ -60,6 +60,30 @@ export default function Stock() {
       setSellDisabled(false);
     }
   }
+  
+  const handleWatchlistChange = (e) => {
+    setWatchlist(e.target.value);
+  }
+
+  const handleWatchlistSubmit = (e :any) => {
+    e.preventDefault();
+    const data = {
+      tickerId: id,
+      watchlist: watchlist
+    };
+    axios.post('http://localhost:5001/watchlistItem', data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(response => {
+      console.log("SUCCESS", response);
+      if (response.status === 200) {
+        initialize();
+      }
+    }).catch(error => {
+      console.log(error);
+    })
+  }
 
   function modifyAsset(data) {
     axios.put('http://localhost:5001/asset', data, {
@@ -100,7 +124,7 @@ export default function Stock() {
     modifyAsset(data);
   }
 
-  useEffect(() => {
+  function initialize() {
     axios.get('http://localhost:5001/stock/' + id).then(response => {
       setTicker(response.data.ticker);
       setIsActive(response.data.isActive);
@@ -112,6 +136,10 @@ export default function Stock() {
     }).catch(error => {
       console.log(error);
     })
+  }
+
+  useEffect(() => {
+    initialize();
   }, []);
 
   return (
@@ -148,7 +176,7 @@ export default function Stock() {
                       <Row>
                         <Col>
                           <p className={styles.subtitle}>Add to Watchlist</p>
-                          <form noValidate autoComplete="off">
+                          <form noValidate autoComplete="off" onSubmit={handleWatchlistSubmit}>
                             <div>
                               <InputLabel className="mt-2" id="demo-simple-select-label">Watchlist</InputLabel>
                               <Select
@@ -156,6 +184,7 @@ export default function Stock() {
                                 id="demo-simple-select"
                                 value={watchlist}
                                 className="mt-2"
+                                onChange={handleWatchlistChange}
                               >
                                 {watchlists.map((entry) => (
                                   <MenuItem value={entry}>{entry}</MenuItem>

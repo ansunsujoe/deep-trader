@@ -184,9 +184,21 @@ def watchlist():
         app.logger.debug(f"Inserted group {group_name}")
         return "OK", 200
     
-@app.route("/watchlist/stocks", methods=["GET"])
-def watchlist_stocks():
-    pass
+@app.route("/watchlistItem", methods=["POST"])
+def watchlist_item():
+    # Get user id, and if not the request is unauthorized
+    user_id = session.get("userid")
+    if user_id is None:
+        return "Unauthorized", 401
+    
+    request_data = request.get_json()
+    watchlist = request_data.get("watchlist")
+    ticker_id= request_data.get("tickerId")
+
+    watchlist_id = db.run_select_one(f"SELECT id FROM watchlist WHERE name = {db.value_string([watchlist])}")[0]
+    db.run_insert("watchlist_item", [user_id, ticker_id, watchlist_id])
+    return "Success", 200
+    
     
 @app.route("/stock/<id>", methods=["GET", "POST"])
 def stock(id):
@@ -402,6 +414,7 @@ def get_buy_transactions():
     """
     data = db.run_select(query)
     transactions = db.to_dict(data, ["time", "name", "action", "shares", "price"])
+    print(transactions)
     return json.dumps(transactions)
 
     
