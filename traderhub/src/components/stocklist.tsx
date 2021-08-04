@@ -119,7 +119,7 @@ export default function StockList() {
             </CardContent>
           </Card>
           {admin ? (
-            <Button variant="contained" color="primary" className="mt-3" onClick={handleDialogOpen}>Add Stock</Button>
+            <Button variant="contained" color="primary" className="m-3" onClick={handleDialogOpen}>Add Stock</Button>
           ) : undefined}
         </Container>
       </div>

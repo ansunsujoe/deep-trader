@@ -62,7 +62,7 @@ export default function Signup() {
 
   function handleNameChange(e) {
     setName(e.target.value);
-    if (name === "") {
+    if (name.length === 0) {
       setDisabled(true);
       setNameError(true);
     }
@@ -74,7 +74,7 @@ export default function Signup() {
 
   function handleUsernameChange(e) {
     setUsername(e.target.value);
-    if (username === "") {
+    if (username.length === 0) {
       setDisabled(true);
       setUsernameErrText("Username must not be empty.");
       setUsernameError(true);
@@ -115,7 +115,7 @@ export default function Signup() {
             placeholder="Full Name"
             helperText="Name must not be empty."
             variant="outlined"
-            onBlur={handleNameChange}
+            onChange={handleNameChange}
           />
         </div>
         <div>
@@ -126,7 +126,7 @@ export default function Signup() {
             placeholder="Username"
             helperText={usernameErrText}
             variant="outlined"
-            onBlur={handleUsernameChange}
+            onChange={handleUsernameChange}
           />
         </div>
         <div>
@@ -137,7 +137,7 @@ export default function Signup() {
             placeholder="Password"
             helperText="Must contain 8+ characters, 1+ numbers, 1+ special characters"
             variant="outlined"
-            onBlur={handlePasswordChange}
+            onChange={handlePasswordChange}
           />
         </div>
         <Button color="primary" type="submit" variant="contained" className="mt-3" disabled={disabled}>Submit</Button>
