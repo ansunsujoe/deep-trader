@@ -148,19 +148,19 @@ export default function Groups() {
                       <Col xs={8}>
                         <Row>
                           {entry.stocks.map((stock) => (
-                            <Col md={4} xs={6}>
+                            <Col xs={6}>
                               <Card>
                                 <CardContent>
-                                  <Container fluid>
+                                  <Container fluid className="p-1">
                                     <Row>
                                       <Col xs={5} className="p-0">
-                                        <h4 className="m-0">{stock.ticker}</h4>
+                                        <h4 className={styles.watchlistStock}>{stock.ticker}</h4>
                                       </Col>
                                       <Col xs={5}>
                                         <h4 className={styles.price}>${stock.price}</h4>
                                       </Col>
                                       <Col xs={2}>
-                                        <Button color="secondary">X</Button>
+                                        <Button color="secondary" variant="contained" size="small" className={styles.watchlistCenter}>X</Button>
                                       </Col>
                                     </Row>
                                   </Container>

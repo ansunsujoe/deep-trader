@@ -50,3 +50,14 @@
     margin-left: auto;
     text-align: right;
 }
+
+.watchlistStock {
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 0px;
+    line-height: 40px;
+}
+
+.watchlistCenter {
+    line-height: 40px;
+}
