@@ -7,9 +7,7 @@ export default function Timeseries({data}) {
     <div>
       <Line
         data={{
-          labels: [
-            Array(data.length).fill('')
-          ],
+          labels: Array(data.length).fill(''),
           datasets: [{
             label: 'Timeseries',
             data: data,
