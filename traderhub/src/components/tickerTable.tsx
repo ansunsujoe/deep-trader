@@ -85,8 +85,8 @@ export default function TickerTable({ admin }) {
   const [imageFile, setImageFile] = useState(null);
 
   // Filter controls
-  const [upperPrice, setUpperPrice] = useState(null);
-  const [lowerPrice, setLowerPrice] = useState(null);
+  const [upperPrice, setUpperPrice] = useState(0);
+  const [lowerPrice, setLowerPrice] = useState(10000);
   const [activeChecked, setActiveChecked] = useState(true);
   const [deletedChecked, setDeletedChecked] = useState(false);
 
@@ -221,7 +221,7 @@ export default function TickerTable({ admin }) {
 
   useEffect(() => {
     const filteredRows = originalRows.filter((row) => {
-      return row.price >= lowerPrice && row.price <= upperPrice && statusMatch(row.status, activeChecked, deletedChecked);
+      return row.price > lowerPrice && row.price < upperPrice && statusMatch(row.status, activeChecked, deletedChecked);
     });
     setRows(filteredRows);
   }, [lowerPrice, upperPrice, deletedChecked, activeChecked])
@@ -257,13 +257,12 @@ export default function TickerTable({ admin }) {
             fullWidth
             onChange={handleDescChange}
           />
-          <p>Image</p>
           <Button
             variant="contained"
             component="label"
             color="primary"
           >
-            Upload File
+            Upload Image
             <input type="file" hidden onChange={handleImageChange} />
           </Button>
         </DialogContent>
@@ -289,7 +288,7 @@ export default function TickerTable({ admin }) {
                 label="Greater Than"
                 type="name"
                 fullWidth
-                onChange={handleUpperChange}
+                onChange={handleLowerChange}
               />
               <TextField
                 autoFocus
@@ -298,7 +297,7 @@ export default function TickerTable({ admin }) {
                 label="Less Than"
                 type="name"
                 fullWidth
-                onChange={handleLowerChange}
+                onChange={handleUpperChange}
               />
             </Col>
             <Col>
