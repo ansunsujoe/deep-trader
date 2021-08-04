@@ -61,7 +61,7 @@ export default function Groups() {
     }
 
     // Make request to insert watchlist
-    axios.put('http://localhost:5001/watchlist', data, {
+    axios.put('http://localhost:5001/watchlistItem', data, {
       headers: {
         'Content-Type': 'application/json'
       }
