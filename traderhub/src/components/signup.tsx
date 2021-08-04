@@ -26,10 +26,10 @@ export default function Signup() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [disabled, setDisabled] = useState(true);
-  const [nameError, setNameError] = useState(false);
-  const [usernameError, setUsernameError] = useState(false);
+  const [nameError, setNameError] = useState(true);
+  const [usernameError, setUsernameError] = useState(true);
   const [usernameErrText, setUsernameErrText] = useState("");
-  const [passwordError, setPasswordError] = useState(false);
+  const [passwordError, setPasswordError] = useState(true);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -100,6 +100,9 @@ export default function Signup() {
   function checkEnableSubmit() {
     if (nameError === false && usernameError === false && passwordError === false) {
       setDisabled(false);
+    }
+    else {
+      setDisabled(true);
     }
   }
 
