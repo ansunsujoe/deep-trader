@@ -49,14 +49,9 @@ export default function Signup() {
       if (response.status === 200) {
         history.push("/dashboard");
       }
-      else {
-        if (response.status === 400) {
-          setUsernameErrText("Username is already taken.");
-          setUsernameError(true);
-        }
-      }
     }).catch(error => {
-      console.log(error);
+      setUsernameErrText("Username is already taken.");
+      setUsernameError(true);
     })
   }
 

@@ -78,7 +78,8 @@ export default function Login() {
           setPasswordError(true);
         }
       }).catch(error => {
-        console.log(error);
+        setPasswordErrText("Incorrect password.");
+        setPasswordError(true);
       })
     }
   }
