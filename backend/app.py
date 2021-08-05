@@ -162,7 +162,7 @@ def edit_description():
     return "Success", 200
     
 
-@app.route("/watchlist", methods=["GET", "POST"])
+@app.route("/watchlist", methods=["GET", "POST", "PUT"])
 def watchlist():
     # Get user id, and if not the request is unauthorized
     user_id = session.get("userid")
@@ -208,6 +208,13 @@ def watchlist():
         app.logger.debug(f"Inserted group {group_name}")
         return "OK", 200
     
+    # Request PUT
+    elif request.method == "PUT":
+        request_data = request.get_json()
+        watchlist = request_data.get("watchlist")
+        db.run_update(f"DELETE FROM watchlist WHERE name = {db.value_string([watchlist])};")
+        return "Success", 200
+    
 @app.route("/watchlistItem", methods=["POST", "PUT"])
 def watchlist_item():
     # Get user id, and if not the request is unauthorized
@@ -218,7 +225,7 @@ def watchlist_item():
     if request.method == "POST":
         request_data = request.get_json()
         watchlist = request_data.get("watchlist")
-        ticker_id= request_data.get("tickerId")
+        ticker_id = request_data.get("tickerId")
 
         watchlist_id = db.run_select_one(f"SELECT id FROM watchlist WHERE name = {db.value_string([watchlist])};")[0]
         db.run_insert("watchlist_item", [user_id, watchlist_id, ticker_id])
@@ -232,7 +239,7 @@ def watchlist_item():
         ticker_id = db.run_select_one(f"SELECT id FROM ticker WHERE name = {db.value_string([ticker])};")[0]
         watchlist_id = db.run_select_one(f"SELECT id FROM watchlist WHERE name = {db.value_string([watchlist])};")[0]
         
-        db.run_update(f"DELETE FROM watchlist_item WHERE id = {watchlist_id};")
+        db.run_update(f"DELETE FROM watchlist_item WHERE watchlist_id = {watchlist_id} AND ticker_id = {ticker_id};")
         return "Success", 200
     
 @app.route("/stock/<id>", methods=["GET", "POST"])

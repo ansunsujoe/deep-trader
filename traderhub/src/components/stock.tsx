@@ -193,33 +193,6 @@ export default function Stock() {
                       <Timeseries data={timeseries} />
                     </CardContent>
                   </Card>
-                  <Card variant="outlined" className="mt-2">
-                    <CardContent>
-                      <Row>
-                        <Col>
-                          <p className={styles.subtitle}>Add to Watchlist</p>
-                          <form noValidate autoComplete="off" onSubmit={handleWatchlistSubmit}>
-                            <div>
-                              <InputLabel className="mt-2" id="demo-simple-select-label">Watchlist</InputLabel>
-                              <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={watchlist}
-                                className="mt-2"
-                                onChange={handleWatchlistChange}
-                              >
-                                {watchlists.map((entry) => (
-                                  <MenuItem value={entry}>{entry}</MenuItem>
-                                ))}
-                              </Select>
-                            </div>
-
-                            <Button className="mt-3" color="primary" variant="contained" type="submit">Add</Button>
-                          </form>
-                        </Col>
-                      </Row>
-                    </CardContent>
-                  </Card>
                 </Col>
                 <Col>
                   <Card variant="outlined">
@@ -266,6 +239,33 @@ export default function Stock() {
                         <p>Cash Added: ${Math.round(currentSell * price * 100) / 100}</p>
                         <Button color="secondary" variant="contained" type="submit" disabled={sellDisabled}>Sell</Button>
                       </form>
+                    </CardContent>
+                  </Card>
+                  <Card variant="outlined" className="mt-2">
+                    <CardContent>
+                      <Row>
+                        <Col>
+                          <p className={styles.subtitle}>Add to Watchlist</p>
+                          <form noValidate autoComplete="off" onSubmit={handleWatchlistSubmit}>
+                            <div>
+                              <InputLabel className="mt-2" id="demo-simple-select-label">Watchlist</InputLabel>
+                              <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={watchlist}
+                                className="mt-2"
+                                onChange={handleWatchlistChange}
+                              >
+                                {watchlists.map((entry) => (
+                                  <MenuItem value={entry}>{entry}</MenuItem>
+                                ))}
+                              </Select>
+                            </div>
+
+                            <Button className="mt-3" color="primary" variant="contained" type="submit">Add</Button>
+                          </form>
+                        </Col>
+                      </Row>
                     </CardContent>
                   </Card>
                 </Col>

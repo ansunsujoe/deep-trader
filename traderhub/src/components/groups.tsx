@@ -60,8 +60,25 @@ export default function Groups() {
       watchlist: watchlist,
     }
 
-    // Make request to insert watchlist
+    // Make request to delete watchlist
     axios.put('http://localhost:5001/watchlistItem', data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(response => {
+      initialize();
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+
+  function handleDeleteWatchlist(watchlist: string) {
+    const data = {
+      watchlist: watchlist
+    }
+
+    // Make request to delete watchlist
+    axios.put('http://localhost:5001/watchlist', data, {
       headers: {
         'Content-Type': 'application/json'
       }
@@ -180,7 +197,7 @@ export default function Groups() {
                   </AccordionDetails>
                   <Divider />
                   <AccordionActions>
-                    <Button size="small" color="secondary">
+                    <Button size="small" color="secondary" onClick={() => handleDeleteWatchlist(entry.name)}>
                       Delete
                     </Button>
                   </AccordionActions>
