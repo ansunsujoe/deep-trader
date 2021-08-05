@@ -456,6 +456,7 @@ def get_buy_transactions():
     INNER JOIN ticker t
     ON tr.ticker_id = t.id
     WHERE tr.action = {db.value_string(["buy"])}
+    AND tr.trader_id = {userid}
     ORDER BY tr.time DESC;
     """
     data = db.run_select(query)
@@ -477,6 +478,7 @@ def get_sell_transactions():
     INNER JOIN ticker t
     ON tr.ticker_id = t.id
     WHERE tr.action = {db.value_string(["sell"])}
+    AND tr.trader_id = {userid}
     ORDER BY tr.time DESC;
     """
     data = db.run_select(query)
