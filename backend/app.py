@@ -480,7 +480,7 @@ def get_sell_transactions():
     ORDER BY tr.time DESC;
     """
     data = db.run_select(query)
-    transactions = db.to_dict(data, ["time", "name", "action", "shares", "price"])
+    transactions = db.to_dict(data, ["time", "ticker", "action", "shares", "price"])
     return json.dumps(transactions)
     
 # Main method

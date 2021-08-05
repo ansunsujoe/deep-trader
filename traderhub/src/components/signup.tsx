@@ -50,7 +50,7 @@ export default function Signup() {
         history.push("/dashboard");
       }
       else {
-        if (response.data === "Username Exists") {
+        if (response.status === 400) {
           setUsernameErrText("Username is already taken.");
           setUsernameError(true);
         }
