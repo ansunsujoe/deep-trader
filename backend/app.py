@@ -212,7 +212,7 @@ def watchlist():
     elif request.method == "PUT":
         request_data = request.get_json()
         watchlist = request_data.get("watchlist")
-        db.run_update(f"DELETE FROM watchlist WHERE name = {db.value_string([watchlist])};")
+        db.run_update(f"DELETE FROM watchlist WHERE name = {db.value_string([watchlist])} AND trader_id = {user_id};")
         return "Success", 200
     
 @app.route("/watchlistItem", methods=["POST", "PUT"])
@@ -239,7 +239,7 @@ def watchlist_item():
         ticker_id = db.run_select_one(f"SELECT id FROM ticker WHERE name = {db.value_string([ticker])};")[0]
         watchlist_id = db.run_select_one(f"SELECT id FROM watchlist WHERE name = {db.value_string([watchlist])};")[0]
         
-        db.run_update(f"DELETE FROM watchlist_item WHERE watchlist_id = {watchlist_id} AND ticker_id = {ticker_id};")
+        db.run_update(f"DELETE FROM watchlist_item WHERE watchlist_id = {watchlist_id} AND ticker_id = {ticker_id} AND trader_id = {user_id};")
         return "Success", 200
     
 @app.route("/stock/<id>", methods=["GET", "POST"])
