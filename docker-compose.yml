@@ -45,5 +45,5 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./images:/usr/src/images
+      - ./images:/usr/src/app/src/images
     restart: unless-stopped
